@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"cross-env NODE_ENV=development ts-node-dev --exit-child --respawn src/main.ts\" \"graphql-codegen --config codegen.ts --watch\"",
+    "dev": "cross-env NODE_ENV=development ts-node-dev --exit-child --respawn src/main.ts",
+    "dev2": "concurrently \"cross-env NODE_ENV=development ts-node-dev --exit-child --respawn src/main.ts\" \"graphql-codegen --config codegen.ts --watch\"",
     "start": "ts-node src/main.ts",
     "codegen": "graphql-codegen --config codegen.ts"
   },

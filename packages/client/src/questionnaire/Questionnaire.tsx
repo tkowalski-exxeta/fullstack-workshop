@@ -3,6 +3,7 @@ import { graphql } from "../gql"
 import { useQuery } from "@tanstack/react-query"
 import request from "graphql-request"
 import { QuestionInput } from "../gql/graphql"
+import { useNavigate, useParams } from "react-router-dom"
 
 const createFormDocument = graphql(/* GraphQL */ `
   mutation CreateForm($title: String!) {
@@ -44,20 +45,70 @@ const getQuestionnaireDocument = graphql(/* GraphQL */ `
   }
 `)
 
-function createForm(form: any) {
-  request("/graphql", createFormDocument, { form })
+function createForm(title: string) {
+  return request("/graphql", createFormDocument, { title })
 }
-function createQuestion(question: QuestionInput) {
-  request("/graphql", createQuestionDocument, { question })
+function createQuestion(formId: string, question: QuestionInput) {
+  return request("/graphql", createQuestionDocument, { formId, question })
+}
+
+let i = 0
+const questions: QuestionInput[] = [
+  {
+    select: {
+      question: "Do you like GraphQL?",
+      options: ["yes", "no"],
+      multiSelect: false,
+    },
+  },
+  {
+    text: {
+      question: "What do you like about GraphQL?",
+    },
+  },
+]
+
+
+
+export function QuestionnaireMain() {
+  const navigate = useNavigate()
+  return (
+    <div>
+      <button
+        onClick={() =>
+          createForm("sample form").then((data) =>
+            navigate(data.createForm?._id!)
+          )
+        }
+      >
+        Create Form
+      </button>
+    </div>
+  )
 }
 
 export function QuestionnaireDetails() {
+  const { id } = useParams()
+  const formId = id!
+  const navigate = useNavigate()
   const { data } = useQuery(["questionnaiers"], async () =>
-    Promise.all([
-      request("/graphql", getQuestionnaireDocument, {
-        formId: "",
-      }),
-    ])
+    request("/graphql", getQuestionnaireDocument, { formId })
   )
-  return <pre>{JSON.stringify(data, null, 2)}</pre>
+  return (
+    <div>
+      <button
+        onClick={() =>
+          createForm("sample form").then((data) =>
+            navigate(data.createForm?._id!)
+          )
+        }
+      >
+        Create Form
+      </button>
+      <button onClick={() => createQuestion(formId, questions[i++]).then()}>
+        Create Questions
+      </button>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
+    </div>
+  )
 }
