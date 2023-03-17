@@ -1,0 +1,43 @@
+type Questionnaire {
+  _id: ID!
+  title: String!
+  questions: [Question!]!
+}
+interface Question {
+  _id: ID!
+  question: String!
+}
+type  TextQuestion implements Question  {
+  _id: ID!
+  question: String!
+}
+type SelectQuestion implements Question {
+  _id: ID!
+  question: String!
+  options: [String!]!
+  multiSelect: Boolean!
+}
+
+input QuestionnaireInput {
+  title: String!
+}
+input TextQuestionInput  {
+  question: String!
+}
+input SelectQuestionInput {
+  question: String!
+  options: [String!]!
+  multiSelect: Boolean!
+}
+input QuestionInput {
+  text: TextQuestionInput
+  select: SelectQuestionInput
+}
+
+type Mutation {
+  createForm(form: QuestionnaireInput!): Questionnaire
+  createQuestion(formId: ID!, question: QuestionInput!): Question
+}
+type Query {
+  questionnaire(id: ID!): Questionnaire
+}
