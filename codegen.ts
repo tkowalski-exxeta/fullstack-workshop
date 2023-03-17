@@ -23,6 +23,9 @@ const config: CodegenConfig = {
     "./packages/client/src/gql/": {
       preset: "client",
     },
+    "./packages/client/src/schema.graphql": {
+      plugins: ["schema-ast"],
+    },
   },
   hooks: { afterOneFileWrite: ["prettier --write"] },
 }

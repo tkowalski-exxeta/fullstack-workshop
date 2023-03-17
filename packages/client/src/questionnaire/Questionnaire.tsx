@@ -2,34 +2,21 @@ import { useState } from "react"
 import { graphql } from "../gql"
 import { useQuery } from "@tanstack/react-query"
 import request from "graphql-request"
+import { QuestionInput } from "../gql/graphql"
 
 const createFormDocument = graphql(/* GraphQL */ `
-  mutation CreateForm {
-    createForm(form: { title: "form-1" }) {
+  mutation CreateForm($title: String!) {
+    createForm(form: { title: $title }) {
       _id
       title
     }
   }
 `)
 
-const createQuestionsDocument = graphql(/* GraphQL */ `
-  mutation CreateQuestion($formId: ID!) {
-    q1: createQuestion(
-      formId: $formId
-      question: {
-        select: {
-          question: "Do you like GraphQL?"
-          options: ["yes", "no"]
-          multiSelect: false
-        }
-      }
-    ) {
-      __typename
-    }
-    q2: createQuestion(
-      formId: $formId
-      question: { text: { question: "What do you like about GraphQL?" } }
-    ) {
+const createQuestionDocument = graphql(/* GraphQL */ `
+  mutation CreateQuestion($formId: ID!, $question: QuestionInput!) {
+    q1: createQuestion(formId: $formId, question: $question) {
+      _id
       __typename
     }
   }
@@ -57,11 +44,18 @@ const getQuestionnaireDocument = graphql(/* GraphQL */ `
   }
 `)
 
+function createForm(form: any) {
+  request("/graphql", createFormDocument, { form })
+}
+function createQuestion(question: QuestionInput) {
+  request("/graphql", createQuestionDocument, { question })
+}
+
 export function QuestionnaireDetails() {
   const { data } = useQuery(["questionnaiers"], async () =>
     Promise.all([
       request("/graphql", getQuestionnaireDocument, {
-        first: 10, // variables are typed too!
+        formId: "",
       }),
     ])
   )
