@@ -1,0 +1,26 @@
+{
+  "name": "fullstack-workshop",
+  "scripts": {
+    "dev": "concurrently \"cross-env NODE_ENV=development ts-node-dev --exit-child --respawn packages/server/src/main.ts\" \"graphql-codegen --config codegen.ts --watch\"",
+    "start": "ts-node src/main.ts",
+    "codegen": "graphql-codegen --config codegen.ts"
+  },
+  "dependencies": {
+    "@graphql-codegen/client-preset": "^2.1.1",
+    "@graphql-typed-document-node/core": "^3.1.2",
+    "graphql": "^16.6.0"
+  },
+  "devDependencies": {
+    "@eddeee888/gcg-typescript-resolver-files": "^0.3.0",
+    "@graphql-codegen/cli": "3.2.2",
+    "concurrently": "^7.6.0",
+    "cross-env": "7.0.3",
+    "ts-node": "10.9.1",
+    "ts-node-dev": "2.0.0",
+    "typescript": "5.0.2"
+  },
+  "workspaces": [
+    "packages/client",
+    "packages/server"
+  ]
+}
