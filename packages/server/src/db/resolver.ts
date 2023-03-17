@@ -1,6 +1,6 @@
 import crypto from "node:crypto"
-import { GqlContext, SelectQuestionDB, TextQuestionDB } from "../db/models"
 import { Resolvers } from "../generated/graphql"
+import { GqlContext, SelectQuestionDB, TextQuestionDB } from "./models"
 
 export const resolvers: Resolvers<GqlContext> = {
   Query: {

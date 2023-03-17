@@ -1,6 +1,6 @@
 import { makeExecutableSchema } from "@graphql-tools/schema"
 import fs from "node:fs"
-import { resolvers } from "./resolver"
+import { resolvers } from "../db/resolver"
 
 const typeDefinitions = fs.readFileSync(__dirname + "/schema.graphql", "utf-8")
 

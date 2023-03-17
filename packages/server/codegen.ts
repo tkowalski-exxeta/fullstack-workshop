@@ -1,10 +1,12 @@
+import { preset as serverPreset } from "@eddeee888/gcg-typescript-resolver-files"
 import type { CodegenConfig } from "@graphql-codegen/cli"
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: "src/schema.graphql",
+  schema: "src/**/schema.graphql",
   generates: {
-    "src/generated/graphql.ts": {
+    "src/schema": {
+      preset: serverPreset,
       config: {
         contextType: "src/db/models#GqlContext",
         mappers: {
@@ -13,7 +15,6 @@ const config: CodegenConfig = {
           Questionnaire: "src/db/models#QuestionnaireDb",
         },
       },
-      plugins: ["typescript", "typescript-resolvers"],
     },
   },
 }
