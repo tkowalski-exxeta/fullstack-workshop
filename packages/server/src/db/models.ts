@@ -1,4 +1,4 @@
-import { SelectQuestion, TextQuestion } from "../generated/graphql"
+import { SelectQuestion, TextQuestion } from "../schema/types.generated"
 
 type UUID = string
 // type BaseQuestion =
