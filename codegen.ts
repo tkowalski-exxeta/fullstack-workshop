@@ -23,7 +23,7 @@ const config: CodegenConfig = {
     "./packages/client/src/gql/": {
       preset: "client",
     },
-    "./packages/client/src/schema.graphql": {
+    "./packages/client/schema.graphql": {
       plugins: ["schema-ast"],
     },
   },
