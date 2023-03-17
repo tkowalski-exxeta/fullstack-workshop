@@ -1,137 +1,137 @@
 /* eslint-disable */
-import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core";
-export type Maybe<T> = T | null;
-export type InputMaybe<T> = Maybe<T>;
+import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core"
+export type Maybe<T> = T | null
+export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
+  [K in keyof T]: T[K]
+}
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
+  [SubKey in K]?: Maybe<T[SubKey]>
+}
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
+  [SubKey in K]: Maybe<T[SubKey]>
+}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
-};
+  ID: string
+  String: string
+  Boolean: boolean
+  Int: number
+  Float: number
+}
 
 export type Mutation = {
-  __typename?: "Mutation";
-  createForm?: Maybe<Questionnaire>;
-  createQuestion?: Maybe<Question>;
-};
+  __typename?: "Mutation"
+  createForm?: Maybe<Questionnaire>
+  createQuestion?: Maybe<Question>
+}
 
 export type MutationCreateFormArgs = {
-  form: QuestionnaireInput;
-};
+  form: QuestionnaireInput
+}
 
 export type MutationCreateQuestionArgs = {
-  formId: Scalars["ID"];
-  question: QuestionInput;
-};
+  formId: Scalars["ID"]
+  question: QuestionInput
+}
 
 export type Query = {
-  __typename?: "Query";
-  questionnaire?: Maybe<Questionnaire>;
-};
+  __typename?: "Query"
+  questionnaire?: Maybe<Questionnaire>
+}
 
 export type QueryQuestionnaireArgs = {
-  id: Scalars["ID"];
-};
+  id: Scalars["ID"]
+}
 
 export type Question = {
-  _id: Scalars["ID"];
-  question: Scalars["String"];
-};
+  _id: Scalars["ID"]
+  question: Scalars["String"]
+}
 
 export type QuestionInput = {
-  select?: InputMaybe<SelectQuestionInput>;
-  text?: InputMaybe<TextQuestionInput>;
-};
+  select?: InputMaybe<SelectQuestionInput>
+  text?: InputMaybe<TextQuestionInput>
+}
 
 export type Questionnaire = {
-  __typename?: "Questionnaire";
-  _id: Scalars["ID"];
-  questions: Array<Question>;
-  title: Scalars["String"];
-};
+  __typename?: "Questionnaire"
+  _id: Scalars["ID"]
+  questions: Array<Question>
+  title: Scalars["String"]
+}
 
 export type QuestionnaireInput = {
-  title: Scalars["String"];
-};
+  title: Scalars["String"]
+}
 
 export type SelectQuestion = Question & {
-  __typename?: "SelectQuestion";
-  _id: Scalars["ID"];
-  multiSelect: Scalars["Boolean"];
-  options: Array<Scalars["String"]>;
-  question: Scalars["String"];
-};
+  __typename?: "SelectQuestion"
+  _id: Scalars["ID"]
+  multiSelect: Scalars["Boolean"]
+  options: Array<Scalars["String"]>
+  question: Scalars["String"]
+}
 
 export type SelectQuestionInput = {
-  multiSelect: Scalars["Boolean"];
-  options: Array<Scalars["String"]>;
-  question: Scalars["String"];
-};
+  multiSelect: Scalars["Boolean"]
+  options: Array<Scalars["String"]>
+  question: Scalars["String"]
+}
 
 export type TextQuestion = Question & {
-  __typename?: "TextQuestion";
-  _id: Scalars["ID"];
-  question: Scalars["String"];
-};
+  __typename?: "TextQuestion"
+  _id: Scalars["ID"]
+  question: Scalars["String"]
+}
 
 export type TextQuestionInput = {
-  question: Scalars["String"];
-};
+  question: Scalars["String"]
+}
 
-export type CreateFormMutationVariables = Exact<{ [key: string]: never }>;
+export type CreateFormMutationVariables = Exact<{ [key: string]: never }>
 
 export type CreateFormMutation = {
-  __typename?: "Mutation";
+  __typename?: "Mutation"
   createForm?: {
-    __typename?: "Questionnaire";
-    _id: string;
-    title: string;
-  } | null;
-};
+    __typename?: "Questionnaire"
+    _id: string
+    title: string
+  } | null
+}
 
 export type CreateQuestionMutationVariables = Exact<{
-  formId: Scalars["ID"];
-}>;
+  formId: Scalars["ID"]
+}>
 
 export type CreateQuestionMutation = {
-  __typename?: "Mutation";
-  q1?: { __typename: "SelectQuestion" } | { __typename: "TextQuestion" } | null;
-  q2?: { __typename: "SelectQuestion" } | { __typename: "TextQuestion" } | null;
-};
+  __typename?: "Mutation"
+  q1?: { __typename: "SelectQuestion" } | { __typename: "TextQuestion" } | null
+  q2?: { __typename: "SelectQuestion" } | { __typename: "TextQuestion" } | null
+}
 
 export type GetQuestionnaireQueryVariables = Exact<{
-  formId: Scalars["ID"];
-}>;
+  formId: Scalars["ID"]
+}>
 
 export type GetQuestionnaireQuery = {
-  __typename?: "Query";
+  __typename?: "Query"
   questionnaire?: {
-    __typename?: "Questionnaire";
-    _id: string;
-    title: string;
+    __typename?: "Questionnaire"
+    _id: string
+    title: string
     questions: Array<
       | {
-          __typename: "SelectQuestion";
-          _id: string;
-          question: string;
-          options: Array<string>;
-          multiSelect: boolean;
+          __typename: "SelectQuestion"
+          _id: string
+          question: string
+          options: Array<string>
+          multiSelect: boolean
         }
       | { __typename: "TextQuestion"; _id: string; question: string }
-    >;
-  } | null;
-};
+    >
+  } | null
+}
 
 export const CreateFormDocument = {
   kind: "Document",
@@ -178,7 +178,7 @@ export const CreateFormDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<CreateFormMutation, CreateFormMutationVariables>;
+} as unknown as DocumentNode<CreateFormMutation, CreateFormMutationVariables>
 export const CreateQuestionDocument = {
   kind: "Document",
   definitions: [
@@ -329,7 +329,7 @@ export const CreateQuestionDocument = {
 } as unknown as DocumentNode<
   CreateQuestionMutation,
   CreateQuestionMutationVariables
->;
+>
 export const GetQuestionnaireDocument = {
   kind: "Document",
   definitions: [
@@ -442,4 +442,4 @@ export const GetQuestionnaireDocument = {
 } as unknown as DocumentNode<
   GetQuestionnaireQuery,
   GetQuestionnaireQueryVariables
->;
+>
