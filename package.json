@@ -1,9 +1,14 @@
 {
   "name": "fullstack-workshop",
   "scripts": {
-    "dev": "concurrently \"cross-env NODE_ENV=development ts-node-dev --exit-child --respawn packages/server/src/main.ts\" \"graphql-codegen --config codegen.ts --watch\"",
-    "start": "ts-node src/main.ts",
-    "codegen": "graphql-codegen --config codegen.ts"
+    "generate": "graphql-codegen",
+    "client:dev": "npm run dev -w packages/client",
+    "server:dev": "npm run dev -w packages/server",
+    "dev": "concurrently \"graphql-codegen --watch\" \"npm run client:dev\" \"npm run server:dev\"",
+    "client:start": "npm run start -w packages/client",
+    "server:start": "npm run start -w packages/server",
+    "start": "concurrently \"npm run client:start\" \"npm run server:start\"",
+    "prestart": "npm run generate"
   },
   "dependencies": {
     "@graphql-codegen/client-preset": "^2.1.1",

@@ -1,0 +1,51 @@
+type Mutation {
+  createForm(form: FormInput!): Form
+  createQuestion(formId: ID!, question: QuestionInput!): Question
+}
+
+type Query {
+  forms: [Form]
+  form(id: ID!): Form
+}
+
+interface Question @abstractEntity(discriminatorField: "questionType") {
+  _id: ID!
+  text: String!
+}
+
+input QuestionInput {
+  select: SelectQuestionInput
+  text: TextQuestionInput
+}
+
+type Form @entity {
+  _id: ID! @id
+  questions: [Question!]! @column(overrideType: "QuestionDbInterface")
+  title: String! @column
+}
+
+input FormInput {
+  title: String!
+}
+
+type SelectQuestion implements Question @entity {
+  _id: ID! @id
+  text: String! @column
+  multiSelect: Boolean! @column
+  options: [String!]! @column
+}
+
+input SelectQuestionInput {
+  multiSelect: Boolean!
+  options: [String!]!
+  text: String!
+}
+
+type TextQuestion implements Question @entity {
+  _id: ID! @id
+  text: String! @column
+}
+
+input TextQuestionInput {
+  text: String!
+}

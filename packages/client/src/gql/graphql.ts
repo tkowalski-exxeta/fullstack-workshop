@@ -20,14 +20,25 @@ export type Scalars = {
   Float: number;
 };
 
+export type Form = {
+  __typename?: "Form";
+  _id: Scalars["ID"];
+  questions: Array<Question>;
+  title: Scalars["String"];
+};
+
+export type FormInput = {
+  title: Scalars["String"];
+};
+
 export type Mutation = {
   __typename?: "Mutation";
-  createForm?: Maybe<Questionnaire>;
+  createForm?: Maybe<Form>;
   createQuestion?: Maybe<Question>;
 };
 
 export type MutationCreateFormArgs = {
-  form: QuestionnaireInput;
+  form: FormInput;
 };
 
 export type MutationCreateQuestionArgs = {
@@ -37,16 +48,17 @@ export type MutationCreateQuestionArgs = {
 
 export type Query = {
   __typename?: "Query";
-  questionnaire?: Maybe<Questionnaire>;
+  form?: Maybe<Form>;
+  forms?: Maybe<Array<Maybe<Form>>>;
 };
 
-export type QueryQuestionnaireArgs = {
+export type QueryFormArgs = {
   id: Scalars["ID"];
 };
 
 export type Question = {
   _id: Scalars["ID"];
-  question: Scalars["String"];
+  text: Scalars["String"];
 };
 
 export type QuestionInput = {
@@ -54,39 +66,28 @@ export type QuestionInput = {
   text?: InputMaybe<TextQuestionInput>;
 };
 
-export type Questionnaire = {
-  __typename?: "Questionnaire";
-  _id: Scalars["ID"];
-  questions: Array<Question>;
-  title: Scalars["String"];
-};
-
-export type QuestionnaireInput = {
-  title: Scalars["String"];
-};
-
 export type SelectQuestion = Question & {
   __typename?: "SelectQuestion";
   _id: Scalars["ID"];
   multiSelect: Scalars["Boolean"];
   options: Array<Scalars["String"]>;
-  question: Scalars["String"];
+  text: Scalars["String"];
 };
 
 export type SelectQuestionInput = {
   multiSelect: Scalars["Boolean"];
   options: Array<Scalars["String"]>;
-  question: Scalars["String"];
+  text: Scalars["String"];
 };
 
 export type TextQuestion = Question & {
   __typename?: "TextQuestion";
   _id: Scalars["ID"];
-  question: Scalars["String"];
+  text: Scalars["String"];
 };
 
 export type TextQuestionInput = {
-  question: Scalars["String"];
+  text: Scalars["String"];
 };
 
 export type CreateFormMutationVariables = Exact<{
@@ -95,11 +96,7 @@ export type CreateFormMutationVariables = Exact<{
 
 export type CreateFormMutation = {
   __typename?: "Mutation";
-  createForm?: {
-    __typename?: "Questionnaire";
-    _id: string;
-    title: string;
-  } | null;
+  createForm?: { __typename?: "Form"; _id: string; title: string } | null;
 };
 
 export type CreateQuestionMutationVariables = Exact<{
@@ -115,25 +112,25 @@ export type CreateQuestionMutation = {
     | null;
 };
 
-export type GetQuestionnaireQueryVariables = Exact<{
+export type GetFormQueryVariables = Exact<{
   formId: Scalars["ID"];
 }>;
 
-export type GetQuestionnaireQuery = {
+export type GetFormQuery = {
   __typename?: "Query";
-  questionnaire?: {
-    __typename?: "Questionnaire";
+  form?: {
+    __typename?: "Form";
     _id: string;
     title: string;
     questions: Array<
       | {
           __typename: "SelectQuestion";
           _id: string;
-          question: string;
+          text: string;
           options: Array<string>;
           multiSelect: boolean;
         }
-      | { __typename: "TextQuestion"; _id: string; question: string }
+      | { __typename: "TextQuestion"; _id: string; text: string }
     >;
   } | null;
 };
@@ -274,13 +271,13 @@ export const CreateQuestionDocument = {
   CreateQuestionMutation,
   CreateQuestionMutationVariables
 >;
-export const GetQuestionnaireDocument = {
+export const GetFormDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "GetQuestionnaire" },
+      name: { kind: "Name", value: "GetForm" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -299,7 +296,7 @@ export const GetQuestionnaireDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "questionnaire" },
+            name: { kind: "Name", value: "form" },
             arguments: [
               {
                 kind: "Argument",
@@ -340,7 +337,7 @@ export const GetQuestionnaireDocument = {
                             },
                             {
                               kind: "Field",
-                              name: { kind: "Name", value: "question" },
+                              name: { kind: "Name", value: "text" },
                             },
                           ],
                         },
@@ -360,7 +357,7 @@ export const GetQuestionnaireDocument = {
                             },
                             {
                               kind: "Field",
-                              name: { kind: "Name", value: "question" },
+                              name: { kind: "Name", value: "text" },
                             },
                             {
                               kind: "Field",
@@ -383,7 +380,4 @@ export const GetQuestionnaireDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<
-  GetQuestionnaireQuery,
-  GetQuestionnaireQueryVariables
->;
+} as unknown as DocumentNode<GetFormQuery, GetFormQueryVariables>;

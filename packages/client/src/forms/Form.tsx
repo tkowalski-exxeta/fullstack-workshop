@@ -1,9 +1,8 @@
-import { useState } from "react"
-import { graphql } from "../gql"
-import { useQuery } from "@tanstack/react-query"
-import request from "graphql-request"
-import { QuestionInput } from "../gql/graphql"
-import { useNavigate, useParams } from "react-router-dom"
+import { useQuery } from "@tanstack/react-query";
+import request from "graphql-request";
+import { useNavigate, useParams } from "react-router-dom";
+import { graphql } from "../gql";
+import { QuestionInput } from "../gql/graphql";
 
 const createFormDocument = graphql(/* GraphQL */ `
   mutation CreateForm($title: String!) {
@@ -12,7 +11,7 @@ const createFormDocument = graphql(/* GraphQL */ `
       title
     }
   }
-`)
+`);
 
 const createQuestionDocument = graphql(/* GraphQL */ `
   mutation CreateQuestion($formId: ID!, $question: QuestionInput!) {
@@ -21,38 +20,38 @@ const createQuestionDocument = graphql(/* GraphQL */ `
       __typename
     }
   }
-`)
+`);
 
-const getQuestionnaireDocument = graphql(/* GraphQL */ `
-  query GetQuestionnaire($formId: ID!) {
-    questionnaire(id: $formId) {
+const getFormDocument = graphql(/* GraphQL */ `
+  query GetForm($formId: ID!) {
+    form(id: $formId) {
       _id
       title
       questions {
         __typename
         ... on TextQuestion {
           _id
-          question
+          text
         }
         ... on SelectQuestion {
           _id
-          question
+          text
           options
           multiSelect
         }
       }
     }
   }
-`)
+`);
 
 function createForm(title: string) {
-  return request("/graphql", createFormDocument, { title })
+  return request("/graphql", createFormDocument, { title });
 }
 function createQuestion(formId: string, question: QuestionInput) {
-  return request("/graphql", createQuestionDocument, { formId, question })
+  return request("/graphql", createQuestionDocument, { formId, question });
 }
 
-let i = 0
+let i = 0;
 const questions: QuestionInput[] = [
   {
     select: {
@@ -66,12 +65,10 @@ const questions: QuestionInput[] = [
       question: "What do you like about GraphQL?",
     },
   },
-]
+];
 
-
-
-export function QuestionnaireMain() {
-  const navigate = useNavigate()
+export function FormMain() {
+  const navigate = useNavigate();
   return (
     <div>
       <button
@@ -84,16 +81,16 @@ export function QuestionnaireMain() {
         Create Form
       </button>
     </div>
-  )
+  );
 }
 
-export function QuestionnaireDetails() {
-  const { id } = useParams()
-  const formId = id!
-  const navigate = useNavigate()
-  const { data } = useQuery(["questionnaiers"], async () =>
-    request("/graphql", getQuestionnaireDocument, { formId })
-  )
+export function FormDetails() {
+  const { id } = useParams();
+  const formId = id!;
+  const navigate = useNavigate();
+  const { data } = useQuery(["forms"], async () =>
+    request("/graphql", getFormDocument, { formId })
+  );
   return (
     <div>
       <button
@@ -110,5 +107,5 @@ export function QuestionnaireDetails() {
       </button>
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
-  )
+  );
 }

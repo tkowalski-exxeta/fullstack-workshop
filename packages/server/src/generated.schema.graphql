@@ -1,15 +1,26 @@
+type Form {
+  _id: ID!
+  questions: [Question!]!
+  title: String!
+}
+
+input FormInput {
+  title: String!
+}
+
 type Mutation {
-  createForm(form: QuestionnaireInput!): Questionnaire
+  createForm(form: FormInput!): Form
   createQuestion(formId: ID!, question: QuestionInput!): Question
 }
 
 type Query {
-  questionnaire(id: ID!): Questionnaire
+  form(id: ID!): Form
+  forms: [Form]
 }
 
 interface Question {
   _id: ID!
-  question: String!
+  text: String!
 }
 
 input QuestionInput {
@@ -17,34 +28,24 @@ input QuestionInput {
   text: TextQuestionInput
 }
 
-type Questionnaire {
-  _id: ID!
-  questions: [Question!]!
-  title: String!
-}
-
-input QuestionnaireInput {
-  title: String!
-}
-
 type SelectQuestion implements Question {
   _id: ID!
   multiSelect: Boolean!
   options: [String!]!
-  question: String!
+  text: String!
 }
 
 input SelectQuestionInput {
   multiSelect: Boolean!
   options: [String!]!
-  question: String!
+  text: String!
 }
 
 type TextQuestion implements Question {
   _id: ID!
-  question: String!
+  text: String!
 }
 
 input TextQuestionInput {
-  question: String!
+  text: String!
 }

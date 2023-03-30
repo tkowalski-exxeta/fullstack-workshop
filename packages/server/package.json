@@ -5,16 +5,17 @@
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development ts-node-dev --exit-child --respawn src/main.ts",
-    "dev2": "concurrently \"cross-env NODE_ENV=development ts-node-dev --exit-child --respawn src/main.ts\" \"graphql-codegen --config codegen.ts --watch\"",
-    "start": "ts-node src/main.ts",
-    "codegen": "graphql-codegen --config codegen.ts"
+    "start": "ts-node src/main.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@graphql-tools/load-files": "^6.6.1",
     "@graphql-yoga/render-graphiql": "^3.7.3",
-    "graphql-yoga": "3.7.3"
+    "dotenv": "^16.0.3",
+    "graphql-yoga": "3.7.3",
+    "mongodb": "^5.1.0"
   },
   "devDependencies": {
     "@types/node": "18.15.3"
