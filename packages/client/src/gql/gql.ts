@@ -19,6 +19,8 @@ const documents = {
     types.CreateQuestionDocument,
   "\n  query GetForm($formId: ID!) {\n    form(id: $formId) {\n      _id\n      title\n      questions {\n        __typename\n        ... on TextQuestion {\n          _id\n          text\n        }\n        ... on SelectQuestion {\n          _id\n          text\n          options\n          multiSelect\n        }\n      }\n    }\n  }\n":
     types.GetFormDocument,
+  "\n  query GetForms {\n    forms {\n      _id\n      title\n      questions {\n        __typename\n        ... on TextQuestion {\n          _id\n          text\n        }\n        ... on SelectQuestion {\n          _id\n          text\n          options\n          multiSelect\n        }\n      }\n    }\n  }\n":
+    types.GetFormsDocument,
 };
 
 /**
@@ -53,6 +55,12 @@ export function graphql(
 export function graphql(
   source: "\n  query GetForm($formId: ID!) {\n    form(id: $formId) {\n      _id\n      title\n      questions {\n        __typename\n        ... on TextQuestion {\n          _id\n          text\n        }\n        ... on SelectQuestion {\n          _id\n          text\n          options\n          multiSelect\n        }\n      }\n    }\n  }\n"
 ): (typeof documents)["\n  query GetForm($formId: ID!) {\n    form(id: $formId) {\n      _id\n      title\n      questions {\n        __typename\n        ... on TextQuestion {\n          _id\n          text\n        }\n        ... on SelectQuestion {\n          _id\n          text\n          options\n          multiSelect\n        }\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  query GetForms {\n    forms {\n      _id\n      title\n      questions {\n        __typename\n        ... on TextQuestion {\n          _id\n          text\n        }\n        ... on SelectQuestion {\n          _id\n          text\n          options\n          multiSelect\n        }\n      }\n    }\n  }\n"
+): (typeof documents)["\n  query GetForms {\n    forms {\n      _id\n      title\n      questions {\n        __typename\n        ... on TextQuestion {\n          _id\n          text\n        }\n        ... on SelectQuestion {\n          _id\n          text\n          options\n          multiSelect\n        }\n      }\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

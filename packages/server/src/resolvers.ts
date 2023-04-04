@@ -4,7 +4,7 @@ import { Resolvers } from "./generated.types";
 export const resolvers: Resolvers = {
   Query: {
     form: async (_parent, { id }, context) =>
-      await context.db.forms.findOne({ _id: id }),
+      await context.db.forms.findOne({ _id: new ObjectId(id) }),
     forms: async (_parent, _args, context) => await context.db.forms.find(),
   },
   Mutation: {

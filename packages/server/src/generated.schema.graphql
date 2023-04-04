@@ -15,7 +15,7 @@ type Mutation {
 
 type Query {
   form(id: ID!): Form
-  forms: [Form]
+  forms: [Form!]!
 }
 
 interface Question {

@@ -49,7 +49,7 @@ export type MutationCreateQuestionArgs = {
 export type Query = {
   __typename?: "Query";
   form?: Maybe<Form>;
-  forms?: Maybe<Array<Maybe<Form>>>;
+  forms: Array<Form>;
 };
 
 export type QueryFormArgs = {
@@ -133,6 +133,27 @@ export type GetFormQuery = {
       | { __typename: "TextQuestion"; _id: string; text: string }
     >;
   } | null;
+};
+
+export type GetFormsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetFormsQuery = {
+  __typename?: "Query";
+  forms: Array<{
+    __typename?: "Form";
+    _id: string;
+    title: string;
+    questions: Array<
+      | {
+          __typename: "SelectQuestion";
+          _id: string;
+          text: string;
+          options: Array<string>;
+          multiSelect: boolean;
+        }
+      | { __typename: "TextQuestion"; _id: string; text: string }
+    >;
+  }>;
 };
 
 export const CreateFormDocument = {
@@ -381,3 +402,90 @@ export const GetFormDocument = {
     },
   ],
 } as unknown as DocumentNode<GetFormQuery, GetFormQueryVariables>;
+export const GetFormsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetForms" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "forms" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "_id" } },
+                { kind: "Field", name: { kind: "Name", value: "title" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "questions" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: { kind: "Name", value: "TextQuestion" },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "_id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "text" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: { kind: "Name", value: "SelectQuestion" },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "_id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "text" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "options" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "multiSelect" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetFormsQuery, GetFormsQueryVariables>;

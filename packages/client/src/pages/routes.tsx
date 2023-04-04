@@ -1,26 +1,6 @@
-import { FormDetails, FormMain } from "forms/Form";
+import { FormDetails, FormDisplay, FormMain } from "forms/Form";
 import { MainLayout } from "layout/main-layout";
-import { Link, RouteObject } from "react-router-dom";
-
-export const FormDisplay: React.FC = () => (
-  <div>TODO: Implement form-display</div>
-);
-
-export const InitialContent: React.FC = () => (
-  <div className="flex items-center justify-center h-full">
-    <div>
-      <h1 className="text-lg text-center">Initial content</h1>
-      <div className="inline-flex flex-row gap-4">
-        <Link to="admin/questionnaire">
-          <button>Admin-Page</button>
-        </Link>
-        <Link to="user/form/sample-id">
-          <button>User-Page</button>
-        </Link>
-      </div>
-    </div>
-  </div>
-);
+import { RouteObject } from "react-router-dom";
 
 export const routes: RouteObject[] = [
   {
@@ -29,23 +9,15 @@ export const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <InitialContent />,
+        element: <FormMain />,
       },
       {
         path: "admin",
-        children: [
-          {
-            path: "form",
-            children: [
-              { index: true, element: <FormMain /> },
-              { path: ":id", element: <FormDetails /> },
-            ],
-          },
-        ],
+        children: [{ path: "forms/:id", element: <FormDetails /> }],
       },
       {
         path: "user",
-        children: [{ path: "form/:id", element: <FormDisplay /> }],
+        children: [{ path: "forms/:id", element: <FormDisplay /> }],
       },
     ],
   },

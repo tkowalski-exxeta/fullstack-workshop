@@ -51,7 +51,7 @@ export type MutationCreateQuestionArgs = {
 export type Query = {
   __typename?: "Query";
   form?: Maybe<Form>;
-  forms?: Maybe<Array<Maybe<Form>>>;
+  forms: Array<Form>;
 };
 
 export type QueryFormArgs = {
@@ -367,11 +367,7 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryFormArgs, "id">
   >;
-  forms?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["Form"]>>>,
-    ParentType,
-    ContextType
-  >;
+  forms?: Resolver<Array<ResolversTypes["Form"]>, ParentType, ContextType>;
 };
 
 export type QuestionResolvers<

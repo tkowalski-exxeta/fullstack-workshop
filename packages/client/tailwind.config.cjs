@@ -9,6 +9,7 @@ module.exports = {
   },
   plugins: [],
   corePlugins: {
-    preflight: false
+    // TODO: Why was preflight disabled?
+    preflight: true
   },
 }
