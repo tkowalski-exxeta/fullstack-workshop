@@ -1,8 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import request from "graphql-request";
 import { Link, useNavigate, useParams, redirect } from "react-router-dom";
 import { graphql } from "../gql";
 import { Form, QuestionInput } from "../gql/graphql";
+import React, { useEffect, useState } from "react";
+import { GetFormQuery } from "../gql/graphql";
+import { EditableText } from "./EditableText";
 
 const createFormDocument = graphql(/* GraphQL */ `
   mutation CreateForm($title: String!) {
@@ -68,8 +71,12 @@ const getForms = graphql(`
 function createForm(title: string) {
   return request("/graphql", createFormDocument, { title });
 }
-function createQuestion(formId: string, question: QuestionInput) {
-  return request("/graphql", createQuestionDocument, { formId, question });
+function useCreateQuestion() {
+  const queryClient = useQueryClient();
+  return useMutation<unknown, unknown, {formId: string, question: QuestionInput}>({
+    mutationFn: ({formId, question}) => request("/graphql", createQuestionDocument, { formId, question }),
+    onSettled: () => queryClient.invalidateQueries(["forms"])
+  })
 }
 
 let i = 0;
@@ -116,7 +123,7 @@ export const CreateFormItem: React.FC = () => {
       var form = response.createForm;
       navigate(`/admin/forms/${form?._id}`);
     } catch (error) {
-      console.error("Creating a new form failed due to following error: ", error);
+      console.error("Creating a new form failed due to error: ", error);
     }
   }
   return (
@@ -154,23 +161,31 @@ export function FormDetails() {
   const { id } = useParams();
   const formId = id!;
   const navigate = useNavigate();
+
+  const createQuestionMutation = useCreateQuestion();
+
   const { data } = useQuery(["forms"], async () =>
     request("/graphql", getFormDocument, { formId })
   );
-  return (
-    <div className="flex flex-col items-stretch container mx-auto gap-4 grow max-w-3xl">
-      <h1 className="text-4xl pt-10 pb-4">{data?.form?.title}</h1>
+  return (   
+    <> 
       {!!data?.form &&
-        data.form.questions.map((q) => (
-          <div className="bg-gray-700 w-full p-6 text-lg rounded drop-shadow">
-            {q.text}
-          </div>
-        ))}
+        <div className="flex flex-col items-stretch container mx-auto gap-4 grow max-w-3xl">
+          <h1 className="text-4xl pt-10 pb-4">
+            <EditableText text={data.form.title}  setText={(text:string) => console.log(text)}/>
+          </h1>
+          {data.form.questions.map((q, index) => (
+              <div key={index} className="bg-gray-700 w-full p-6 text-lg rounded drop-shadow">
+                <EditableText text={q.text} setText={(text:string) => console.log(text)}/>
+              </div>
+            ))}
 
-      <button onClick={() => createQuestion(formId, questions[i++]).then()}>
-        Add Question
-      </button>
-    </div>
+          <button onClick={() => createQuestionMutation.mutate({formId, question: questions[i++]})}>
+            Add Question
+          </button>
+        </div>
+        }
+    </>
   );
 }
 
