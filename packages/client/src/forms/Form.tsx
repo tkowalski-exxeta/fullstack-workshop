@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import request from "graphql-request";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, redirect } from "react-router-dom";
 import { graphql } from "../gql";
 import { Form, QuestionInput } from "../gql/graphql";
 
@@ -65,7 +65,6 @@ const getForms = graphql(`
     }
   }
 `);
-
 function createForm(title: string) {
   return request("/graphql", createFormDocument, { title });
 }
@@ -92,7 +91,7 @@ const questions: QuestionInput[] = [
 export const FormList: React.FC<{ forms: Form[] }> = ({ forms }) => {
   return (
     <ul className="flex gap-6 p-6">
-      {!!forms && forms.map((form) => <FormListItem form={form} />)}
+      {!!forms && forms.map((form, index) => <FormListItem key={index} form={form} />)}
       <CreateFormItem />
     </ul>
   );
@@ -102,29 +101,42 @@ export const FormListItem: React.FC<{ form: Form }> = ({ form }) => {
   return (
     <li key={form._id} className="list-none">
       <Link to={`admin/forms/${form._id}`}>
-        <FormCard title={form.title} />
+        <FormCard title={form.title} image={"list-bullet.svg"} />
       </Link>
     </li>
   );
 };
 
-export const CreateFormItem: React.FC = () => {
+export const CreateFormItem: React.FC = () => {  
+  const navigate = useNavigate();
+
+  async function createFormAndReturnUrl(title: string) {
+    try {
+      var response = await createForm(title).then();
+      var form = response.createForm;
+      navigate(`/admin/forms/${form?._id}`);
+    } catch (error) {
+      console.error("Creating a new form failed due to following error: ", error);
+    }
+  }
   return (
     <li>
-      <Link>
-        <FormCard title="Create form" />
+      <Link onClick={() => createFormAndReturnUrl("Untitled")}>
+        <FormCard title="Create form" image={"plus.svg"} />
       </Link>
     </li>
   );
 };
 
-export const FormCard: React.FC<{ title: String; image?: String }> = ({
+export const FormCard: React.FC<{ title: String; image: String }> = ({
   title,
   image,
 }) => {
   return (
     <div className="border border-gray-700 w-48 rounded">
-      <div className="h-36 border-b border-gray-700"></div>
+      <div className="flex h-36 border-b border-gray-700">
+        <img className="flex-auto invert-[0.5]" src={`src/assets/${image}`} height={120} width={120}/>
+      </div>
       <div className="p-2">{title}</div>
     </div>
   );
