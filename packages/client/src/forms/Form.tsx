@@ -90,7 +90,7 @@ const questions: QuestionInput[] = [
 
 export const FormList: React.FC<{ forms: Form[] }> = ({ forms }) => {
   return (
-    <ul className="flex gap-6 p-6">
+    <ul className="flex flex-wrap gap-6 p-6">
       {!!forms && forms.map((form, index) => <FormListItem key={index} form={form} />)}
       <CreateFormItem />
     </ul>
