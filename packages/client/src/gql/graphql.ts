@@ -35,6 +35,8 @@ export type Mutation = {
   __typename?: "Mutation";
   createForm?: Maybe<Form>;
   createQuestion?: Maybe<Question>;
+  updateForm?: Maybe<Form>;
+  updateQuestion?: Maybe<Question>;
 };
 
 export type MutationCreateFormArgs = {
@@ -44,6 +46,17 @@ export type MutationCreateFormArgs = {
 export type MutationCreateQuestionArgs = {
   formId: Scalars["ID"];
   question: QuestionInput;
+};
+
+export type MutationUpdateFormArgs = {
+  form: FormInput;
+  formId: Scalars["ID"];
+};
+
+export type MutationUpdateQuestionArgs = {
+  formId: Scalars["ID"];
+  question: QuestionInput;
+  questionId: Scalars["ID"];
 };
 
 export type Query = {

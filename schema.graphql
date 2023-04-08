@@ -1,6 +1,8 @@
 type Mutation {
   createForm(form: FormInput!): Form
   createQuestion(formId: ID!, question: QuestionInput!): Question
+  updateForm(formId: ID!, form: FormInput!): Form
+  updateQuestion(formId: ID!, questionId: ID!, question: QuestionInput!): Question
 }
 
 type Query {

@@ -32,6 +32,27 @@ export const resolvers: Resolvers = {
       );
       return questionCreated;
     },
+    updateForm: async (_parent, { formId, form }, context) => {
+      await context.db.forms.updateOne(
+        { _id: new ObjectId(formId) },
+        { $set: form }
+      );
+      const formUpdated =  await context.db.forms.findOne({ _id: new ObjectId(formId) });
+      return formUpdated;
+    },
+    updateQuestion: async (_parent, { formId, questionId, question }, context) => {
+      const input = question.select ?? question.text;
+      const type = !!question.select ? "SelectQuestion" : "TextQuestion";
+      const questionUpdate = {
+        questionType: type,
+        ...input,
+      }
+      const questionUpdated = await context.db.forms.updateOne(
+        { _id: new ObjectId(formId), "questions._id": new ObjectId(questionId) },
+        { $set: { "questions.$": questionUpdate } }
+      );
+      return questionUpdated;
+    },
   },
   Question: {
     __resolveType: (question) => {

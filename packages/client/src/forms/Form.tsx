@@ -16,9 +16,27 @@ const createFormDocument = graphql(/* GraphQL */ `
   }
 `);
 
+const updateFormDocument = graphql(/* GraphQL */ `
+  mutation UpdateForm($title: String!, $formId: ID!) {
+    updateForm(form: {title: $title}, formId: $formId) {
+      _id
+      title
+    }
+  }
+`);
+
 const createQuestionDocument = graphql(/* GraphQL */ `
   mutation CreateQuestion($formId: ID!, $question: QuestionInput!) {
     q1: createQuestion(formId: $formId, question: $question) {
+      _id
+      __typename
+    }
+  }
+`);
+
+const updateQuestionDocument = graphql(/* GraphQL */ `
+  mutation UpdateQuestion($formId: ID!, $questionId: ID!, $question: QuestionInput!) {
+    q1: updateQuestion(formId: $formId, questionId: $questionId, question: $question) {
       _id
       __typename
     }
@@ -71,6 +89,10 @@ const getForms = graphql(`
 function createForm(title: string) {
   return request("/graphql", createFormDocument, { title });
 }
+// function updateForm(formId: string, title: string) {
+//   return request("/graphql", updateFormDocument, { formId, title });
+// }
+
 function useCreateQuestion() {
   const queryClient = useQueryClient();
   const question: QuestionInput = {

@@ -37,6 +37,8 @@ export type Mutation = {
   __typename?: "Mutation";
   createForm?: Maybe<Form>;
   createQuestion?: Maybe<Question>;
+  updateForm?: Maybe<Form>;
+  updateQuestion?: Maybe<Question>;
 };
 
 export type MutationCreateFormArgs = {
@@ -46,6 +48,17 @@ export type MutationCreateFormArgs = {
 export type MutationCreateQuestionArgs = {
   formId: Scalars["ID"];
   question: QuestionInput;
+};
+
+export type MutationUpdateFormArgs = {
+  form: FormInput;
+  formId: Scalars["ID"];
+};
+
+export type MutationUpdateQuestionArgs = {
+  formId: Scalars["ID"];
+  question: QuestionInput;
+  questionId: Scalars["ID"];
 };
 
 export type Query = {
@@ -354,6 +367,21 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationCreateQuestionArgs, "formId" | "question">
+  >;
+  updateForm?: Resolver<
+    Maybe<ResolversTypes["Form"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateFormArgs, "form" | "formId">
+  >;
+  updateQuestion?: Resolver<
+    Maybe<ResolversTypes["Question"]>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationUpdateQuestionArgs,
+      "formId" | "question" | "questionId"
+    >
   >;
 };
 
