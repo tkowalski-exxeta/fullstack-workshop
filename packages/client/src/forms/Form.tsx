@@ -1,11 +1,11 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import request from "graphql-request";
-import { Link, useNavigate, useParams, redirect } from "react-router-dom";
-import { graphql } from "../gql";
-import { Form, QuestionInput } from "../gql/graphql";
-import React, { useEffect, useState } from "react";
-import { GetFormQuery } from "../gql/graphql";
-import { EditableText } from "./EditableText";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import request from "graphql-request"
+import { Link, useNavigate, useParams, redirect } from "react-router-dom"
+import { graphql } from "../gql"
+import { Form, QuestionInput } from "../gql/graphql"
+import React, { useEffect, useState } from "react"
+import { EditableText } from "./EditableText"
+import { FormQuestion } from "./FormQuestion"
 
 const createFormDocument = graphql(/* GraphQL */ `
   mutation CreateForm($title: String!) {
@@ -73,27 +73,16 @@ function createForm(title: string) {
 }
 function useCreateQuestion() {
   const queryClient = useQueryClient();
-  return useMutation<unknown, unknown, {formId: string, question: QuestionInput}>({
-    mutationFn: ({formId, question}) => request("/graphql", createQuestionDocument, { formId, question }),
-    onSettled: () => queryClient.invalidateQueries(["forms"])
-  })
-}
-
-let i = 0;
-const questions: QuestionInput[] = [
-  {
-    select: {
-      text: "Do you like GraphQL?",
-      options: ["yes", "no"],
-      multiSelect: false,
-    },
-  },
-  {
+  const question: QuestionInput = {
     text: {
       text: "What do you like about GraphQL?",
     },
-  },
-];
+  }
+  return useMutation<unknown, unknown, {formId: string}>({
+    mutationFn: ({formId}) => request("/graphql", createQuestionDocument, { formId, question }),
+    onSettled: () => queryClient.invalidateQueries(["forms"])
+  })
+}
 
 export const FormList: React.FC<{ forms: Form[] }> = ({ forms }) => {
   return (
@@ -142,7 +131,7 @@ export const FormCard: React.FC<{ title: String; image: String }> = ({
   return (
     <div className="border border-gray-700 w-48 rounded">
       <div className="flex h-36 border-b border-gray-700">
-        <img className="flex-auto invert-[0.5]" src={`src/assets/${image}`} height={120} width={120}/>
+        <img className="flex-auto invert-[0.5]" src={`/src/assets/${image}`} height={120} width={120}/>
       </div>
       <div className="p-2">{title}</div>
     </div>
@@ -175,12 +164,10 @@ export function FormDetails() {
             <EditableText text={data.form.title}  setText={(text:string) => console.log(text)}/>
           </h1>
           {data.form.questions.map((q, index) => (
-              <div key={index} className="bg-gray-700 w-full p-6 text-lg rounded drop-shadow">
-                <EditableText text={q.text} setText={(text:string) => console.log(text)}/>
-              </div>
+              <FormQuestion key={index} {...q} />
             ))}
 
-          <button onClick={() => createQuestionMutation.mutate({formId, question: questions[i++]})}>
+          <button className="mb-6" onClick={() => createQuestionMutation.mutate({formId})}>
             Add Question
           </button>
         </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 
 export const EditableText: React.FC<{ text: string, setText: Function}> = ({
     text,
@@ -26,7 +26,7 @@ export const EditableText: React.FC<{ text: string, setText: Function}> = ({
             onBlur={saveChanges}
           />
           :
-          <div className="p-1 border-b-transparent border-b-2">{inputValue}</div>
+          <div className="p-1 border-b-transparent border-b-2 whitespace-nowrap overflow-hidden">{inputValue}</div>
         }
       </div>
     );
