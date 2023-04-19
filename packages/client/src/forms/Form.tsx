@@ -102,7 +102,7 @@ function useCreateQuestion(formId: string) {
   const queryClient = useQueryClient();
   const question: QuestionInput = {
     text: {
-      text: "What do you like about GraphQL?",
+      text: "Untitled Question",
     },
   }
   return useMutation({
@@ -198,7 +198,7 @@ export function FormDetails() {
       {!!data?.form &&
         <div className="flex flex-col items-stretch container mx-auto gap-4 grow max-w-3xl">
           <h1 className="text-4xl pt-10 pb-4">
-            <EditableText text={data.form.title}  setText={(title:string) => updateFormMutation.mutate({title})}/>
+            <EditableText text={data.form.title}  onChangeText={(title:string) => updateFormMutation.mutate({title})}/>
           </h1>
           {data.form.questions.map((q, index) => (
               <FormQuestion key={index} {...q} updateQuestion={(question: QuestionInput) => updateQuestionMutation.mutate({questionId: q._id, question})} />

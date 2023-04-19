@@ -1,8 +1,8 @@
 import React, { useState } from "react"
 
-export const EditableText: React.FC<{ text: string, setText: Function}> = ({
+export const EditableText: React.FC<{ text: string, onChangeText: Function}> = ({
     text,
-    setText,
+    onChangeText: setText,
   }) => {
     const [editing, setEditing] = useState<boolean>(false);
     const [inputValue, setInputValue] = useState<string>(text);

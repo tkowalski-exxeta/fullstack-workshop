@@ -40,50 +40,54 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
         }
     };
 
-    const setQuestionText = (text: string) => {
+    const updateQuestionText = (text: string) => {
         updateQuestion(createQuestionInput({text}));
     };
 
-    const setQuestionType = (questionType: "SelectQuestion" | "TextQuestion") => {
+    const updateQuestionType = (questionType: "SelectQuestion" | "TextQuestion") => {
         updateQuestion(createQuestionInput({questionType}));
     };
 
     const addQuestionOption = () =>  {
         updateQuestion(createQuestionInput({options: [...options || [], "Untitled Option"]}));
-    }
+    };
+
+    const updateQuestionOptions = (options: string[]) =>  {
+        updateQuestion(createQuestionInput({options}));
+    };
 
     return (
         <div className="bg-gray-700 w-full p-6 text-lg rounded drop-shadow">
-            <FormQuestionHeader text={text} questionType={__typename} setQuestionText={setQuestionText} setQuestionType={setQuestionType}/>
+            <FormQuestionHeader text={text} questionType={__typename} onChangeQuestionText={updateQuestionText} onChangeQuestionType={updateQuestionType}/>
             <div className="py-4">
                 {__typename === "TextQuestion" ?
                     <FormTextQuestionBody/>
                 : 
-                    <FormSelectQuestionBody questionOptions={options || []} addQuestionOption={addQuestionOption}/>
+                    <FormSelectQuestionBody questionOptions={options || []} onChangeQuestionOptions={updateQuestionOptions} addQuestionOption={addQuestionOption}/>
                 }
             </div>
         </div>
     );
 };
 
-export const FormQuestionHeader: React.FC<{text: string, questionType: "SelectQuestion" | "TextQuestion", setQuestionText: (text: string) => void,  setQuestionType: (questionType: "SelectQuestion" | "TextQuestion") => void}> = (
+export const FormQuestionHeader: React.FC<{text: string, questionType: "SelectQuestion" | "TextQuestion", onChangeQuestionText: (text: string) => void,  onChangeQuestionType: (questionType: "SelectQuestion" | "TextQuestion") => void}> = (
     {
         text,
         questionType,
-        setQuestionType,
-        setQuestionText
+        onChangeQuestionType,
+        onChangeQuestionText,
     }) => {
     return (
         <div className="flex gap-2 justify-between">
             <div className="w-3/4">
-                <EditableText text={text} setText={setQuestionText}/>
+                <EditableText text={text} onChangeText={onChangeQuestionText}/>
             </div>
             <select 
                 className="p-1 outline-0 rounded"
                 name="type"
                 id="type"
                 value={questionType}
-                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setQuestionType(e.target.value as "SelectQuestion" | "TextQuestion")}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onChangeQuestionType(e.target.value as "SelectQuestion" | "TextQuestion")}
             >
                 <option value="SelectQuestion">Select Question</option>
                 <option value="TextQuestion">Text Question</option>
@@ -102,16 +106,24 @@ export const FormTextQuestionBody: React.FC = () => {
     );
 };
 
-export const FormSelectQuestionBody: React.FC<{questionOptions: string[], addQuestionOption: () => void}> = ({
+export const FormSelectQuestionBody: React.FC<{questionOptions: string[], addQuestionOption: () => void, onChangeQuestionOptions: (options: string[]) => void}> = ({
         questionOptions,
-        addQuestionOption
+        addQuestionOption,
+        onChangeQuestionOptions,
     }) => { 
+
+    const updateQuestionOption = (index: number, text: string) => {
+        var options = questionOptions.slice();
+        options[index] = text;
+        onChangeQuestionOptions(options);
+    };
+    
     return (
         <div>
             {questionOptions.map((questionOption, index) => (
                 <div key={index} className="flex gap-2 align-baseline">
                     <input type="radio" value={questionOption} disabled/>
-                    <EditableText text={questionOption} setText={(text:string) => console.log(text)}/>
+                    <EditableText text={questionOption} onChangeText={(text:string) => updateQuestionOption(index, text)}/>
                 </div>
             ))}
             <div onClick={addQuestionOption} className="pl-6 pt-2 cursor-pointer">                            
