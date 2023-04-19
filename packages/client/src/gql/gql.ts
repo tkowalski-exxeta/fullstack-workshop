@@ -15,8 +15,12 @@ import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/
 const documents = {
   "\n  mutation CreateForm($title: String!) {\n    createForm(form: { title: $title }) {\n      _id\n      title\n    }\n  }\n":
     types.CreateFormDocument,
+  "\n  mutation UpdateForm($title: String!, $formId: ID!) {\n    updateForm(form: {title: $title}, formId: $formId) {\n      _id\n      title\n    }\n  }\n":
+    types.UpdateFormDocument,
   "\n  mutation CreateQuestion($formId: ID!, $question: QuestionInput!) {\n    q1: createQuestion(formId: $formId, question: $question) {\n      _id\n      __typename\n    }\n  }\n":
     types.CreateQuestionDocument,
+  "\n  mutation UpdateQuestion($formId: ID!, $questionId: ID!, $question: QuestionInput!) {\n    q1: updateQuestion(formId: $formId, questionId: $questionId, question: $question) {\n      _id\n      __typename\n    }\n  }\n":
+    types.UpdateQuestionDocument,
   "\n  query GetForm($formId: ID!) {\n    form(id: $formId) {\n      _id\n      title\n      questions {\n        __typename\n        ... on TextQuestion {\n          _id\n          text\n        }\n        ... on SelectQuestion {\n          _id\n          text\n          options\n          multiSelect\n        }\n      }\n    }\n  }\n":
     types.GetFormDocument,
   "\n  query GetForms {\n    forms {\n      _id\n      title\n      questions {\n        __typename\n        ... on TextQuestion {\n          _id\n          text\n        }\n        ... on SelectQuestion {\n          _id\n          text\n          options\n          multiSelect\n        }\n      }\n    }\n  }\n":
@@ -47,8 +51,20 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
+  source: "\n  mutation UpdateForm($title: String!, $formId: ID!) {\n    updateForm(form: {title: $title}, formId: $formId) {\n      _id\n      title\n    }\n  }\n"
+): (typeof documents)["\n  mutation UpdateForm($title: String!, $formId: ID!) {\n    updateForm(form: {title: $title}, formId: $formId) {\n      _id\n      title\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
   source: "\n  mutation CreateQuestion($formId: ID!, $question: QuestionInput!) {\n    q1: createQuestion(formId: $formId, question: $question) {\n      _id\n      __typename\n    }\n  }\n"
 ): (typeof documents)["\n  mutation CreateQuestion($formId: ID!, $question: QuestionInput!) {\n    q1: createQuestion(formId: $formId, question: $question) {\n      _id\n      __typename\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  mutation UpdateQuestion($formId: ID!, $questionId: ID!, $question: QuestionInput!) {\n    q1: updateQuestion(formId: $formId, questionId: $questionId, question: $question) {\n      _id\n      __typename\n    }\n  }\n"
+): (typeof documents)["\n  mutation UpdateQuestion($formId: ID!, $questionId: ID!, $question: QuestionInput!) {\n    q1: updateQuestion(formId: $formId, questionId: $questionId, question: $question) {\n      _id\n      __typename\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -89,19 +89,32 @@ const getForms = graphql(`
 function createForm(title: string) {
   return request("/graphql", createFormDocument, { title });
 }
-// function updateForm(formId: string, title: string) {
-//   return request("/graphql", updateFormDocument, { formId, title });
-// }
 
-function useCreateQuestion() {
+function useUpdateForm(formId: string) {
+  const queryClient = useQueryClient();
+  return useMutation<unknown, unknown, { title: string}>({
+    mutationFn: ({title}) => request("/graphql", updateFormDocument, { formId, title }),
+    onSettled: () => queryClient.invalidateQueries(["forms"])
+  })
+}
+
+function useCreateQuestion(formId: string) {
   const queryClient = useQueryClient();
   const question: QuestionInput = {
     text: {
       text: "What do you like about GraphQL?",
     },
   }
-  return useMutation<unknown, unknown, {formId: string}>({
-    mutationFn: ({formId}) => request("/graphql", createQuestionDocument, { formId, question }),
+  return useMutation({
+    mutationFn: () => request("/graphql", createQuestionDocument, { formId, question }),
+    onSettled: () => queryClient.invalidateQueries(["forms"])
+  })
+}
+
+function useUpdateQuestion(formId: string) {
+  const queryClient = useQueryClient();
+  return useMutation<unknown, unknown, {questionId: string, question: QuestionInput}>({
+    mutationFn: ({questionId, question}) => request("/graphql", updateQuestionDocument, { formId, questionId, question }),
     onSettled: () => queryClient.invalidateQueries(["forms"])
   })
 }
@@ -173,7 +186,9 @@ export function FormDetails() {
   const formId = id!;
   const navigate = useNavigate();
 
-  const createQuestionMutation = useCreateQuestion();
+  const createQuestionMutation = useCreateQuestion(formId);
+  const updateFormMutation = useUpdateForm(formId);
+  const updateQuestionMutation = useUpdateQuestion(formId);
 
   const { data } = useQuery(["forms"], async () =>
     request("/graphql", getFormDocument, { formId })
@@ -183,13 +198,13 @@ export function FormDetails() {
       {!!data?.form &&
         <div className="flex flex-col items-stretch container mx-auto gap-4 grow max-w-3xl">
           <h1 className="text-4xl pt-10 pb-4">
-            <EditableText text={data.form.title}  setText={(text:string) => console.log(text)}/>
+            <EditableText text={data.form.title}  setText={(title:string) => updateFormMutation.mutate({title})}/>
           </h1>
           {data.form.questions.map((q, index) => (
-              <FormQuestion key={index} {...q} />
+              <FormQuestion key={index} {...q} updateQuestion={(question: QuestionInput) => updateQuestionMutation.mutate({questionId: q._id, question})} />
             ))}
 
-          <button className="mb-6" onClick={() => createQuestionMutation.mutate({formId})}>
+          <button className="mb-6" onClick={() => createQuestionMutation.mutate()}>
             Add Question
           </button>
         </div>

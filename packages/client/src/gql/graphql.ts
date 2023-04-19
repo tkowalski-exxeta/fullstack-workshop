@@ -112,12 +112,36 @@ export type CreateFormMutation = {
   createForm?: { __typename?: "Form"; _id: string; title: string } | null;
 };
 
+export type UpdateFormMutationVariables = Exact<{
+  title: Scalars["String"];
+  formId: Scalars["ID"];
+}>;
+
+export type UpdateFormMutation = {
+  __typename?: "Mutation";
+  updateForm?: { __typename?: "Form"; _id: string; title: string } | null;
+};
+
 export type CreateQuestionMutationVariables = Exact<{
   formId: Scalars["ID"];
   question: QuestionInput;
 }>;
 
 export type CreateQuestionMutation = {
+  __typename?: "Mutation";
+  q1?:
+    | { __typename: "SelectQuestion"; _id: string }
+    | { __typename: "TextQuestion"; _id: string }
+    | null;
+};
+
+export type UpdateQuestionMutationVariables = Exact<{
+  formId: Scalars["ID"];
+  questionId: Scalars["ID"];
+  question: QuestionInput;
+}>;
+
+export type UpdateQuestionMutation = {
   __typename?: "Mutation";
   q1?:
     | { __typename: "SelectQuestion"; _id: string }
@@ -230,6 +254,86 @@ export const CreateFormDocument = {
     },
   ],
 } as unknown as DocumentNode<CreateFormMutation, CreateFormMutationVariables>;
+export const UpdateFormDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateForm" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "title" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "formId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateForm" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "form" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "title" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "title" },
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "formId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "formId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "_id" } },
+                { kind: "Field", name: { kind: "Name", value: "title" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UpdateFormMutation, UpdateFormMutationVariables>;
 export const CreateQuestionDocument = {
   kind: "Document",
   definitions: [
@@ -304,6 +408,100 @@ export const CreateQuestionDocument = {
 } as unknown as DocumentNode<
   CreateQuestionMutation,
   CreateQuestionMutationVariables
+>;
+export const UpdateQuestionDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateQuestion" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "formId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "questionId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "question" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "QuestionInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "q1" },
+            name: { kind: "Name", value: "updateQuestion" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "formId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "formId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "questionId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "questionId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "question" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "question" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "_id" } },
+                { kind: "Field", name: { kind: "Name", value: "__typename" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateQuestionMutation,
+  UpdateQuestionMutationVariables
 >;
 export const GetFormDocument = {
   kind: "Document",

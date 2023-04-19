@@ -43,13 +43,14 @@ export const resolvers: Resolvers = {
     updateQuestion: async (_parent, { formId, questionId, question }, context) => {
       const input = question.select ?? question.text;
       const type = !!question.select ? "SelectQuestion" : "TextQuestion";
-      const questionUpdate = {
+      const questionUpdated = {
+        _id: new ObjectId(questionId),
         questionType: type,
         ...input,
       }
-      const questionUpdated = await context.db.forms.updateOne(
+      const result = await context.db.forms.updateOne(
         { _id: new ObjectId(formId), "questions._id": new ObjectId(questionId) },
-        { $set: { "questions.$": questionUpdate } }
+        { $set: { "questions.$": questionUpdated } }
       );
       return questionUpdated;
     },
@@ -62,7 +63,7 @@ export const resolvers: Resolvers = {
         case "TextQuestion":
           return "TextQuestion";
         default:
-          throw Error("Question type is invalid.");
+          throw Error(`Question type ${question.questionType} is invalid.`);
       }
     },
   },
