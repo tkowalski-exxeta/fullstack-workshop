@@ -54,6 +54,17 @@ export const resolvers: Resolvers = {
       );
       return questionUpdated;
     },
+    deleteForm: async (_parent, { formId }, context) => {
+      const result = await context.db.forms.deleteOne({ _id: new ObjectId(formId) });
+      return result.deletedCount === 1;
+    },
+    deleteQuestion: async (_parent, { formId, questionId }, context) => {
+      const result = await context.db.forms.updateOne(
+        { _id: new ObjectId(formId) },
+        { $pull: { questions: { _id: new ObjectId(questionId) } } }
+      );
+      return result.modifiedCount === 1;
+    }
   },
   Question: {
     __resolveType: (question) => {

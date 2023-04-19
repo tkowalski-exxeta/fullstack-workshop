@@ -2,13 +2,13 @@ import React, { useState } from "react"
 
 export const EditableText: React.FC<{ text: string, onChangeText: Function}> = ({
     text,
-    onChangeText: setText,
+    onChangeText,
   }) => {
     const [editing, setEditing] = useState<boolean>(false);
     const [inputValue, setInputValue] = useState<string>(text);
     
     const saveChanges = () => {
-      if(inputValue !== text) setText(inputValue);
+      if(inputValue !== text) onChangeText(inputValue);
       setEditing(false);
     };
     

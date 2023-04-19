@@ -35,6 +35,8 @@ export type Mutation = {
   __typename?: "Mutation";
   createForm?: Maybe<Form>;
   createQuestion?: Maybe<Question>;
+  deleteForm?: Maybe<Scalars["Boolean"]>;
+  deleteQuestion?: Maybe<Scalars["Boolean"]>;
   updateForm?: Maybe<Form>;
   updateQuestion?: Maybe<Question>;
 };
@@ -46,6 +48,15 @@ export type MutationCreateFormArgs = {
 export type MutationCreateQuestionArgs = {
   formId: Scalars["ID"];
   question: QuestionInput;
+};
+
+export type MutationDeleteFormArgs = {
+  formId: Scalars["ID"];
+};
+
+export type MutationDeleteQuestionArgs = {
+  formId: Scalars["ID"];
+  questionId: Scalars["ID"];
 };
 
 export type MutationUpdateFormArgs = {
@@ -122,6 +133,15 @@ export type UpdateFormMutation = {
   updateForm?: { __typename?: "Form"; _id: string; title: string } | null;
 };
 
+export type DeleteFormMutationVariables = Exact<{
+  formId: Scalars["ID"];
+}>;
+
+export type DeleteFormMutation = {
+  __typename?: "Mutation";
+  deleteForm?: boolean | null;
+};
+
 export type CreateQuestionMutationVariables = Exact<{
   formId: Scalars["ID"];
   question: QuestionInput;
@@ -147,6 +167,16 @@ export type UpdateQuestionMutation = {
     | { __typename: "SelectQuestion"; _id: string }
     | { __typename: "TextQuestion"; _id: string }
     | null;
+};
+
+export type DeleteQuestionMutationVariables = Exact<{
+  formId: Scalars["ID"];
+  questionId: Scalars["ID"];
+}>;
+
+export type DeleteQuestionMutation = {
+  __typename?: "Mutation";
+  deleteQuestion?: boolean | null;
 };
 
 export type GetFormQueryVariables = Exact<{
@@ -334,6 +364,48 @@ export const UpdateFormDocument = {
     },
   ],
 } as unknown as DocumentNode<UpdateFormMutation, UpdateFormMutationVariables>;
+export const DeleteFormDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeleteForm" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "formId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deleteForm" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "formId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "formId" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<DeleteFormMutation, DeleteFormMutationVariables>;
 export const CreateQuestionDocument = {
   kind: "Document",
   definitions: [
@@ -502,6 +574,70 @@ export const UpdateQuestionDocument = {
 } as unknown as DocumentNode<
   UpdateQuestionMutation,
   UpdateQuestionMutationVariables
+>;
+export const DeleteQuestionDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeleteQuestion" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "formId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "questionId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deleteQuestion" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "formId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "formId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "questionId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "questionId" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeleteQuestionMutation,
+  DeleteQuestionMutationVariables
 >;
 export const GetFormDocument = {
   kind: "Document",

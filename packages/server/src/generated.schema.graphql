@@ -11,6 +11,8 @@ input FormInput {
 type Mutation {
   createForm(form: FormInput!): Form
   createQuestion(formId: ID!, question: QuestionInput!): Question
+  deleteForm(formId: ID!): Boolean
+  deleteQuestion(formId: ID!, questionId: ID!): Boolean
   updateForm(form: FormInput!, formId: ID!): Form
   updateQuestion(
     formId: ID!

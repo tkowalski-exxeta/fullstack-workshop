@@ -2,13 +2,16 @@ import React from "react";
 import { EditableText } from "./EditableText";
 import { QuestionInput } from "gql/graphql";
 
+type QuestionType = "SelectQuestion" | "TextQuestion";
+
 interface FormQuestionProps {
-    __typename: "SelectQuestion" | "TextQuestion";
+    __typename: QuestionType;
     _id: string;
     text: string;
     options?: string[];
     multiSelect?: boolean;
     updateQuestion: (question: QuestionInput) => void;
+    deleteQuestion: () => void;
 }
 
 export const FormQuestion: React.FC<FormQuestionProps> = ({
@@ -17,11 +20,12 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
     text,
     options,
     multiSelect,
-    updateQuestion
+    updateQuestion,
+    deleteQuestion,
 }) => {
 
     const createQuestionInput = ({text: questionText = text, questionType = __typename,  options: questionOptions = options || [], multiSelect: questionMultiSelect = multiSelect || false} 
-        : {text?: string, questionType?: "SelectQuestion" | "TextQuestion", options?: string[], multiSelect?: boolean}): QuestionInput => {
+        : {text?: string, questionType?: QuestionType, options?: string[], multiSelect?: boolean}): QuestionInput => {
         switch (questionType) {
             case "SelectQuestion":
                 return {
@@ -44,7 +48,7 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
         updateQuestion(createQuestionInput({text}));
     };
 
-    const updateQuestionType = (questionType: "SelectQuestion" | "TextQuestion") => {
+    const updateQuestionType = (questionType: QuestionType) => {
         updateQuestion(createQuestionInput({questionType}));
     };
 
@@ -56,38 +60,44 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
         updateQuestion(createQuestionInput({options}));
     };
 
+    const updateMultiSelect = (multiSelect: boolean) => {
+        updateQuestion(createQuestionInput({multiSelect}));
+    };
+
     return (
         <div className="bg-gray-700 w-full p-6 text-lg rounded drop-shadow">
-            <FormQuestionHeader text={text} questionType={__typename} onChangeQuestionText={updateQuestionText} onChangeQuestionType={updateQuestionType}/>
+            <FormQuestionHeader text={text} questionType={__typename} onChangeQuestionText={updateQuestionText} onChangeQuestionType={updateQuestionType} onDeleteQuestion={deleteQuestion}/>
             <div className="py-4">
                 {__typename === "TextQuestion" ?
                     <FormTextQuestionBody/>
                 : 
-                    <FormSelectQuestionBody questionOptions={options || []} onChangeQuestionOptions={updateQuestionOptions} addQuestionOption={addQuestionOption}/>
+                    <FormSelectQuestionBody questionOptions={options || []} multiSelect={multiSelect ?? false} onChangeQuestionOptions={updateQuestionOptions} addQuestionOption={addQuestionOption} onChangeMultiSelect={updateMultiSelect}/>
                 }
             </div>
         </div>
     );
 };
 
-export const FormQuestionHeader: React.FC<{text: string, questionType: "SelectQuestion" | "TextQuestion", onChangeQuestionText: (text: string) => void,  onChangeQuestionType: (questionType: "SelectQuestion" | "TextQuestion") => void}> = (
+export const FormQuestionHeader: React.FC<{text: string, questionType: QuestionType, onChangeQuestionText: (text: string) => void,  onChangeQuestionType: (questionType: QuestionType) => void, onDeleteQuestion: () => void}> = (
     {
         text,
         questionType,
         onChangeQuestionType,
         onChangeQuestionText,
+        onDeleteQuestion,
     }) => {
     return (
         <div className="flex gap-2 justify-between">
             <div className="w-3/4">
                 <EditableText text={text} onChangeText={onChangeQuestionText}/>
             </div>
+            <img onClick={onDeleteQuestion} className="m-1 flex-none invert-[0.5] cursor-pointer" src="/src/assets/trash.svg" title="Delete question" height={20} width={20}/>
             <select 
                 className="p-1 outline-0 rounded"
                 name="type"
                 id="type"
                 value={questionType}
-                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onChangeQuestionType(e.target.value as "SelectQuestion" | "TextQuestion")}
+                onChange={(e) => onChangeQuestionType(e.target.value as QuestionType)}
             >
                 <option value="SelectQuestion">Select Question</option>
                 <option value="TextQuestion">Text Question</option>
@@ -106,10 +116,12 @@ export const FormTextQuestionBody: React.FC = () => {
     );
 };
 
-export const FormSelectQuestionBody: React.FC<{questionOptions: string[], addQuestionOption: () => void, onChangeQuestionOptions: (options: string[]) => void}> = ({
+export const FormSelectQuestionBody: React.FC<{questionOptions: string[], multiSelect: boolean, addQuestionOption: () => void, onChangeQuestionOptions: (options: string[]) => void, onChangeMultiSelect: (multiSelect: boolean) => void}> = ({
         questionOptions,
+        multiSelect,
         addQuestionOption,
         onChangeQuestionOptions,
+        onChangeMultiSelect,
     }) => { 
 
     const updateQuestionOption = (index: number, text: string) => {
@@ -120,14 +132,22 @@ export const FormSelectQuestionBody: React.FC<{questionOptions: string[], addQue
     
     return (
         <div>
-            {questionOptions.map((questionOption, index) => (
-                <div key={index} className="flex gap-2 align-baseline">
-                    <input type="radio" value={questionOption} disabled/>
-                    <EditableText text={questionOption} onChangeText={(text:string) => updateQuestionOption(index, text)}/>
+            <div className="float-right mr-1">
+                <label>
+                    <input defaultChecked={multiSelect} type="checkbox" onChange={(e) => onChangeMultiSelect(e.target.checked)}/>
+                    <span className="ml-2">Multi-Select</span>
+                </label>
+            </div>
+            <div className="w-3/4">
+                {questionOptions.map((questionOption, index) => (
+                    <div key={index} className="flex gap-2 align-baseline">
+                        <input type="radio" value={questionOption} disabled/>
+                        <EditableText text={questionOption} onChangeText={(text:string) => updateQuestionOption(index, text)}/>
+                    </div>
+                ))}
+                <div onClick={addQuestionOption} className="pl-6 pt-2 cursor-pointer">                            
+                    <span className="underline">+ Add Option</span>
                 </div>
-            ))}
-            <div onClick={addQuestionOption} className="pl-6 pt-2 cursor-pointer">                            
-                <span className="underline">+ Add Option</span>
             </div>
         </div>
     );

@@ -25,6 +25,12 @@ const updateFormDocument = graphql(/* GraphQL */ `
   }
 `);
 
+const deleteFormDocument = graphql(/* GraphQL */ `
+  mutation DeleteForm($formId: ID!) {
+    deleteForm(formId: $formId)
+  }
+`);
+
 const createQuestionDocument = graphql(/* GraphQL */ `
   mutation CreateQuestion($formId: ID!, $question: QuestionInput!) {
     q1: createQuestion(formId: $formId, question: $question) {
@@ -40,6 +46,12 @@ const updateQuestionDocument = graphql(/* GraphQL */ `
       _id
       __typename
     }
+  }
+`);
+
+const deleteQuestionDocument = graphql(/* GraphQL */ `
+  mutation DeleteQuestion($formId: ID!, $questionId: ID!) {
+    deleteQuestion(formId: $formId, questionId: $questionId)
   }
 `);
 
@@ -98,6 +110,14 @@ function useUpdateForm(formId: string) {
   })
 }
 
+function useDeleteForm(formId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => request("/graphql", deleteFormDocument, { formId }),
+    onSettled: () => queryClient.invalidateQueries(["forms"])
+  });
+}
+
 function useCreateQuestion(formId: string) {
   const queryClient = useQueryClient();
   const question: QuestionInput = {
@@ -119,6 +139,14 @@ function useUpdateQuestion(formId: string) {
   })
 }
 
+function useDeleteQuestion(formId: string) {
+  const queryClient = useQueryClient();
+  return useMutation<unknown, unknown, {questionId: string}>({
+    mutationFn: ({questionId}) => request("/graphql", deleteQuestionDocument, { formId, questionId }),
+    onSettled: () => queryClient.invalidateQueries(["forms"])
+  });
+}
+
 export const FormList: React.FC<{ forms: Form[] }> = ({ forms }) => {
   return (
     <ul className="flex flex-wrap gap-6 p-6">
@@ -129,16 +157,28 @@ export const FormList: React.FC<{ forms: Form[] }> = ({ forms }) => {
 };
 
 export const FormListItem: React.FC<{ form: Form }> = ({ form }) => {
+  const navigate = useNavigate();
   return (
     <li key={form._id} className="list-none">
-      <Link to={`admin/forms/${form._id}`}>
-        <FormCard title={form.title} image={"list-bullet.svg"} />
-      </Link>
+        <FormCard formId={form._id} title={form.title} image={"list-bullet.svg"}/>
     </li>
   );
 };
 
 export const CreateFormItem: React.FC = () => {  
+  const navigate = useNavigate();
+  return (
+    <li>
+      <FormCard title="Create form" image={"plus.svg"} />
+    </li>
+  );
+};
+
+export const FormCard: React.FC<{ formId?: string, title: string; image: string; }> = ({
+  formId,
+  title,
+  image,
+}) => {
   const navigate = useNavigate();
 
   async function createFormAndReturnUrl(title: string) {
@@ -150,25 +190,28 @@ export const CreateFormItem: React.FC = () => {
       console.error("Creating a new form failed due to error: ", error);
     }
   }
-  return (
-    <li>
-      <Link onClick={() => createFormAndReturnUrl("Untitled")}>
-        <FormCard title="Create form" image={"plus.svg"} />
-      </Link>
-    </li>
-  );
-};
 
-export const FormCard: React.FC<{ title: String; image: String }> = ({
-  title,
-  image,
-}) => {
+  const onClickCard = () => {
+    if (formId) {
+      navigate(`/admin/forms/${formId}`);
+    } else {
+      createFormAndReturnUrl("Untitled");
+    }
+  }
+
+  const deleteFormMutation = useDeleteForm(formId ?? "");
+
   return (
     <div className="border border-gray-700 w-48 rounded">
-      <div className="flex h-36 border-b border-gray-700">
+      <div className="flex h-36 border-b border-gray-700 cursor-pointer" onClick={onClickCard}>
         <img className="flex-auto invert-[0.5]" src={`/src/assets/${image}`} height={120} width={120}/>
       </div>
-      <div className="p-2">{title}</div>
+      <div className="flex justify-between">
+        <div onClick={onClickCard} className="p-2 text-ellipsis overflow-hidden flex-grow cursor-pointer">{title}</div>
+        {!!formId &&
+          <img onClick={() => deleteFormMutation.mutate()} title="Delete form" className="m-1 flex-none invert-[0.5] cursor-pointer" src={"/src/assets/trash.svg"} height={20} width={20}/>
+        }        
+      </div>
     </div>
   );
 };
@@ -189,6 +232,7 @@ export function FormDetails() {
   const createQuestionMutation = useCreateQuestion(formId);
   const updateFormMutation = useUpdateForm(formId);
   const updateQuestionMutation = useUpdateQuestion(formId);
+  const deleteQuestionMutation = useDeleteQuestion(formId);
 
   const { data } = useQuery(["forms"], async () =>
     request("/graphql", getFormDocument, { formId })
@@ -201,7 +245,7 @@ export function FormDetails() {
             <EditableText text={data.form.title}  onChangeText={(title:string) => updateFormMutation.mutate({title})}/>
           </h1>
           {data.form.questions.map((q, index) => (
-              <FormQuestion key={index} {...q} updateQuestion={(question: QuestionInput) => updateQuestionMutation.mutate({questionId: q._id, question})} />
+              <FormQuestion key={index} {...q} updateQuestion={(question: QuestionInput) => updateQuestionMutation.mutate({questionId: q._id, question})}  deleteQuestion={() => deleteQuestionMutation.mutate({questionId: q._id})}/>
             ))}
 
           <button className="mb-6" onClick={() => createQuestionMutation.mutate()}>

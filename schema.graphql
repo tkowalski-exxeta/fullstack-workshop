@@ -3,6 +3,8 @@ type Mutation {
   createQuestion(formId: ID!, question: QuestionInput!): Question
   updateForm(formId: ID!, form: FormInput!): Form
   updateQuestion(formId: ID!, questionId: ID!, question: QuestionInput!): Question
+  deleteForm(formId: ID!): Boolean
+  deleteQuestion(formId: ID!, questionId: ID!): Boolean
 }
 
 type Query {

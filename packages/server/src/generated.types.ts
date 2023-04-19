@@ -37,6 +37,8 @@ export type Mutation = {
   __typename?: "Mutation";
   createForm?: Maybe<Form>;
   createQuestion?: Maybe<Question>;
+  deleteForm?: Maybe<Scalars["Boolean"]>;
+  deleteQuestion?: Maybe<Scalars["Boolean"]>;
   updateForm?: Maybe<Form>;
   updateQuestion?: Maybe<Question>;
 };
@@ -48,6 +50,15 @@ export type MutationCreateFormArgs = {
 export type MutationCreateQuestionArgs = {
   formId: Scalars["ID"];
   question: QuestionInput;
+};
+
+export type MutationDeleteFormArgs = {
+  formId: Scalars["ID"];
+};
+
+export type MutationDeleteQuestionArgs = {
+  formId: Scalars["ID"];
+  questionId: Scalars["ID"];
 };
 
 export type MutationUpdateFormArgs = {
@@ -222,11 +233,11 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars["String"]>;
   FormInput: FormInput;
   Mutation: ResolverTypeWrapper<{}>;
+  Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
   Query: ResolverTypeWrapper<{}>;
   Question: ResolverTypeWrapper<QuestionDbInterface>;
   QuestionInput: QuestionInput;
   SelectQuestion: ResolverTypeWrapper<SelectQuestion>;
-  Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
   SelectQuestionInput: SelectQuestionInput;
   TextQuestion: ResolverTypeWrapper<TextQuestion>;
   TextQuestionInput: TextQuestionInput;
@@ -240,11 +251,11 @@ export type ResolversParentTypes = {
   String: Scalars["String"];
   FormInput: FormInput;
   Mutation: {};
+  Boolean: Scalars["Boolean"];
   Query: {};
   Question: QuestionDbInterface;
   QuestionInput: QuestionInput;
   SelectQuestion: SelectQuestion;
-  Boolean: Scalars["Boolean"];
   SelectQuestionInput: SelectQuestionInput;
   TextQuestion: TextQuestion;
   TextQuestionInput: TextQuestionInput;
@@ -367,6 +378,18 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationCreateQuestionArgs, "formId" | "question">
+  >;
+  deleteForm?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteFormArgs, "formId">
+  >;
+  deleteQuestion?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteQuestionArgs, "formId" | "questionId">
   >;
   updateForm?: Resolver<
     Maybe<ResolversTypes["Form"]>,
