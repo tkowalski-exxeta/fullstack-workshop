@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import request from "graphql-request";
-import { Link, useNavigate, useParams, redirect } from "react-router-dom";
+import React from "react";
+import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
 import { graphql } from "../gql";
-import { Form, QuestionInput } from "../gql/graphql";
-import React, { useEffect, useState } from "react";
+import { CreateFormMutation, Form, QuestionInput } from "../gql/graphql";
 import { EditableText } from "./EditableText";
 import { FormQuestion } from "./FormQuestion";
 
@@ -106,8 +106,20 @@ const getForms = graphql(`
     }
   }
 `);
+
 function createForm(title: string) {
   return request("/graphql", createFormDocument, { title });
+}
+
+function useCreateForm(navigate: NavigateFunction) {
+  return useMutation<unknown, unknown, { title: string }>({
+    mutationFn: ({ title }) =>
+      request("/graphql", createFormDocument, { title }),
+    onSuccess: (data) => {
+      const formMutation = data as CreateFormMutation;
+      navigate(`/admin/forms/${formMutation.createForm?._id}`);
+    },
+  });
 }
 
 function useUpdateForm(formId: string) {
@@ -171,98 +183,96 @@ export const FormList: React.FC<{ forms: Form[] }> = ({ forms }) => {
   return (
     <ul className="flex flex-wrap gap-6 p-6">
       {!!forms &&
-        forms.map((form, index) => <FormListItem key={index} form={form} />)}
+        forms.map((form) => <FormListItem key={form._id} form={form} />)}
       <CreateFormItem />
     </ul>
   );
 };
 
-export const FormListItem: React.FC<{ form: Form }> = ({ form }) => {
+export const FormListItem: React.FC<{
+  form: Form;
+}> = ({ form }) => {
   const navigate = useNavigate();
-  return (
-    <li key={form._id} className="list-none">
-      <FormCard
-        formId={form._id}
-        title={form.title}
-        image={"list-bullet.svg"}
-      />
-    </li>
-  );
-};
-
-export const CreateFormItem: React.FC = () => {
-  const navigate = useNavigate();
-  return (
-    <li>
-      <FormCard title="Create form" image={"plus.svg"} />
-    </li>
-  );
-};
-
-export const FormCard: React.FC<{
-  formId?: string;
-  title: string;
-  image: string;
-}> = ({ formId, title, image }) => {
-  const navigate = useNavigate();
-
-  async function createFormAndReturnUrl(title: string) {
-    try {
-      var response = await createForm(title).then();
-      var form = response.createForm;
-      navigate(`/admin/forms/${form?._id}`);
-    } catch (error) {
-      console.error("Creating a new form failed due to error: ", error);
-    }
-  }
 
   const onClickCard = () => {
-    if (formId) {
-      navigate(`/admin/forms/${formId}`);
-    } else {
-      createFormAndReturnUrl("Untitled");
-    }
+    navigate(`/admin/forms/${form._id}`);
   };
 
-  const deleteFormMutation = useDeleteForm(formId ?? "");
+  const deleteFormMutation = useDeleteForm(form._id);
+  const deleteForm = () => deleteFormMutation.mutate();
 
   return (
-    <div className="border border-gray-700 w-48 rounded">
-      <div
-        className="flex h-36 border-b border-gray-700 cursor-pointer"
-        onClick={onClickCard}
-      >
-        <img
-          className="flex-auto invert-[0.5]"
-          src={`/src/assets/${image}`}
-          height={120}
-          width={120}
-        />
-      </div>
-      <div className="flex justify-between">
+    <li>
+      <div className="border border-gray-700 w-48 rounded">
         <div
+          className="flex h-36 border-b border-gray-700 cursor-pointer"
           onClick={onClickCard}
-          className="p-2 text-ellipsis overflow-hidden flex-grow cursor-pointer"
         >
-          {title}
-        </div>
-        {!!formId && (
           <img
-            onClick={() => deleteFormMutation.mutate()}
+            className="flex-auto invert-[0.5]"
+            src={`/src/assets/list-bullet.svg`}
+            height={120}
+            width={120}
+          />
+        </div>
+        <div className="flex justify-between">
+          <div
+            onClick={onClickCard}
+            className="p-2 text-ellipsis overflow-hidden flex-grow cursor-pointer"
+          >
+            {form.title}
+          </div>
+          <img
+            onClick={deleteForm}
             title="Delete form"
             className="m-1 flex-none invert-[0.5] cursor-pointer"
             src={"/src/assets/trash.svg"}
             height={20}
             width={20}
           />
-        )}
+        </div>
       </div>
-    </div>
+    </li>
+  );
+};
+
+export const CreateFormItem: React.FC<{}> = () => {
+  const navigate = useNavigate();
+
+  const createFormMutation = useCreateForm(navigate);
+
+  const onClickCard = () => {
+    createFormMutation.mutate({ title: "Untitled Form" });
+  };
+
+  return (
+    <li>
+      <div className="border border-gray-700 w-48 rounded">
+        <div
+          className="flex h-36 border-b border-gray-700 cursor-pointer"
+          onClick={onClickCard}
+        >
+          <img
+            className="flex-auto invert-[0.5]"
+            src={`/src/assets/plus.svg`}
+            height={120}
+            width={120}
+          />
+        </div>
+        <div className="flex justify-between">
+          <div
+            onClick={onClickCard}
+            className="p-2 text-ellipsis overflow-hidden flex-grow cursor-pointer"
+          >
+            Create Form
+          </div>
+        </div>
+      </div>
+    </li>
   );
 };
 
 export function FormMain() {
-  const navigate = useNavigate();
   const { data } = useQuery(["forms"], async () =>
     request("/graphql", getForms)
   );
@@ -272,7 +282,6 @@ export function FormMain() {
 export function FormDetails() {
   const { id } = useParams();
   const formId = id!;
-  const navigate = useNavigate();
 
   const createQuestionMutation = useCreateQuestion(formId);
   const updateFormMutation = useUpdateForm(formId);

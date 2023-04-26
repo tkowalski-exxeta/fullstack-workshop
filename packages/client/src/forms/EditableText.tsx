@@ -7,19 +7,27 @@ export const EditableText: React.FC<{
   const [editing, setEditing] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>(text);
 
+  const enableEditig = () => {
+    setEditing(true);
+  };
+
+  const updateInputeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
   const saveChanges = () => {
     if (inputValue !== text) onChangeText(inputValue);
     setEditing(false);
   };
 
   return (
-    <div className="w-full " onClick={() => setEditing(true)}>
+    <div className="w-full " onClick={enableEditig}>
       {editing ? (
         <input
           className="w-full bg-inherit backdrop-brightness-90 p-1 rounded outline-0 border-b-white border-b-2"
           autoFocus
           value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={updateInputeValue}
           onBlur={saveChanges}
         />
       ) : (
