@@ -37,25 +37,36 @@ export const resolvers: Resolvers = {
         { _id: new ObjectId(formId) },
         { $set: form }
       );
-      const formUpdated =  await context.db.forms.findOne({ _id: new ObjectId(formId) });
+      const formUpdated = await context.db.forms.findOne({
+        _id: new ObjectId(formId),
+      });
       return formUpdated;
     },
-    updateQuestion: async (_parent, { formId, questionId, question }, context) => {
+    updateQuestion: async (
+      _parent,
+      { formId, questionId, question },
+      context
+    ) => {
       const input = question.select ?? question.text;
       const type = !!question.select ? "SelectQuestion" : "TextQuestion";
       const questionUpdated = {
         _id: new ObjectId(questionId),
         questionType: type,
         ...input,
-      }
+      };
       const result = await context.db.forms.updateOne(
-        { _id: new ObjectId(formId), "questions._id": new ObjectId(questionId) },
+        {
+          _id: new ObjectId(formId),
+          "questions._id": new ObjectId(questionId),
+        },
         { $set: { "questions.$": questionUpdated } }
       );
       return questionUpdated;
     },
     deleteForm: async (_parent, { formId }, context) => {
-      const result = await context.db.forms.deleteOne({ _id: new ObjectId(formId) });
+      const result = await context.db.forms.deleteOne({
+        _id: new ObjectId(formId),
+      });
       return result.deletedCount === 1;
     },
     deleteQuestion: async (_parent, { formId, questionId }, context) => {
@@ -64,7 +75,7 @@ export const resolvers: Resolvers = {
         { $pull: { questions: { _id: new ObjectId(questionId) } } }
       );
       return result.modifiedCount === 1;
-    }
+    },
   },
   Question: {
     __resolveType: (question) => {
