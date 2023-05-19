@@ -1,16 +1,11 @@
 import { ObjectId } from "mongodb"
 import { GqlContext } from "./create-context"
-import { Question } from "./db/types"
+import { QuestionDB } from "./db/types"
+import { Resolvers } from "./generated.types"
 
-type FormInput = {
-  title: string
-}
-type FormArgs = {
-  form: FormInput
-}
-export const resolvers = {
+export const resolvers: Resolvers<GqlContext> = {
   Mutation: {
-    createForm: async (_root, { form }: FormArgs, { db }: GqlContext) => {
+    createForm: async (_root, { form }, { db }) => {
       const formDB = {
         _id: new ObjectId(),
         title: form.title,
@@ -19,13 +14,13 @@ export const resolvers = {
       await db.forms.insertOne(formDB)
       return formDB
     },
-    createQuestion: async (_root, { formId, question }, { db }: GqlContext) => {
+    createQuestion: async (_root, { formId, question }, { db }) => {
       const input = question.select ?? question.text
-      const type = !!question.select ? "SelectQuestion" : "TextQuestion"
-      const questionCreated: Question = {
+      const type = !!question.select ? "select" : "text"
+      const questionCreated: QuestionDB = {
         _id: new ObjectId(),
-        questionType: type,
-        ...input,
+        type: type,
+        ...(input as any),
       }
       const res = await db.forms.updateOne(
         { _id: new ObjectId(formId) },
@@ -33,24 +28,20 @@ export const resolvers = {
       )
       return res.matchedCount === 1 ? questionCreated : null
     },
-    updateForm: async (_root, { formId, form }, { db }: GqlContext) => {
+    updateForm: async (_root, { formId, form }, { db }) => {
       await db.forms.updateOne({ _id: new ObjectId(formId) }, { $set: form })
       const formUpdated = await db.forms.findOne({
         _id: new ObjectId(formId),
       })
       return formUpdated
     },
-    updateQuestion: async (
-      _root,
-      { formId, questionId, question },
-      { db }: GqlContext
-    ) => {
+    updateQuestion: async (_root, { formId, questionId, question }, { db }) => {
       const input = question.select ?? question.text
-      const type = !!question.select ? "SelectQuestion" : "TextQuestion"
-      const questionUpdated = {
+      const type = !!question.select ? "select" : "text"
+      const questionUpdated: QuestionDB = {
         _id: new ObjectId(questionId),
-        questionType: type,
-        ...input,
+        type: type,
+        ...(input as any),
       }
       const result = await db.forms.updateOne(
         {
@@ -61,17 +52,13 @@ export const resolvers = {
       )
       return result.matchedCount === 1 ? questionUpdated : null
     },
-    deleteForm: async (_root, { formId }, { db }: GqlContext) => {
+    deleteForm: async (_root, { formId }, { db }) => {
       const result = await db.forms.deleteOne({
         _id: new ObjectId(formId),
       })
       return result.deletedCount === 1
     },
-    deleteQuestion: async (
-      _root,
-      { formId, questionId },
-      { db }: GqlContext
-    ) => {
+    deleteQuestion: async (_root, { formId, questionId }, { db }) => {
       const result = await db.forms.updateOne(
         { _id: new ObjectId(formId) },
         { $pull: { questions: { _id: new ObjectId(questionId) } } }
@@ -80,22 +67,22 @@ export const resolvers = {
     },
   },
   Query: {
-    forms: async (_root, _args, { db }: GqlContext) => {
+    forms: async (_root, _args, { db }) => {
       return db.forms.find().toArray()
     },
-    formById: async (_root, { id }, { db }: GqlContext) => {
+    formById: async (_root, { id }, { db }) => {
       return db.forms.findOne({ _id: new ObjectId(id) })
     },
   },
   Question: {
     __resolveType: (question) => {
-      switch (question.questionType) {
-        case "SelectQuestion":
+      switch (question.type) {
+        case "select":
           return "SelectQuestion"
-        case "TextQuestion":
+        case "text":
           return "TextQuestion"
         default:
-          throw Error(`Question type ${question.questionType} is invalid.`)
+          throw Error(`Question type is invalid.`)
       }
     },
   },

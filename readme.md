@@ -35,7 +35,6 @@ The participants should have a working understanding of developing Java Spring B
 
     ## Unit 3: Codegen (Server) & Advanced TypeScript Types
     - Graphql-Codegen
-    - Integrating GraphQL into a React project using (Graphql-Request)[https://github.com/jasonkuhrt/graphql-request] and (Tanstack Query aka. React Query)[https://tanstack.com/query/latest/]
     - TypeScript basics review
     - Introduction to discriminated union types
     - Built-in helper classes in TypeScript (e.g. **Readonly**, **Partial**, etc.)
@@ -46,6 +45,7 @@ The participants should have a working understanding of developing Java Spring B
     - Setting up a React project with TypeScript
     - List / Detail-View using React State
     - Layout with Flexbox + CSS Grid
+    - Integrating GraphQL into a React project using (Graphql-Request)[https://github.com/jasonkuhrt/graphql-request] and (Tanstack Query aka. React Query)[https://tanstack.com/query/latest/]
     - BROWN-BAG: Mock Service Worker
 
 ## Unit 5: Admin UI & Forms + React Router
