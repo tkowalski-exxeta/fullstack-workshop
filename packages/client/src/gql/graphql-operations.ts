@@ -129,19 +129,19 @@ export type GetFormDetailsQuery = {
     title: string;
     questions: Array<
       | {
-          __typename?: "SelectQuestion";
+          __typename: "SelectQuestion";
           multiSelect: boolean;
           options: Array<string>;
           _id: string;
           question: string;
         }
-      | { __typename?: "TextQuestion"; _id: string; question: string }
+      | { __typename: "TextQuestion"; _id: string; question: string }
     >;
   } | null;
 };
 
 type FormDetailQuestion_SelectQuestion_Fragment = {
-  __typename?: "SelectQuestion";
+  __typename: "SelectQuestion";
   multiSelect: boolean;
   options: Array<string>;
   _id: string;
@@ -149,7 +149,7 @@ type FormDetailQuestion_SelectQuestion_Fragment = {
 };
 
 type FormDetailQuestion_TextQuestion_Fragment = {
-  __typename?: "TextQuestion";
+  __typename: "TextQuestion";
   _id: string;
   question: string;
 };
@@ -178,6 +178,7 @@ export const FormDetailQuestionFragmentDoc = {
       selectionSet: {
         kind: "SelectionSet",
         selections: [
+          { kind: "Field", name: { kind: "Name", value: "__typename" } },
           { kind: "Field", name: { kind: "Name", value: "_id" } },
           { kind: "Field", name: { kind: "Name", value: "question" } },
           {
@@ -266,6 +267,7 @@ export const GetFormDetailsDocument = {
       selectionSet: {
         kind: "SelectionSet",
         selections: [
+          { kind: "Field", name: { kind: "Name", value: "__typename" } },
           { kind: "Field", name: { kind: "Name", value: "_id" } },
           { kind: "Field", name: { kind: "Name", value: "question" } },
           {

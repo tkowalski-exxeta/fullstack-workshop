@@ -9,6 +9,7 @@ query GetFormDetails($id: ID!) {
 }
 
 fragment FormDetailQuestion on Question {
+  __typename
   _id
   question
   ... on SelectQuestion {

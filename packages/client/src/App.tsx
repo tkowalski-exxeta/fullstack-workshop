@@ -7,13 +7,11 @@ const queryClient = new QueryClient()
 
 function App() {
   return (
-    <div className="app">
       <QueryClientProvider client={queryClient}>
           <MainLayout>
             <FormPage />
           </MainLayout>
       </QueryClientProvider>
-    </div>
   )
 }
 

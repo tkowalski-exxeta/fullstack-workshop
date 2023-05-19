@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
-import { GetFormMainDocument } from "../gql/graphql-operations"
-import { client } from "../gql/client"
+import { GetFormMainDocument } from "../../gql/graphql-operations"
+import { client } from "../../gql/client"
+import "./form-main.css"
 
 interface Props {
   onFormSelect(formId: string): void

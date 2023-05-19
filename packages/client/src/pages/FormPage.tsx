@@ -1,6 +1,6 @@
 import { useState } from "react"
-import { FormMain } from "../forms/FormMain"
-import { FormDetails } from "../forms/FormDetails"
+import { FormMain } from "../forms/list-view/FormMain"
+import { FormDetails } from "../forms/detail-view/FormDetails"
 
 export const FormPage: React.FC = () => {
   const [formId, setSelectedForm] = useState<string>()
@@ -8,6 +8,6 @@ export const FormPage: React.FC = () => {
   return !formId ? (
     <FormMain onFormSelect={setSelectedForm} />
   ) : (
-    <FormDetails id={formId} />
+    <FormDetails id={formId} goBack={() => setSelectedForm(undefined)} />
   )
 }
