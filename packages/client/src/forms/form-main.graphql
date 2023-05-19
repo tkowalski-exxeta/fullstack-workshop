@@ -1,0 +1,6 @@
+query GetFormMain {
+  forms {
+    _id
+    title
+  }
+}

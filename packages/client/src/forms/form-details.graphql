@@ -1,0 +1,18 @@
+query GetFormDetails($id: ID!) {
+  formById(id: $id) {
+    _id
+    title
+    questions {
+      ...FormDetailQuestion
+    }
+  }
+}
+
+fragment FormDetailQuestion on Question {
+  _id
+  question
+  ... on SelectQuestion {
+    multiSelect
+    options
+  }
+}
