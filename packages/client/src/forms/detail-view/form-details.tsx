@@ -1,7 +1,10 @@
 import { useQuery } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 import { client } from "../../gql/client"
-import { GetFormDetailsDocument } from "../../gql/graphql-operations"
+import {
+  FormAnswerEntryInput,
+  GetFormDetailsDocument,
+} from "../../gql/graphql-operations"
 import "./form-details.css"
 import { FormQuestionList } from "./form-question-list"
 
@@ -14,9 +17,16 @@ export const FormDetails: React.FC = () => {
     { enabled: !!id }
   )
   const form = data?.formById ?? undefined
+  const formValues: FormAnswerEntryInput[] =
+    form?.questions?.map((q) => ({ id: q._id, result: undefined })) ?? []
+
   return (
     <div className="form-detail-content">
-      {form ? <FormQuestionList form={form} /> : <div>Form not found</div>}
+      {form ? (
+        <FormQuestionList form={form} values={formValues} />
+      ) : (
+        <div>Form not found</div>
+      )}
     </div>
   )
 }

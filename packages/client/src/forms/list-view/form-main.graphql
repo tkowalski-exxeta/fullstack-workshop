@@ -6,7 +6,7 @@ query GetFormMain {
 }
 
 mutation CreateForm($formInput: FormInput!) {
-  createForm(form: $formInput) {
+  saveForm(form: $formInput) {
     _id
     title
   }

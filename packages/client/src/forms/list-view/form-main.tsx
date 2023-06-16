@@ -1,34 +1,34 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { Link } from "react-router-dom"
-import { client } from "../../gql/client"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
+import { client } from "../../gql/client";
 import {
   CreateFormDocument,
-  DeleteFormDocument,
   GetFormMainDocument,
-} from "../../gql/graphql-operations"
-import cls from "./form-main.module.css"
-import placeholder from "../icons/placeholder.svg"
-import plusIcon from "../icons/plus.svg"
-import deleteIcon from "../icons/delete.svg"
+  DeleteFormDocument,
+} from "../../gql/graphql-operations";
+import cls from "./form-main.module.css";
+import placeholder from "../icons/placeholder.svg";
+import plusIcon from "../icons/plus.svg";
+import deleteIcon from "../icons/delete.svg";
 
 export const FormMain: React.FC = () => {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   const { data } = useQuery(["form-main"], () =>
     client.request(GetFormMainDocument)
-  )
+  );
 
   const { mutate: createForm } = useMutation(
     () =>
       client.request(CreateFormDocument, {
-        formInput: { title: "Untitled Form" },
+        formInput: { title: "Untitled Form", questions: [] },
       }),
     {
       onSuccess() {
-        queryClient.invalidateQueries({ queryKey: ["form-main"] })
+        queryClient.invalidateQueries({ queryKey: ["form-main"] });
       },
     }
-  )
+  );
 
   const { mutate: deleteForm } = useMutation(
     (formId: string) =>
@@ -37,16 +37,16 @@ export const FormMain: React.FC = () => {
       }),
     {
       onSuccess() {
-        queryClient.invalidateQueries({ queryKey: ["form-main"] })
+        queryClient.invalidateQueries({ queryKey: ["form-main"] });
       },
     }
-  )
+  );
 
   const handleDelete =
     (formId: string) => (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault()
-      deleteForm(formId)
-    }
+      e.preventDefault();
+      deleteForm(formId);
+    };
 
   return (
     <div className={cls["form-main"]}>
@@ -69,5 +69,5 @@ export const FormMain: React.FC = () => {
         <img src={plusIcon} alt="plus icon" />
       </button>
     </div>
-  )
-}
+  );
+};
