@@ -4,10 +4,12 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
 };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -28,6 +30,13 @@ export type FormInput = {
   title: Scalars["String"];
 };
 
+export type LoginResponse = {
+  __typename?: "LoginResponse";
+  _id: Scalars["ID"];
+  name: Scalars["String"];
+  token: Scalars["String"];
+};
+
 export type Mutation = {
   __typename?: "Mutation";
   /** Creates a new form */
@@ -38,6 +47,8 @@ export type Mutation = {
   deleteForm?: Maybe<Scalars["Boolean"]>;
   /** Removes a question from within an existing form */
   deleteQuestion?: Maybe<Scalars["Boolean"]>;
+  /** Allows the user to login */
+  login?: Maybe<LoginResponse>;
   /** Allows to updates the details of an existing form */
   updateForm?: Maybe<Form>;
   /** Updates a question within an existing form */
@@ -60,6 +71,11 @@ export type MutationDeleteFormArgs = {
 export type MutationDeleteQuestionArgs = {
   formId: Scalars["ID"];
   questionId: Scalars["ID"];
+};
+
+export type MutationLoginArgs = {
+  password: Scalars["String"];
+  username: Scalars["String"];
 };
 
 export type MutationUpdateFormArgs = {
@@ -163,6 +179,39 @@ export type GetFormMainQueryVariables = Exact<{ [key: string]: never }>;
 export type GetFormMainQuery = {
   __typename?: "Query";
   forms: Array<{ __typename?: "Form"; _id: string; title: string }>;
+};
+
+export type CreateFormMutationVariables = Exact<{
+  formInput: FormInput;
+}>;
+
+export type CreateFormMutation = {
+  __typename?: "Mutation";
+  createForm?: { __typename?: "Form"; _id: string; title: string } | null;
+};
+
+export type DeleteFormMutationVariables = Exact<{
+  formId: Scalars["ID"];
+}>;
+
+export type DeleteFormMutation = {
+  __typename?: "Mutation";
+  deleteForm?: boolean | null;
+};
+
+export type LoginMutationVariables = Exact<{
+  username: Scalars["String"];
+  password: Scalars["String"];
+}>;
+
+export type LoginMutation = {
+  __typename?: "Mutation";
+  login?: {
+    __typename?: "LoginResponse";
+    _id: string;
+    name: string;
+    token: string;
+  } | null;
 };
 
 export const FormDetailQuestionFragmentDoc = {
@@ -315,3 +364,172 @@ export const GetFormMainDocument = {
     },
   ],
 } as unknown as DocumentNode<GetFormMainQuery, GetFormMainQueryVariables>;
+export const CreateFormDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CreateForm" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "formInput" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "FormInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createForm" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "form" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "formInput" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "_id" } },
+                { kind: "Field", name: { kind: "Name", value: "title" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CreateFormMutation, CreateFormMutationVariables>;
+export const DeleteFormDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeleteForm" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "formId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deleteForm" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "formId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "formId" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<DeleteFormMutation, DeleteFormMutationVariables>;
+export const LoginDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "Login" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "username" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "password" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "login" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "username" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "username" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "password" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "password" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "_id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "token" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<LoginMutation, LoginMutationVariables>;

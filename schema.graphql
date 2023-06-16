@@ -8,6 +8,12 @@ input FormInput {
   title: String!
 }
 
+type LoginResponse {
+  _id: ID!
+  name: String!
+  token: String!
+}
+
 type Mutation {
   """
   Creates a new form
@@ -28,6 +34,11 @@ type Mutation {
   Removes a question from within an existing form
   """
   deleteQuestion(formId: ID!, questionId: ID!): Boolean
+
+  """
+  Allows the user to login
+  """
+  login(password: String!, username: String!): LoginResponse
 
   """
   Allows to updates the details of an existing form

@@ -1,16 +1,14 @@
-
+import { RouterProvider, createBrowserRouter } from "react-router-dom"
+import { routes } from "./pages/routes"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { MainLayout } from "./layout/main-layout"
-import { FormPage } from "./pages/FormPage"
 
+const router = createBrowserRouter(routes)
 const queryClient = new QueryClient()
 
 function App() {
   return (
       <QueryClientProvider client={queryClient}>
-          <MainLayout>
-            <FormPage />
-          </MainLayout>
+        <RouterProvider router={router} />
       </QueryClientProvider>
   )
 }

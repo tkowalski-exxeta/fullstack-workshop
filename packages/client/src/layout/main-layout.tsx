@@ -1,17 +1,16 @@
-import "./main-layout.css"
+import { Outlet } from "react-router-dom";
+import "./main-layout.css";
 
-export const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
+export const MainLayout: React.FC = () => {
   return (
-    <div className="app">
-      <section className="layout">
-        <header className="header">
-          <a className="link" href="/">
-            Forms-App
-          </a>
-        </header>
-        <main>{children}</main>
-        <footer className="footer">&copy; 2023 Exxeta</footer>
-      </section>
-    </div>
-  )
-}
+    <section className="layout">
+      <main>
+        <Outlet />
+      </main>
+      
+      <footer className="footer">
+        &copy; 2023 Exxeta
+      </footer>
+    </section>
+  );
+};

@@ -6,6 +6,11 @@ export const typeDefinitions = /* GraphQL */ `
 
   type Mutation {
     """
+    Allows the user to login
+    """
+    login(username: String!, password: String!): LoginResponse
+
+    """
     Creates a new form
     """
     createForm(form: FormInput!): Form
@@ -75,5 +80,11 @@ export const typeDefinitions = /* GraphQL */ `
   }
   input TextQuestionInput {
     question: String!
+  }
+
+  type LoginResponse {
+    _id: ID!
+    name: String!
+    token: String!
   }
 `

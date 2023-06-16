@@ -1,0 +1,40 @@
+
+.form-main {
+    display: flex;
+    padding: 1rem;
+    gap: 0.5rem;
+}
+
+.form-main-item {
+    border: 1px solid #e2e2e2;
+}
+
+.form-main-item > img {
+    width: 10rem;
+}
+
+.form-main-item > div {
+    padding: 0.5rem;
+    color: var(--dark);
+}
+
+.add-form {
+    cursor: pointer;
+    border: 1px solid #e2e2e2;
+    fill: var(--main)
+}
+
+.add-form:hover {
+    filter: brightness(var(--hover-brightness));
+}
+
+.add-form > img {
+    width: 10rem;
+    height: 10rem;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
