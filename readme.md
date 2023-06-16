@@ -36,7 +36,7 @@ The participants should have a working understanding of developing Java Spring B
     ## Unit 3: Codegen (Server) & Advanced TypeScript Types
     - Graphql-Codegen
     - TypeScript basics review
-    - Introduction to discriminated union types
+    - Introduction to discriminated union types∏∏
     - Built-in helper classes in TypeScript (e.g. **Readonly**, **Partial**, etc.)
     - Enhancing the GraphQL code with advanced TypeScript types
 
@@ -48,20 +48,22 @@ The participants should have a working understanding of developing Java Spring B
     - Integrating GraphQL into a React project using (Graphql-Request)[https://github.com/jasonkuhrt/graphql-request] and (Tanstack Query aka. React Query)[https://tanstack.com/query/latest/]
     - BROWN-BAG: Mock Service Worker
 
-## Unit 5: Admin UI & Forms + React Router
-- Setup the routes to navigate between
-  - Routes contain only playholder divs (divs with some border and a litte text/Json-data) for now
-- Dynamic routing with route parameters
-- React Router: Protected routes with authentication and authorization
-- Form validation with libraries such as (React Hook Form)[https://react-hook-form.com/get-started]
-- Edit-Functionality
+    ## Unit 5: React Router
+    - Setup the routes to navigate between
+      - Routes contain only playholder divs (divs with some border and a litte text/Json-data) for now
+    - Dynamic routing with route parameters
+    - React Router: Protected routes with authentication and authorization
 
-## Unit 6: Testing + Accessibility
+    ## Unit 6: Admin UI & Forms
+    - Form validation with libraries such as (React Hook Form)[https://react-hook-form.com/get-started]
+    - Edit-Functionality
+
+## Unit 7: Testing + Accessibility
 - Accessiblity
 - React Testing Library
 - Playwright
 
-    ## Unit 7: Conclusion and Presentation / Collect Feedback
+    ## Unit 8: Conclusion and Presentation / Collect Feedback
     - Review of the course topics
     - Participants work on a final project, applying the concepts learned throughout the course
     - Presentation of final projects and wrap up.

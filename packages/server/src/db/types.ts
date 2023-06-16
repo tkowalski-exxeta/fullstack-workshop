@@ -29,5 +29,5 @@ export type FormAnswersDB = {
 }
 export type QuestionAnswerDB = {
   _id: ObjectId
-  result: string
+  result?: string[] | string | undefined
 }

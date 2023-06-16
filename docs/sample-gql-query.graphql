@@ -10,37 +10,11 @@ query GetForms {
 }
 
 mutation CreateForm {
-  createForm(form: {title: "form-3"}) {
+  saveForm(form: {title: "form-3", questions: []}) {
     _id
     title
   }
 }
-
-mutation CreateQuestion($formId: ID!) {
-  q1: createQuestion(
-    formId: $formId
-    question: {
-      select: {
-        question: "How are you today??",
-        options: ["great", "sleepy", "not sure"],
-        multiSelect: false
-      }
-    }
-  ) {
-    __typename
-  }
-  q2: createQuestion(
-    formId: $formId
-    question: {
-      text: {
-        question: "What do you like most about GraphQL?",
-      }
-    }
-  ) {
-    __typename
-  }
-}
-
 
 query GetQuestionnaire($formId: ID!) {
   formById(id: $formId) {

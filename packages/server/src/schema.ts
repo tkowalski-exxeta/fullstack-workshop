@@ -5,15 +5,11 @@ export const typeDefinitions = /* GraphQL */ `
   }
 
   type Mutation {
+    login(username: String!, password: String!): LoginResponse
     """
-    Creates a new form
+    Used to create or update a form including questions
     """
-    createForm(form: FormInput!): Form
-
-    """
-    Attaches a new question to an existing form
-    """
-    createQuestion(formId: ID!, question: QuestionInput!): Question
+    saveForm(form: FormInput!): Form
 
     """
     Removes a form with an given ID
@@ -21,23 +17,9 @@ export const typeDefinitions = /* GraphQL */ `
     deleteForm(formId: ID!): Boolean
 
     """
-    Removes a question from within an existing form
+    Submit the collected data of the user who filled the form
     """
-    deleteQuestion(formId: ID!, questionId: ID!): Boolean
-
-    """
-    Allows to updates the details of an existing form
-    """
-    updateForm(form: FormInput!, formId: ID!): Form
-
-    """
-    Updates a question within an existing form
-    """
-    updateQuestion(
-      formId: ID!
-      question: QuestionInput!
-      questionId: ID!
-    ): Question
+    submitFormAnswer(formId: ID!, data: [FormAnswerEntryInput!]!): ID!
   }
 
   type Form {
@@ -46,7 +28,9 @@ export const typeDefinitions = /* GraphQL */ `
     title: String!
   }
   input FormInput {
+    _id: ID
     title: String!
+    questions: [QuestionInput!]!
   }
 
   interface Question {
@@ -69,11 +53,24 @@ export const typeDefinitions = /* GraphQL */ `
     text: TextQuestionInput
   }
   input SelectQuestionInput {
+    _id: ID
     multiSelect: Boolean!
     options: [String!]!
     question: String!
   }
   input TextQuestionInput {
+    _id: ID
     question: String!
+  }
+
+  input FormAnswerEntryInput {
+    id: ID!
+    result: [String!]
+  }
+
+  type LoginResponse {
+    _id: ID!
+    name: String!
+    token: String!
   }
 `
