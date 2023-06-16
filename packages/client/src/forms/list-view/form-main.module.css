@@ -1,40 +1,44 @@
-
 .form-main {
-    display: flex;
-    padding: 1rem;
-    gap: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1rem;
+  gap: 0.5rem;
 }
 
 .form-main-item {
-    border: 1px solid #e2e2e2;
+  border: 1px solid #e2e2e2;
+  border-radius: var(--border-radius);
 }
 
 .form-main-item > img {
-    width: 10rem;
+  width: 10rem;
 }
 
 .form-main-item > div {
-    padding: 0.5rem;
-    color: var(--dark);
+  padding: 0.5rem;
+  color: var(--dark);
 }
 
 .add-form {
-    cursor: pointer;
-    border: 1px solid #e2e2e2;
-    fill: var(--main)
+  width: 10rem;
+  cursor: pointer;
+  border: 1px solid #e2e2e2;
+  fill: var(--main);
+  padding: 0;
+  margin: 0;
 }
 
 .add-form:hover {
-    filter: brightness(var(--hover-brightness));
+  filter: brightness(var(--hover-brightness));
 }
 
 .add-form > img {
-    width: 10rem;
-    height: 10rem;
+  width: 10rem;
+  height: 10rem;
 }
 
 .title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

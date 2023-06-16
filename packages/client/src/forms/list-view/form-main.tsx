@@ -55,6 +55,7 @@ export const FormMain: React.FC = () => {
           key={f._id}
           to={f._id}
           className={`${cls["form-main-item"]} link`}
+          aria-label={f.title}
         >
           <img src={placeholder} alt="placeholder" />
           <div className={cls["title"]}>

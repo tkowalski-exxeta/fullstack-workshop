@@ -15,7 +15,7 @@ export const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <Navigate to="/admin" />
+        element: <Navigate to="/admin" />,
       },
       {
         path: "login",
@@ -27,7 +27,11 @@ export const routes: RouteObject[] = [
       },
       {
         path: "admin",
-        element: <PrivateRoute><AdminLayout /></PrivateRoute>,
+        element: (
+          <PrivateRoute>
+            <AdminLayout />
+          </PrivateRoute>
+        ),
         children: [
           { index: true, element: <FormMain /> },
           { path: ":id", element: <FormEditorPage /> },
@@ -37,7 +41,6 @@ export const routes: RouteObject[] = [
         },
       },
       { path: "thank-you", element: <ThankYouPage /> },
-
     ],
   },
 ];

@@ -6,8 +6,8 @@ import { getUser } from "./auth";
 
 export const resolvers: Resolvers<GqlContext> = {
   Mutation: {
-    login: (_root, {username, password}, {db} ) => {
-      return getUser(username, password)
+    login: (_root, { username, password }, { db }) => {
+      return getUser(username, password);
     },
     saveForm: async (_root, { form }, { db }) => {
       const id = form._id ? new ObjectId(form._id) : new ObjectId();

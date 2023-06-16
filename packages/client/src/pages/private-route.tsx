@@ -15,7 +15,6 @@ export const PrivateRoute: React.FC<React.PropsWithChildren> = ({
   return canAccess ? <>{children}</> : <Navigate to="/login" />;
 };
 
-
 function getUser() {
   const token = window.localStorage.getItem("id_token");
   if (!token) {

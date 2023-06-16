@@ -7,10 +7,8 @@ export const MainLayout: React.FC = () => {
       <main>
         <Outlet />
       </main>
-      
-      <footer className="footer">
-        &copy; 2023 Exxeta
-      </footer>
+
+      <footer className="footer">&copy; 2023 Exxeta</footer>
     </section>
   );
 };

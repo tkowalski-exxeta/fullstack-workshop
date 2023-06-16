@@ -77,4 +77,4 @@ export const typeDefinitions = /* GraphQL */ `
     name: String!
     token: String!
   }
-`
+`;

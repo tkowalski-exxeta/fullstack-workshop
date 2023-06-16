@@ -1,2 +1,5 @@
 node_modules
+/test-results/
 packages/server/src/generated.types.ts
+packages/client/playwright-report/
+packages/client/playwright/.cache/

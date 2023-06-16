@@ -1,4 +1,4 @@
-import type { CodegenConfig } from "@graphql-codegen/cli"
+import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
   schema: "./src/schema.ts",
@@ -22,6 +22,6 @@ const config: CodegenConfig = {
     },
   },
   hooks: { afterOneFileWrite: ["prettier --write"] },
-}
+};
 
-export default config
+export default config;

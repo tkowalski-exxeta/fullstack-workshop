@@ -4,13 +4,13 @@ query GetForms {
     title
     questions {
       _id
-  		question
+      question
     }
   }
 }
 
 mutation CreateForm {
-  saveForm(form: {title: "form-3", questions: []}) {
+  saveForm(form: { title: "form-3", questions: [] }) {
     _id
     title
   }
@@ -22,11 +22,11 @@ query GetQuestionnaire($formId: ID!) {
     title
     questions {
       __typename
-      ...on TextQuestion {
+      ... on TextQuestion {
         _id
         question
       }
-      ...on SelectQuestion {
+      ... on SelectQuestion {
         _id
         question
         options
