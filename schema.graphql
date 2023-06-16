@@ -4,44 +4,39 @@ type Form {
   title: String!
 }
 
+input FormAnswerEntryInput {
+  id: ID!
+  result: [String!]
+}
+
 input FormInput {
+  _id: ID
+  questions: [QuestionInput!]!
   title: String!
+}
+
+type LoginResponse {
+  _id: ID!
+  name: String!
+  token: String!
 }
 
 type Mutation {
   """
-  Creates a new form
-  """
-  createForm(form: FormInput!): Form
-
-  """
-  Attaches a new question to an existing form
-  """
-  createQuestion(formId: ID!, question: QuestionInput!): Question
-
-  """
   Removes a form with an given ID
   """
   deleteForm(formId: ID!): Boolean
+  login(password: String!, username: String!): LoginResponse
 
   """
-  Removes a question from within an existing form
+  Used to create or update a form including questions
   """
-  deleteQuestion(formId: ID!, questionId: ID!): Boolean
+  saveForm(form: FormInput!): Form
 
   """
-  Allows to updates the details of an existing form
+  Submit the collected data of the user who filled the form
   """
-  updateForm(form: FormInput!, formId: ID!): Form
-
-  """
-  Updates a question within an existing form
-  """
-  updateQuestion(
-    formId: ID!
-    question: QuestionInput!
-    questionId: ID!
-  ): Question
+  submitFormAnswer(data: [FormAnswerEntryInput!]!, formId: ID!): ID!
 }
 
 type Query {
@@ -67,6 +62,7 @@ type SelectQuestion implements Question {
 }
 
 input SelectQuestionInput {
+  _id: ID
   multiSelect: Boolean!
   options: [String!]!
   question: String!
@@ -78,5 +74,6 @@ type TextQuestion implements Question {
 }
 
 input TextQuestionInput {
+  _id: ID
   question: String!
 }

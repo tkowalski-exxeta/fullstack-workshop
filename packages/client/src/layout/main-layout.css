@@ -3,8 +3,15 @@
     --main: rgb(30 58 138);
     --dark: rgb(41 37 36);
     --hover-brightness: 0.85;
+    --border-radius: 6px;
 }
-
+* {
+   box-sizing: border-box;
+}
+#root {
+    height: 100dvh;
+    width: 100dvw;
+}
 body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
@@ -19,15 +26,25 @@ body {
     height: 100%;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: min-content 1fr min-content;
+    grid-template-rows: 1fr min-content;
 }
 
 .header {
     background-color: var(--main);
-    display: block;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
     color: var(--text);
-    padding: 1.5rem;
-    font-size: 1.5rem;
+    padding: 4px 16px;
+    line-height: 1;
+}
+.header h1 {
+    flex: 1;
+    font-size: 18px;
+}
+.header img {
+    vertical-align: middle;
 }
 
 .footer {
@@ -39,8 +56,83 @@ body {
 .link {
     text-decoration: none;
     color: var(--text);
+    cursor: pointer;
 }
 
 .link:hover {
     filter: brightness(var(--hover-brightness));
+}
+
+button {
+    /* background: none repeat scroll 0 0 transparent; 
+    border: medium none; */
+    border-radius: var(--border-radius);
+    padding: 6px 12px;
+    margin: 4px;
+    border-spacing: 0;
+    text-align: left;
+    text-decoration: none;
+    text-indent: 0;
+    cursor: pointer;
+}
+button.primary {
+    background: var(--main);
+    color: var(--text);
+    border: 1px solid black;
+}
+button.secondary {
+    border: 1px solid black;
+
+}
+button.icon {
+    border: 0;
+    background: transparent;
+    padding: 6px;
+}
+button.icon:hover {
+    background: #ddd;
+}
+button.icon img {
+    height: 18px;
+    width: 18px;
+    vertical-align: middle;
+}
+select {
+    padding: 2px;
+}
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.login-paper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ddd;
+    gap: 2rem;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+}
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: start;
+}
+.login-form > button {
+    align-self: flex-end;
+}
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 320px;
+}
+
+.error-msg {
+    color: rgb(205, 9, 9);
+    font-size: 12px;
+    font-weight: 600;
 }

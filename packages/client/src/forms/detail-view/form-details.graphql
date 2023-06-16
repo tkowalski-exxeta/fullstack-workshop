@@ -17,3 +17,7 @@ fragment FormDetailQuestion on Question {
     options
   }
 }
+
+mutation SubmitFormdata($formId: ID!, $data: [FormAnswerEntryInput!]!) {
+    submitFormAnswer(formId: $formId, data: $data)
+}

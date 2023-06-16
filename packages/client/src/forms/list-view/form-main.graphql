@@ -4,3 +4,14 @@ query GetFormMain {
     title
   }
 }
+
+mutation CreateForm($formInput: FormInput!) {
+  saveForm(form: $formInput) {
+    _id
+    title
+  }
+}
+
+mutation DeleteForm($formId: ID!) {
+  deleteForm(formId: $formId)
+}
