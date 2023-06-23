@@ -56,7 +56,7 @@ export const QuestionEditor: React.FC<QuestionProps<FormInput>> = (props) => {
   }
 
   return (
-    <div className="form-detail-question">
+    <section aria-label={`questions.${index}`} className="form-detail-question">
       <select value={questionType} onChange={changeQuestionType}>
         <option value="select">Multiple Choice</option>
         <option value="text">Freitext</option>
@@ -67,7 +67,7 @@ export const QuestionEditor: React.FC<QuestionProps<FormInput>> = (props) => {
       ) : question.select ? (
         <SelectQuestionEditor {...props} />
       ) : null}
-    </div>
+    </section>
   );
 };
 
