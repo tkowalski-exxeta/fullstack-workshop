@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb"
 import { GqlContext } from "./create-context"
-import { Question } from "./db/types"
+import { QuestionDB } from "./db/types"
 
 type FormInput = {
   title: string
@@ -22,7 +22,7 @@ export const resolvers = {
     createQuestion: async (_root, { formId, question }, { db }: GqlContext) => {
       const input = question.select ?? question.text
       const type = !!question.select ? "SelectQuestion" : "TextQuestion"
-      const questionCreated: Question = {
+      const questionCreated: QuestionDB = {
         _id: new ObjectId(),
         questionType: type,
         ...input,
