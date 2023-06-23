@@ -3,7 +3,7 @@ import crypto from "node:crypto";
 
 test("Admin - Form creation", async ({ page }) => {
   await test.step("login", async () => {
-    await page.goto("http://localhost:4000/login");
+    await page.goto("/login");
     await page.getByLabel("Username").click();
     await page.getByLabel("Username").fill("thko");
     await page.getByLabel("Username").press("Tab");
