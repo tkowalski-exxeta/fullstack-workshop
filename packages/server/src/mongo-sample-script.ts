@@ -87,17 +87,6 @@ async function main() {
     .toArray()
 
   console.log(questionsWithAnswers)
-
-  // // delete a single question from the array of questions within a form
-  // await db.forms.updateOne(
-  //   { _id: formInsertationResult.insertedId },
-  //   { $pull: { questions: { _id: q1._id } } }
-  // )
-
-  // // delete the form
-  // await db.forms.deleteOne({
-  //   _id: new ObjectId(formInsertationResult.insertedId),
-  // })
 }
 
 main()
