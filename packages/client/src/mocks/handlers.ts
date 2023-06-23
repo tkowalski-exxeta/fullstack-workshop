@@ -1,30 +1,18 @@
-import { rest } from 'msw'
+import { graphql } from "msw";
 
 // Mock Data
-export const posts = [
+export const forms = [
   {
-    userId: 1,
-    id: 1,
-    title: 'first post title',
-    body: 'first post body',
+    _id: "6479b7e2762f4f829cb7c316",
+    title: "Test Form",
   },
   {
-    userId: 2,
-    id: 5,
-    title: 'second post title',
-    body: 'second post body',
+    _id: "648c5d0b7c4bc517ee1bcd9b",
+    title: "Untitled Form",
   },
-  {
-    userId: 3,
-    id: 6,
-    title: 'third post title',
-    body: 'third post body',
-  },
-]
+];
 
 // Define handlers that catch the corresponding requests and returns the mock data.
 export const handlers = [
-  rest.get('https://jsonplaceholder.typicode.com/posts', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(posts))
-  }),
-]
+  graphql.query("GetFormMain", (_, res, ctx) => res(ctx.data(forms))),
+];
