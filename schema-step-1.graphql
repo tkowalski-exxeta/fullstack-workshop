@@ -1,0 +1,25 @@
+type Query {
+  formById(id: ID!): Form
+  forms: [Form!]!
+}
+
+type Form {
+  _id: ID!
+  questions: [Question!]!
+  title: String!
+}
+
+interface Question {
+  _id: ID!
+  question: String!
+}
+type SelectQuestion implements Question {
+  _id: ID!
+  multiSelect: Boolean!
+  options: [String!]!
+  question: String!
+}
+type TextQuestion implements Question {
+  _id: ID!
+  question: String!
+}
