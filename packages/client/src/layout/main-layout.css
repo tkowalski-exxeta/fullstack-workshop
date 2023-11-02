@@ -1,0 +1,46 @@
+:root {
+    --text: rgb(248 250 252);
+    --main: rgb(30 58 138);
+    --dark: rgb(41 37 36);
+    --hover-brightness: 0.85;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.app {
+    width: 100vw;
+    height: 100vh;
+}
+
+.layout {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: min-content 1fr min-content;
+}
+
+.header {
+    background-color: var(--main);
+    display: block;
+    color: var(--text);
+    padding: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.footer {
+    background-color: var(--dark);
+    padding: 1.5rem;
+    color: var(--text);
+}
+
+.link {
+    text-decoration: none;
+    color: var(--text);
+}
+
+.link:hover {
+    filter: brightness(var(--hover-brightness));
+}
