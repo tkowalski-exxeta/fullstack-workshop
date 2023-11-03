@@ -1,26 +1,26 @@
-export type FormOverview = Omit<FormDetails, "questions">
+export type FormOverview = Omit<FormDetails, "questions">;
 
 export interface FormDetails {
-  _id: string
-  title: string
-  questions: Question[]
+  _id: string;
+  title: string;
+  questions: Question[];
 }
 
-export type Question = SelectQuestion | TextQuestion
+export type Question = SelectQuestion | TextQuestion;
 
 type SelectQuestion = {
-  _id: string
-  type: "select"
-  question: string
-  multiSelect: boolean
-  options: string[]
-}
+  _id: string;
+  type: "select";
+  question: string;
+  multiSelect: boolean;
+  options: string[];
+};
 
 type TextQuestion = {
-  _id: string
-  type: "text"
-  question: string
-}
+  _id: string;
+  type: "text";
+  question: string;
+};
 
 const form1: FormDetails = {
   _id: "65440a0235331789ab36d1af",
@@ -39,7 +39,7 @@ const form1: FormDetails = {
       question: "Why do you like it best?",
     },
   ],
-}
+};
 const form2: FormDetails = {
   _id: "654415246022b91ca7abcef4",
   title: "form #2",
@@ -57,28 +57,28 @@ const form2: FormDetails = {
       question: "Why do you like it best?",
     },
   ],
-}
+};
 
 export const formService = {
   getAllForms: async () => {
-    await delay(800)
-    return [form1, form2].map(toFormOverview)
+    await delay(800);
+    return [form1, form2].map(toFormOverview);
   },
   getFormById: async (id: string) => {
-    await delay(500)
-    if (id === form1._id) return { formById: form1 }
-    if (id === form2._id) return { formById: form1 }
-    return null
+    await delay(500);
+    if (id === form1._id) return { formById: form1 };
+    if (id === form2._id) return { formById: form1 };
+    return null;
   },
-}
+};
 
-function toFormOverview(f: FormDetailResponse): FormOverview {
+function toFormOverview(f: FormDetails): FormOverview {
   return {
     _id: f._id,
     title: f.title,
-  }
+  };
 }
 
 function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
