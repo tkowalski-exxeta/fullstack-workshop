@@ -9,39 +9,23 @@ input FormInput {
 }
 
 type Mutation {
-  """
-  Creates a new form
-  """
+  """Creates a new form"""
   createForm(form: FormInput!): Form
 
-  """
-  Attaches a new question to an existing form
-  """
+  """Attaches a new question to an existing form"""
   createQuestion(formId: ID!, question: QuestionInput!): Question
 
-  """
-  Removes a form with an given ID
-  """
+  """Removes a form with an given ID"""
   deleteForm(formId: ID!): Boolean
 
-  """
-  Removes a question from within an existing form
-  """
+  """Removes a question from within an existing form"""
   deleteQuestion(formId: ID!, questionId: ID!): Boolean
 
-  """
-  Allows to updates the details of an existing form
-  """
+  """Allows to updates the details of an existing form"""
   updateForm(form: FormInput!, formId: ID!): Form
 
-  """
-  Updates a question within an existing form
-  """
-  updateQuestion(
-    formId: ID!
-    question: QuestionInput!
-    questionId: ID!
-  ): Question
+  """Updates a question within an existing form"""
+  updateQuestion(formId: ID!, question: QuestionInput!, questionId: ID!): Question
 }
 
 type Query {

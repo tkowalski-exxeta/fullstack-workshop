@@ -7,9 +7,10 @@ interface Props {
   onFormSelect(formId: string): void;
 }
 export const FormMain: React.FC<Props> = ({ onFormSelect }) => {
-  const { data, isLoading } = useQuery(["form-main"], () =>
-    client.request(GetFormMainDocument)
-  );
+  const { data, isLoading } = useQuery({
+    queryKey: ["form-main"],
+    queryFn: () => client.request(GetFormMainDocument),
+  });
   if (isLoading) {
     return <div>Loading...</div>;
   }

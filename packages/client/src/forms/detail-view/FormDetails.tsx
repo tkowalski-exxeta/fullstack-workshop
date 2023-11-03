@@ -11,11 +11,11 @@ interface Props {
   goBack(): void;
 }
 export const FormDetails: React.FC<Props> = ({ id, goBack }) => {
-  const { data } = useQuery(
-    ["form-detail", id],
-    () => client.request(GetFormDetailsDocument, { id: id! }),
-    { enabled: !!id }
-  );
+  const { data } = useQuery({
+    queryKey: ["form-detail", id],
+    queryFn: () => client.request(GetFormDetailsDocument, { id: id! }),
+    enabled: !!id,
+  });
   const form = data?.formById;
 
   function submitForm(ev: React.MouseEvent) {
