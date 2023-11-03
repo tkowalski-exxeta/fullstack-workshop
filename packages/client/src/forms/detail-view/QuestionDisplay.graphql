@@ -1,0 +1,9 @@
+fragment QuestionDisplay on Question {
+  __typename
+  _id
+  question
+  ... on SelectQuestion {
+    multiSelect
+    options
+  }
+}

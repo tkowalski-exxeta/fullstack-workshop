@@ -1,4 +1,4 @@
-import type { CodegenConfig } from "@graphql-codegen/cli"
+import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
   schema: "./src/schema.ts",
@@ -8,6 +8,7 @@ const config: CodegenConfig = {
     "./src/generated.types.ts": {
       plugins: ["typescript", "typescript-resolvers"],
       config: {
+        contextType: "./create-context#GqlContext",
         mappers: {
           Form: "./db/types#FormDB",
           Question: "./db/types#QuestionDB",
@@ -22,6 +23,6 @@ const config: CodegenConfig = {
     },
   },
   hooks: { afterOneFileWrite: ["prettier --write"] },
-}
+};
 
-export default config
+export default config;
