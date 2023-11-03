@@ -69,4 +69,4 @@ export const typeDefinitions = /* GraphQL */ `
   input TextQuestionInput {
     question: String!
   }
-`
+`;

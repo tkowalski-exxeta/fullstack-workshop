@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 import { GqlContext } from "./create-context";
-import { QuestionDB } from "./db/types";
+import { FormDB, QuestionDB } from "./db/types";
 
 type FormInput = {
   title: string;
@@ -19,12 +19,13 @@ export const resolvers = {
       await db.forms.insertOne(formDB);
       return formDB;
     },
+
     createQuestion: async (_root, { formId, question }, { db }: GqlContext) => {
       const input = question.select ?? question.text;
-      const type = !!question.select ? "SelectQuestion" : "TextQuestion";
+      const type: QuestionDB["type"] = !!question.select ? "select" : "text";
       const questionCreated: QuestionDB = {
         _id: new ObjectId(),
-        questionType: type,
+        type,
         ...input,
       };
       const res = await db.forms.updateOne(
@@ -33,6 +34,7 @@ export const resolvers = {
       );
       return res.matchedCount === 1 ? questionCreated : null;
     },
+
     updateForm: async (_root, { formId, form }, { db }: GqlContext) => {
       await db.forms.updateOne({ _id: new ObjectId(formId) }, { $set: form });
       const formUpdated = await db.forms.findOne({
@@ -83,8 +85,13 @@ export const resolvers = {
     forms: async (_root, _args, { db }: GqlContext) => {
       return db.forms.find().toArray();
     },
-    formById: async (_root, { id }, { db }: GqlContext) => {
+    formById: async (_root, { id, username }, { db }: GqlContext) => {
       return db.forms.findOne({ _id: new ObjectId(id) });
+    },
+  },
+  Form: {
+    questions(form: FormDB, _args, { db }: GqlContext) {
+      return db.querstion.find({ formId: form._id }).toArray();
     },
   },
   Question: {

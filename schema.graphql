@@ -51,6 +51,7 @@ input FormInput {
 interface Question {
   _id: ID!
   question: String!
+  form: Form
 }
 type SelectQuestion implements Question {
   _id: ID!

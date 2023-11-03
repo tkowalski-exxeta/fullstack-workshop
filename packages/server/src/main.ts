@@ -12,11 +12,10 @@ async function main() {
   const schema = createSchema<GqlContext>({
     typeDefs: typeDefinitions,
     resolvers,
-  });
-  const context = await createContext();
+  });˚
   const yoga = createYoga({
     schema,
-    context,
+    context: createContext,
     renderGraphiQL,
   });
   const server = createServer(yoga);
