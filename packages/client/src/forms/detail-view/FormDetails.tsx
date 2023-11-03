@@ -1,25 +1,25 @@
-import { useQuery } from "@tanstack/react-query"
-import { client } from "../../gql/client"
+import { useQuery } from "@tanstack/react-query";
+import { client } from "../../gql/client";
 import {
-  GetFormDetailsDocument,
   FormDetailQuestionFragment,
-} from "../../gql/graphql-operations"
-import "./form-details.css"
+  GetFormDetailsDocument,
+} from "../../gql/graphql-operations";
+import "./form-details.css";
 
 interface Props {
-  id: string
-  goBack(): void
+  id: string;
+  goBack(): void;
 }
 export const FormDetails: React.FC<Props> = ({ id, goBack }) => {
   const { data } = useQuery(
     ["form-detail", id],
     () => client.request(GetFormDetailsDocument, { id: id! }),
     { enabled: !!id }
-  )
-  const form = data?.formById
+  );
+  const form = data?.formById;
 
   function submitForm(ev: React.MouseEvent) {
-    ev.preventDefault()
+    ev.preventDefault();
   }
 
   return (
@@ -39,11 +39,11 @@ export const FormDetails: React.FC<Props> = ({ id, goBack }) => {
         <div>Form not found</div>
       )}
     </div>
-  )
-}
+  );
+};
 
 interface QuestionProps {
-  data: FormDetailQuestionFragment
+  data: FormDetailQuestionFragment;
 }
 export const QuestionDisplay: React.FC<QuestionProps> = ({ data }) => {
   switch (data.__typename) {
@@ -60,7 +60,7 @@ export const QuestionDisplay: React.FC<QuestionProps> = ({ data }) => {
             ))}
           </div>
         </div>
-      )
+      );
     case "TextQuestion":
       return (
         <div className="form-detail-question">
@@ -69,11 +69,11 @@ export const QuestionDisplay: React.FC<QuestionProps> = ({ data }) => {
             <input type="text" name={data._id} />
           </div>
         </div>
-      )
+      );
     default:
-      assertBadType(data.__typename)
+      assertBadType(data);
   }
-}
+};
 function assertBadType(__typename: never): never {
-  throw new Error("Unknown type of question")
+  throw new Error("Unknown type of question");
 }
