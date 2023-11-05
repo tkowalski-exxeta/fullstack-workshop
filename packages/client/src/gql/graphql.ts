@@ -140,12 +140,12 @@ export type FormDetailsQuery = {
     _id: string;
     title: string;
     questions: Array<
-      | ({ __typename?: "SelectQuestion" } & {
+      | ({ __typename?: "SelectQuestion"; _id: string } & {
           " $fragmentRefs"?: {
             QuestionDisplay_SelectQuestion_Fragment: QuestionDisplay_SelectQuestion_Fragment;
           };
         })
-      | ({ __typename?: "TextQuestion" } & {
+      | ({ __typename?: "TextQuestion"; _id: string } & {
           " $fragmentRefs"?: {
             QuestionDisplay_TextQuestion_Fragment: QuestionDisplay_TextQuestion_Fragment;
           };
@@ -288,6 +288,7 @@ export const FormDetailsDocument = {
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
+                      { kind: "Field", name: { kind: "Name", value: "_id" } },
                       {
                         kind: "FragmentSpread",
                         name: { kind: "Name", value: "QuestionDisplay" },

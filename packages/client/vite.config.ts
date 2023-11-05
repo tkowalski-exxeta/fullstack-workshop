@@ -8,5 +8,14 @@ export default defineConfig({
       "/graphql": "http://localhost:3000/graphql",
     },
   },
-  plugins: [react()],
+  plugins: [
+    react({
+      plugins: [
+        [
+          "@graphql-codegen/client-preset-swc-plugin",
+          { artifactDirectory: "./src/gql", gqlTagName: "graphql" },
+        ],
+      ],
+    }),
+  ],
 })
