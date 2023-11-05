@@ -1,10 +1,23 @@
-import { QuestionDisplayFragment } from "../../gql/graphql-operations"
+import { FragmentType, graphql, useFragment } from "../../gql"
 import "./FormDetails.css"
 
+const questionDisplayFragment = graphql(/* GraphQL */ `
+  fragment QuestionDisplay on Question {
+    __typename
+    _id
+    question
+    ... on SelectQuestion {
+      multiSelect
+      options
+    }
+  }
+`)
 interface QuestionProps {
-  data: QuestionDisplayFragment
+  data: FragmentType<typeof questionDisplayFragment>
 }
-export const QuestionDisplay: React.FC<QuestionProps> = ({ data }) => {
+export const QuestionDisplay: React.FC<QuestionProps> = (props) => {
+  const data = useFragment(questionDisplayFragment, props.data)
+
   switch (data.__typename) {
     case "SelectQuestion":
       return (

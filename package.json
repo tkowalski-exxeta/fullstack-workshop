@@ -5,10 +5,12 @@
     "packages/server"
   ],
   "scripts": {
+    "dev": "graphql-codegen --watch",
     "codegen": "graphql-codegen"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.0",
+    "@graphql-codegen/client-preset": "^4.1.0",
     "@graphql-codegen/schema-ast": "^4.0.0",
     "@graphql-codegen/typed-document-node": "^5.0.1",
     "@graphql-codegen/typescript-operations": "^4.0.1",

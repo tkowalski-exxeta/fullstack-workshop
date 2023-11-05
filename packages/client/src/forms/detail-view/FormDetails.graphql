@@ -1,9 +1,0 @@
-query FormDetails($id: ID!) {
-  formById(id: $id) {
-    _id
-    title
-    questions {
-      ...QuestionDisplay
-    }
-  }
-}

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -139,14 +140,16 @@ export type FormDetailsQuery = {
     _id: string;
     title: string;
     questions: Array<
-      | {
-          __typename: "SelectQuestion";
-          multiSelect: boolean;
-          options: Array<string>;
-          _id: string;
-          question: string;
-        }
-      | { __typename: "TextQuestion"; _id: string; question: string }
+      | ({ __typename?: "SelectQuestion" } & {
+          " $fragmentRefs"?: {
+            QuestionDisplay_SelectQuestion_Fragment: QuestionDisplay_SelectQuestion_Fragment;
+          };
+        })
+      | ({ __typename?: "TextQuestion" } & {
+          " $fragmentRefs"?: {
+            QuestionDisplay_TextQuestion_Fragment: QuestionDisplay_TextQuestion_Fragment;
+          };
+        })
     >;
   } | null;
 };
@@ -157,13 +160,13 @@ type QuestionDisplay_SelectQuestion_Fragment = {
   options: Array<string>;
   _id: string;
   question: string;
-};
+} & { " $fragmentName"?: "QuestionDisplay_SelectQuestion_Fragment" };
 
 type QuestionDisplay_TextQuestion_Fragment = {
   __typename: "TextQuestion";
   _id: string;
   question: string;
-};
+} & { " $fragmentName"?: "QuestionDisplay_TextQuestion_Fragment" };
 
 export type QuestionDisplayFragment =
   | QuestionDisplay_SelectQuestion_Fragment
@@ -173,13 +176,17 @@ export type FormListItemFragment = {
   __typename?: "Form";
   _id: string;
   title: string;
-};
+} & { " $fragmentName"?: "FormListItemFragment" };
 
 export type FormListPageQueryVariables = Exact<{ [key: string]: never }>;
 
 export type FormListPageQuery = {
   __typename?: "Query";
-  forms: Array<{ __typename?: "Form"; _id: string; title: string }>;
+  forms: Array<
+    { __typename?: "Form"; _id: string } & {
+      " $fragmentRefs"?: { FormListItemFragment: FormListItemFragment };
+    }
+  >;
 };
 
 export const QuestionDisplayFragmentDoc = {
@@ -342,6 +349,7 @@ export const FormListPageDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "_id" } },
                 {
                   kind: "FragmentSpread",
                   name: { kind: "Name", value: "FormListItem" },

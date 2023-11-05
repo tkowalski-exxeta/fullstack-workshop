@@ -1,16 +1,24 @@
 import { useQuery } from "@tanstack/react-query"
 import { client } from "../../gql/client"
-import { FormListPageDocument } from "../../gql/graphql-operations"
 import { FormListItem } from "./FormListItem"
 import "./FormListPage.css"
+import { graphql } from "../../gql"
 
+const formListDocument = graphql(/* GraphQL */ `
+  query FormListPage {
+    forms {
+      _id
+      ...FormListItem
+    }
+  }
+`)
 interface Props {
   onFormSelect(formId: string): void
 }
 export const FormListPage: React.FC<Props> = ({ onFormSelect }) => {
   const { data, isLoading } = useQuery({
     queryKey: ["form-main"],
-    queryFn: () => client.request(FormListPageDocument),
+    queryFn: () => client.request(formListDocument),
   })
   if (isLoading) {
     return <div>Loading...</div>

@@ -1,4 +1,0 @@
-fragment FormListItem on Form {
-  _id
-  title
-}

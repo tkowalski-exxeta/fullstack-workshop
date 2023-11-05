@@ -1,8 +1,20 @@
 import { useQuery } from "@tanstack/react-query"
 import { client } from "../../gql/client"
-import { FormDetailsDocument } from "../../gql/graphql-operations"
 import { QuestionDisplay } from "./QuestionDisplay"
 import "./FormDetails.css"
+import { graphql } from "../../gql"
+
+const formDetailsDocument = graphql(/* GraphQL */ `
+  query FormDetails($id: ID!) {
+    formById(id: $id) {
+      _id
+      title
+      questions {
+        ...QuestionDisplay
+      }
+    }
+  }
+`)
 
 interface Props {
   id: string
@@ -11,7 +23,7 @@ interface Props {
 export const FormDetails: React.FC<Props> = ({ id, goBack }) => {
   const { data } = useQuery({
     queryKey: ["form-detail", id],
-    queryFn: () => client.request(FormDetailsDocument, { id: id! }),
+    queryFn: () => client.request(formDetailsDocument, { id: id! }),
     enabled: !!id,
   })
   const form = data?.formById
