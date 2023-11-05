@@ -1,23 +1,23 @@
-import { useQuery } from "@tanstack/react-query";
-import { client } from "../../gql/client";
-import { FormDetailsDocument } from "../../gql/graphql-operations";
-import { QuestionDisplay } from "./QuestionDisplay";
-import "./form-details.css";
+import { useQuery } from "@tanstack/react-query"
+import { client } from "../../gql/client"
+import { FormDetailsDocument } from "../../gql/graphql-operations"
+import { QuestionDisplay } from "./QuestionDisplay"
+import "./FormDetails.css"
 
 interface Props {
-  id: string;
-  goBack(): void;
+  id: string
+  goBack(): void
 }
 export const FormDetails: React.FC<Props> = ({ id, goBack }) => {
   const { data } = useQuery({
     queryKey: ["form-detail", id],
     queryFn: () => client.request(FormDetailsDocument, { id: id! }),
     enabled: !!id,
-  });
-  const form = data?.formById;
+  })
+  const form = data?.formById
 
   function submitForm(ev: React.MouseEvent) {
-    ev.preventDefault();
+    ev.preventDefault()
   }
 
   return (
@@ -37,5 +37,5 @@ export const FormDetails: React.FC<Props> = ({ id, goBack }) => {
         <div>Form not found</div>
       )}
     </div>
-  );
-};
+  )
+}

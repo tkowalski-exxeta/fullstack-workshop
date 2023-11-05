@@ -1,8 +1,8 @@
-import { QuestionDisplayFragment } from "../../gql/graphql-operations";
-import "./form-details.css";
+import { QuestionDisplayFragment } from "../../gql/graphql-operations"
+import "./FormDetails.css"
 
 interface QuestionProps {
-  data: QuestionDisplayFragment;
+  data: QuestionDisplayFragment
 }
 export const QuestionDisplay: React.FC<QuestionProps> = ({ data }) => {
   switch (data.__typename) {
@@ -19,7 +19,7 @@ export const QuestionDisplay: React.FC<QuestionProps> = ({ data }) => {
             ))}
           </div>
         </div>
-      );
+      )
     case "TextQuestion":
       return (
         <div className="form-detail-question">
@@ -28,11 +28,11 @@ export const QuestionDisplay: React.FC<QuestionProps> = ({ data }) => {
             <input type="text" name={data._id} />
           </div>
         </div>
-      );
+      )
     default:
-      assertBadType(data);
+      assertBadType(data)
   }
-};
+}
 function assertBadType(__typename: never): never {
-  throw new Error("Unknown type of question");
+  throw new Error("Unknown type of question")
 }

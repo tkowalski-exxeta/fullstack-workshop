@@ -1,4 +1,4 @@
-import "./main-layout.css"
+import "./MainLayout.css"
 
 export const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
