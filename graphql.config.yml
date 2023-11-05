@@ -1,2 +1,2 @@
 schema: "schema.graphql"
-documents: "packages/client/src/**/*.graphql"
+documents: "packages/client/src/**/*.tsx"
