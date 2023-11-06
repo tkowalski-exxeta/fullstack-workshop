@@ -18,7 +18,7 @@
     "mongodb": "^5.9.1"
   },
   "devDependencies": {
-    "@types/node": "^18.16.2",
+    "@types/node": "^18.18.8",
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
     "prettier": "^3.0.3",

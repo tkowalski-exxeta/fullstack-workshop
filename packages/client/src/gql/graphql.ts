@@ -13,7 +13,7 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
 };
 export type MakeEmpty<
   T extends { [key: string]: unknown },
-  K extends keyof T
+  K extends keyof T,
 > = { [_ in K]?: never };
 export type Incremental<T> =
   | T
@@ -140,16 +140,14 @@ export type FormDetailsQuery = {
     _id: string;
     title: string;
     questions: Array<
-      | ({ __typename?: "SelectQuestion"; _id: string } & {
-          " $fragmentRefs"?: {
-            QuestionDisplay_SelectQuestion_Fragment: QuestionDisplay_SelectQuestion_Fragment;
-          };
-        })
-      | ({ __typename?: "TextQuestion"; _id: string } & {
-          " $fragmentRefs"?: {
-            QuestionDisplay_TextQuestion_Fragment: QuestionDisplay_TextQuestion_Fragment;
-          };
-        })
+      | {
+          __typename: "SelectQuestion";
+          _id: string;
+          multiSelect: boolean;
+          options: Array<string>;
+          question: string;
+        }
+      | { __typename: "TextQuestion"; _id: string; question: string }
     >;
   } | null;
 };
@@ -160,13 +158,13 @@ type QuestionDisplay_SelectQuestion_Fragment = {
   options: Array<string>;
   _id: string;
   question: string;
-} & { " $fragmentName"?: "QuestionDisplay_SelectQuestion_Fragment" };
+};
 
 type QuestionDisplay_TextQuestion_Fragment = {
   __typename: "TextQuestion";
   _id: string;
   question: string;
-} & { " $fragmentName"?: "QuestionDisplay_TextQuestion_Fragment" };
+};
 
 export type QuestionDisplayFragment =
   | QuestionDisplay_SelectQuestion_Fragment
@@ -176,17 +174,13 @@ export type FormListItemFragment = {
   __typename?: "Form";
   _id: string;
   title: string;
-} & { " $fragmentName"?: "FormListItemFragment" };
+};
 
 export type FormListPageQueryVariables = Exact<{ [key: string]: never }>;
 
 export type FormListPageQuery = {
   __typename?: "Query";
-  forms: Array<
-    { __typename?: "Form"; _id: string } & {
-      " $fragmentRefs"?: { FormListItemFragment: FormListItemFragment };
-    }
-  >;
+  forms: Array<{ __typename?: "Form"; _id: string; title: string }>;
 };
 
 export const QuestionDisplayFragmentDoc = {

@@ -1,4 +1,4 @@
-import react from "@vitejs/plugin-react"
+import react from "@vitejs/plugin-react-swc"
 import { defineConfig } from "vite"
 
 // https://vitejs.dev/config/
@@ -10,12 +10,12 @@ export default defineConfig({
   },
   plugins: [
     react({
-      plugins: [
-        [
-          "@graphql-codegen/client-preset-swc-plugin",
-          { artifactDirectory: "./src/gql", gqlTagName: "graphql" },
-        ],
-      ],
+      // plugins: [
+      //   [
+      //     "@graphql-codegen/client-preset-swc-plugin",
+      //     { artifactDirectory: "./src/gql", gqlTagName: "graphql" },
+      //   ],
+      // ],
     }),
   ],
 })

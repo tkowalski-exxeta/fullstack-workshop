@@ -20,6 +20,9 @@ const config: CodegenConfig = {
     },
     "./packages/client/src/gql/": {
       preset: "client",
+      presetConfig: {
+        fragmentMasking: false,
+      },
     },
   },
   hooks: { afterOneFileWrite: ["prettier --write"] },

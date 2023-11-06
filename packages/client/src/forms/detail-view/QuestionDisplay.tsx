@@ -1,4 +1,4 @@
-import { FragmentType, graphql, useFragment } from "../../gql"
+import { DocumentType, graphql } from "../../gql"
 import "./FormDetails.css"
 
 const questionDisplayFragment = graphql(/* GraphQL */ `
@@ -13,10 +13,9 @@ const questionDisplayFragment = graphql(/* GraphQL */ `
   }
 `)
 interface QuestionProps {
-  data: FragmentType<typeof questionDisplayFragment>
+  data: DocumentType<typeof questionDisplayFragment>
 }
-export const QuestionDisplay: React.FC<QuestionProps> = (props) => {
-  const data = useFragment(questionDisplayFragment, props.data)
+export const QuestionDisplay: React.FC<QuestionProps> = ({ data }) => {
 
   switch (data.__typename) {
     case "SelectQuestion":
