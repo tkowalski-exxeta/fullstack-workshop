@@ -23,12 +23,21 @@ export const QuestionDisplay: React.FC<QuestionProps> = ({ data }) => {
         <div className="form-detail-question">
           {data.question}
           <div>
-            {data.options.map((opt, i) => (
-              <label key={i} className="form-detail-option">
-                {opt}
-                <input type="checkbox" name={"cb" + i} value={opt} />
-              </label>
-            ))}
+            {data.multiSelect ? (
+              data.options.map((opt, i) => (
+                <label key={i} className="form-detail-option">
+                  {opt}
+                  <input type="checkbox" name={`${data._id}-cb${i}`} value={opt} />
+                </label>
+              ))
+            ) : (
+              data.options.map((opt, i) => (
+                <label key={i} className="form-detail-option">
+                  {opt}
+                  <input type="radio" name={data._id} value={opt} />
+                </label>
+              ))
+            )}
           </div>
         </div>
       )
