@@ -129,34 +129,29 @@ export type TextQuestionInput = {
   question: Scalars["String"]["input"];
 };
 
-export type QuestionnaireFragment = {
-  __typename?: "Form";
-  title: string;
-  questions: Array<
-    | ({ __typename?: "SelectQuestion"; _id: string } & {
-        " $fragmentRefs"?: {
-          QuestionDisplay_SelectQuestion_Fragment: QuestionDisplay_SelectQuestion_Fragment;
-        };
-      })
-    | ({ __typename?: "TextQuestion"; _id: string } & {
-        " $fragmentRefs"?: {
-          QuestionDisplay_TextQuestion_Fragment: QuestionDisplay_TextQuestion_Fragment;
-        };
-      })
-  >;
-} & { " $fragmentName"?: "QuestionnaireFragment" };
-
 export type FormDetailsQueryVariables = Exact<{
   id: Scalars["ID"]["input"];
 }>;
 
 export type FormDetailsQuery = {
-  __typename?: "Query";
-  formById?:
-    | ({ __typename?: "Form"; _id: string } & {
-        " $fragmentRefs"?: { QuestionnaireFragment: QuestionnaireFragment };
-      })
-    | null;
+  __typename: "Query";
+  formById?: {
+    __typename: "Form";
+    _id: string;
+    title: string;
+    questions: Array<
+      | ({ __typename: "SelectQuestion"; _id: string } & {
+          " $fragmentRefs"?: {
+            QuestionDisplay_SelectQuestion_Fragment: QuestionDisplay_SelectQuestion_Fragment;
+          };
+        })
+      | ({ __typename: "TextQuestion"; _id: string } & {
+          " $fragmentRefs"?: {
+            QuestionDisplay_TextQuestion_Fragment: QuestionDisplay_TextQuestion_Fragment;
+          };
+        })
+    >;
+  } | null;
 };
 
 type QuestionDisplay_SelectQuestion_Fragment = {
@@ -178,7 +173,7 @@ export type QuestionDisplayFragment =
   | QuestionDisplay_TextQuestion_Fragment;
 
 export type FormListItemFragment = {
-  __typename?: "Form";
+  __typename: "Form";
   _id: string;
   title: string;
 } & { " $fragmentName"?: "FormListItemFragment" };
@@ -186,9 +181,9 @@ export type FormListItemFragment = {
 export type FormListPageQueryVariables = Exact<{ [key: string]: never }>;
 
 export type FormListPageQuery = {
-  __typename?: "Query";
+  __typename: "Query";
   forms: Array<
-    { __typename?: "Form"; _id: string } & {
+    { __typename: "Form"; _id: string } & {
       " $fragmentRefs"?: { FormListItemFragment: FormListItemFragment };
     }
   >;
@@ -219,6 +214,7 @@ export const QuestionDisplayFragmentDoc = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "__typename" } },
                 { kind: "Field", name: { kind: "Name", value: "multiSelect" } },
                 { kind: "Field", name: { kind: "Name", value: "options" } },
               ],
@@ -229,69 +225,6 @@ export const QuestionDisplayFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<QuestionDisplayFragment, unknown>;
-export const QuestionnaireFragmentDoc = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Questionnaire" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "Form" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "title" } },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "questions" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "_id" } },
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "QuestionDisplay" },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "QuestionDisplay" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "Question" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "__typename" } },
-          { kind: "Field", name: { kind: "Name", value: "_id" } },
-          { kind: "Field", name: { kind: "Name", value: "question" } },
-          {
-            kind: "InlineFragment",
-            typeCondition: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "SelectQuestion" },
-            },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "multiSelect" } },
-                { kind: "Field", name: { kind: "Name", value: "options" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<QuestionnaireFragment, unknown>;
 export const FormListItemFragmentDoc = {
   kind: "Document",
   definitions: [
@@ -305,6 +238,7 @@ export const FormListItemFragmentDoc = {
       selectionSet: {
         kind: "SelectionSet",
         selections: [
+          { kind: "Field", name: { kind: "Name", value: "__typename" } },
           { kind: "Field", name: { kind: "Name", value: "_id" } },
           { kind: "Field", name: { kind: "Name", value: "title" } },
         ],
@@ -313,7 +247,7 @@ export const FormListItemFragmentDoc = {
   ],
 } as unknown as DocumentNode<FormListItemFragment, unknown>;
 export const FormDetailsDocument = {
-  __meta__: { hash: "7a0921004ea39400f1bab292ac7114054b68d873" },
+  __meta__: { hash: "7ce769e8cee799b8f1471fe60aab025d14f531ac" },
   kind: "Document",
   definitions: [
     {
@@ -333,6 +267,7 @@ export const FormDetailsDocument = {
       selectionSet: {
         kind: "SelectionSet",
         selections: [
+          { kind: "Field", name: { kind: "Name", value: "__typename" } },
           {
             kind: "Field",
             name: { kind: "Name", value: "formById" },
@@ -349,10 +284,26 @@ export const FormDetailsDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "__typename" } },
                 { kind: "Field", name: { kind: "Name", value: "_id" } },
+                { kind: "Field", name: { kind: "Name", value: "title" } },
                 {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Questionnaire" },
+                  kind: "Field",
+                  name: { kind: "Name", value: "questions" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "_id" } },
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "QuestionDisplay" },
+                      },
+                    ],
+                  },
                 },
               ],
             },
@@ -382,36 +333,9 @@ export const FormDetailsDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "__typename" } },
                 { kind: "Field", name: { kind: "Name", value: "multiSelect" } },
                 { kind: "Field", name: { kind: "Name", value: "options" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Questionnaire" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "Form" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "title" } },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "questions" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "_id" } },
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "QuestionDisplay" },
-                },
               ],
             },
           },
@@ -421,7 +345,7 @@ export const FormDetailsDocument = {
   ],
 } as unknown as DocumentNode<FormDetailsQuery, FormDetailsQueryVariables>;
 export const FormListPageDocument = {
-  __meta__: { hash: "2164dc55aa1b7f62c0500b43cc5b34522ff55be5" },
+  __meta__: { hash: "c11f70503e2cb7937fe154826673f3da6f00a31a" },
   kind: "Document",
   definitions: [
     {
@@ -431,12 +355,14 @@ export const FormListPageDocument = {
       selectionSet: {
         kind: "SelectionSet",
         selections: [
+          { kind: "Field", name: { kind: "Name", value: "__typename" } },
           {
             kind: "Field",
             name: { kind: "Name", value: "forms" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "__typename" } },
                 { kind: "Field", name: { kind: "Name", value: "_id" } },
                 {
                   kind: "FragmentSpread",
@@ -458,6 +384,7 @@ export const FormListPageDocument = {
       selectionSet: {
         kind: "SelectionSet",
         selections: [
+          { kind: "Field", name: { kind: "Name", value: "__typename" } },
           { kind: "Field", name: { kind: "Name", value: "_id" } },
           { kind: "Field", name: { kind: "Name", value: "title" } },
         ],

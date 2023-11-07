@@ -1,5 +1,4 @@
-import { useQuery } from "@tanstack/react-query"
-import { client } from "../../gql/client"
+import { useQuery } from "@apollo/client"
 import { FormListItem } from "./FormListItem"
 import "./FormListPage.css"
 import { graphql } from "../../gql"
@@ -16,11 +15,9 @@ interface Props {
   onFormSelect(formId: string): void
 }
 export const FormListPage: React.FC<Props> = ({ onFormSelect }) => {
-  const { data, isLoading } = useQuery({
-    queryKey: ["form-main"],
-    queryFn: () => client.request(formListDocument),
-  })
-  if (isLoading) {
+  const { data, loading } = useQuery(formListDocument)
+
+  if (loading) {
     return <div>Loading...</div>
   }
   return (

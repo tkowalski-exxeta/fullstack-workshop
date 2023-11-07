@@ -1,23 +1,17 @@
-import { useQuery } from "@tanstack/react-query"
-import { client } from "../../gql/client"
+import { useQuery } from "@apollo/client"
 import { QuestionDisplay } from "./QuestionDisplay"
 import "./FormDetails.css"
-import { graphql, useFragment } from "../../gql"
+import { graphql } from "../../gql"
 
-const QuestionnaireFragement = graphql(/* GraphQL */ `
-  fragment Questionnaire on Form {
-    title
-    questions {
-      _id
-      ...QuestionDisplay
-    }
-  }
-`)
 const formDetailsDocument = graphql(/* GraphQL */ `
   query FormDetails($id: ID!) {
     formById(id: $id) {
       _id
-      ...Questionnaire
+      title
+      questions {
+        _id
+        ...QuestionDisplay
+      }
     }
   }
 `)
@@ -27,12 +21,11 @@ interface Props {
   goBack(): void
 }
 export const FormDetails: React.FC<Props> = ({ id, goBack }) => {
-  const { data } = useQuery({
-    queryKey: ["form-detail", id],
-    queryFn: () => client.request(formDetailsDocument, { id: id! }),
-    enabled: !!id,
+  const { data } = useQuery(formDetailsDocument, {
+    variables: { id: id! },
+    skip: !id,
   })
-  const form = useFragment(QuestionnaireFragement, data?.formById)
+  const form = data?.formById
 
   function submitForm(ev: React.MouseEvent) {
     ev.preventDefault()
@@ -44,9 +37,10 @@ export const FormDetails: React.FC<Props> = ({ id, goBack }) => {
       {form ? (
         <div>
           <h1>{form.title}</h1>
-          {form.questions.map((q) => (
-            <QuestionDisplay key={q._id} data={q} />
-          ))}
+          {form.questions.map((q) => {
+            console.log("question", q)
+            return <QuestionDisplay key={q._id} data={q} />
+          })}
           <button type="submit" onClick={(ev) => submitForm(ev)}>
             Submit Form
           </button>

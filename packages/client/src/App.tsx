@@ -1,17 +1,16 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MainLayout } from "./layout/MainLayout";
-import { FormPage } from "./pages/FormPage";
-
-const queryClient = new QueryClient();
+import { client } from "./gql/client"
+import { MainLayout } from "./layout/MainLayout"
+import { FormPage } from "./pages/FormPage"
+import { ApolloProvider } from "@apollo/client"
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <ApolloProvider client={client}>
       <MainLayout>
         <FormPage />
       </MainLayout>
-    </QueryClientProvider>
-  );
+    </ApolloProvider>
+  )
 }
 
-export default App;
+export default App

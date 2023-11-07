@@ -1,4 +1,4 @@
-import { DocumentType, graphql } from "../../gql"
+import { FragmentType, graphql, useFragment } from "../../gql"
 import "./FormListPage.css"
 
 const formListItemFragment = graphql(/* GraphQL */ `
@@ -8,17 +8,18 @@ const formListItemFragment = graphql(/* GraphQL */ `
   }
 `)
 interface Props {
-  item: DocumentType<typeof formListItemFragment>
+  item: FragmentType<typeof formListItemFragment>
   onFormSelect(formId: string): void
 }
 export const FormListItem: React.FC<Props> = ({ item, onFormSelect }) => {
+  const formItem = useFragment(formListItemFragment, item)
   return (
     <div
-      key={item._id}
+      key={formItem._id}
       className="form-main-item link"
-      onClick={() => onFormSelect(item._id)}
+      onClick={() => onFormSelect(formItem._id)}
     >
-      {item.title}
+      {formItem.title}
     </div>
   )
 }

@@ -10,12 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@graphql-tools/schema": "^9.0.19",
-    "@graphql-yoga/render-graphiql": "^3.9.1",
+    "@graphql-tools/schema": "^10.0.0",
+    "@graphql-yoga/plugin-persisted-operations": "^3.0.0",
+    "@graphql-yoga/render-graphiql": "^5.0.0",
     "dotenv": "^16.3.1",
     "graphql": "^16.8.1",
-    "graphql-yoga": "3.9.1",
-    "mongodb": "^5.9.1"
+    "graphql-yoga": "5.0.0",
+    "mongodb": "^6.2.0"
   },
   "devDependencies": {
     "@types/node": "^18.18.9",

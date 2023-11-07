@@ -1,4 +1,5 @@
 import type { CodegenConfig } from "@graphql-codegen/cli"
+import { addTypenameSelectionDocumentTransform } from "@graphql-codegen/client-preset"
 
 const config: CodegenConfig = {
   schema: "./packages/server/src/schema.ts",
@@ -23,6 +24,13 @@ const config: CodegenConfig = {
       presetConfig: {
         fragmentMasking: true,
         persistedDocuments: true,
+      },
+      documentTransforms: [addTypenameSelectionDocumentTransform],
+    },
+    "./packages/client/src/gql/fragement.ts": {
+      plugins: ["fragment-matcher"],
+      config: {
+        module: "es2015",
       },
     },
   },

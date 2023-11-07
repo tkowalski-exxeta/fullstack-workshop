@@ -13,9 +13,7 @@ import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-  "\n  fragment Questionnaire on Form {\n    title\n    questions {\n      _id\n      ...QuestionDisplay\n    }\n  }\n":
-    types.QuestionnaireFragmentDoc,
-  "\n  query FormDetails($id: ID!) {\n    formById(id: $id) {\n      _id\n      ...Questionnaire\n    }\n  }\n":
+  "\n  query FormDetails($id: ID!) {\n    formById(id: $id) {\n      _id\n      title\n      questions {\n        _id\n        ...QuestionDisplay\n      }\n    }\n  }\n":
     types.FormDetailsDocument,
   "\n  fragment QuestionDisplay on Question {\n    __typename\n    _id\n    question\n    ... on SelectQuestion {\n      multiSelect\n      options\n    }\n  }\n":
     types.QuestionDisplayFragmentDoc,
@@ -43,14 +41,8 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "\n  fragment Questionnaire on Form {\n    title\n    questions {\n      _id\n      ...QuestionDisplay\n    }\n  }\n",
-): (typeof documents)["\n  fragment Questionnaire on Form {\n    title\n    questions {\n      _id\n      ...QuestionDisplay\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
-  source: "\n  query FormDetails($id: ID!) {\n    formById(id: $id) {\n      _id\n      ...Questionnaire\n    }\n  }\n",
-): (typeof documents)["\n  query FormDetails($id: ID!) {\n    formById(id: $id) {\n      _id\n      ...Questionnaire\n    }\n  }\n"];
+  source: "\n  query FormDetails($id: ID!) {\n    formById(id: $id) {\n      _id\n      title\n      questions {\n        _id\n        ...QuestionDisplay\n      }\n    }\n  }\n",
+): (typeof documents)["\n  query FormDetails($id: ID!) {\n    formById(id: $id) {\n      _id\n      title\n      questions {\n        _id\n        ...QuestionDisplay\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
