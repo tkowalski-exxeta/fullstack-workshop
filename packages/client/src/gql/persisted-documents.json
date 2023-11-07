@@ -1,0 +1,4 @@
+{
+  "7a0921004ea39400f1bab292ac7114054b68d873": "fragment QuestionDisplay on Question { __typename _id question ... on SelectQuestion { multiSelect options } } fragment Questionnaire on Form { questions { _id ...QuestionDisplay } title } query FormDetails($id: ID!) { formById(id: $id) { _id ...Questionnaire } }",
+  "2164dc55aa1b7f62c0500b43cc5b34522ff55be5": "fragment FormListItem on Form { _id title } query FormListPage { forms { _id ...FormListItem } }"
+}

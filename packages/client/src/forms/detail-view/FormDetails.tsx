@@ -2,17 +2,22 @@ import { useQuery } from "@tanstack/react-query"
 import { client } from "../../gql/client"
 import { QuestionDisplay } from "./QuestionDisplay"
 import "./FormDetails.css"
-import { graphql } from "../../gql"
+import { graphql, useFragment } from "../../gql"
 
+const QuestionnaireFragement = graphql(/* GraphQL */ `
+  fragment Questionnaire on Form {
+    title
+    questions {
+      _id
+      ...QuestionDisplay
+    }
+  }
+`)
 const formDetailsDocument = graphql(/* GraphQL */ `
   query FormDetails($id: ID!) {
     formById(id: $id) {
       _id
-      title
-      questions {
-        _id
-        ...QuestionDisplay
-      }
+      ...Questionnaire
     }
   }
 `)
@@ -27,7 +32,7 @@ export const FormDetails: React.FC<Props> = ({ id, goBack }) => {
     queryFn: () => client.request(formDetailsDocument, { id: id! }),
     enabled: !!id,
   })
-  const form = data?.formById
+  const form = useFragment(QuestionnaireFragement, data?.formById)
 
   function submitForm(ev: React.MouseEvent) {
     ev.preventDefault()

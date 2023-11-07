@@ -21,7 +21,8 @@ const config: CodegenConfig = {
     "./packages/client/src/gql/": {
       preset: "client",
       presetConfig: {
-        fragmentMasking: false,
+        fragmentMasking: true,
+        persistedDocuments: true,
       },
     },
   },

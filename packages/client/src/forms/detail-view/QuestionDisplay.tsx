@@ -1,4 +1,4 @@
-import { DocumentType, graphql } from "../../gql"
+import { FragmentType, graphql, useFragment } from "../../gql"
 import "./FormDetails.css"
 
 const questionDisplayFragment = graphql(/* GraphQL */ `
@@ -13,9 +13,10 @@ const questionDisplayFragment = graphql(/* GraphQL */ `
   }
 `)
 interface QuestionProps {
-  data: DocumentType<typeof questionDisplayFragment>
+  data: FragmentType<typeof questionDisplayFragment>
 }
-export const QuestionDisplay: React.FC<QuestionProps> = ({ data }) => {
+export const QuestionDisplay: React.FC<QuestionProps> = ({ data: dataSrc }) => {
+  const data = useFragment(questionDisplayFragment, dataSrc)
 
   switch (data.__typename) {
     case "SelectQuestion":
@@ -23,21 +24,23 @@ export const QuestionDisplay: React.FC<QuestionProps> = ({ data }) => {
         <div className="form-detail-question">
           {data.question}
           <div>
-            {data.multiSelect ? (
-              data.options.map((opt, i) => (
-                <label key={i} className="form-detail-option">
-                  {opt}
-                  <input type="checkbox" name={`${data._id}-cb${i}`} value={opt} />
-                </label>
-              ))
-            ) : (
-              data.options.map((opt, i) => (
-                <label key={i} className="form-detail-option">
-                  {opt}
-                  <input type="radio" name={data._id} value={opt} />
-                </label>
-              ))
-            )}
+            {data.multiSelect
+              ? data.options.map((opt, i) => (
+                  <label key={i} className="form-detail-option">
+                    {opt}
+                    <input
+                      type="checkbox"
+                      name={`${data._id}-cb${i}`}
+                      value={opt}
+                    />
+                  </label>
+                ))
+              : data.options.map((opt, i) => (
+                  <label key={i} className="form-detail-option">
+                    {opt}
+                    <input type="radio" name={data._id} value={opt} />
+                  </label>
+                ))}
           </div>
         </div>
       )
