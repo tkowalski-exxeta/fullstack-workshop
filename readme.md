@@ -55,7 +55,6 @@ The participants should have a working understanding of developing Java Spring B
 
   Optionaler Content:
 
-  - Tailwind
   - Client-/Server-Presets
   - Apollo-Client?
 

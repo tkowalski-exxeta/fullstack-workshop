@@ -1,8 +1,7 @@
 import { ObjectId } from "mongodb";
 import { QuestionDB } from "./db/types";
-import { Resolvers } from "./generated.types";
 
-export const resolvers: Resolvers = {
+export const resolvers = {
   Mutation: {
     createForm: async (_root, { form }, { db }) => {
       const formDB = {

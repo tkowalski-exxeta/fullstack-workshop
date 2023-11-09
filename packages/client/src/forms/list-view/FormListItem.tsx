@@ -1,15 +1,15 @@
-import { DocumentType, graphql } from "../../gql"
-import "./FormListPage.css"
+import { DocumentType, graphql } from "../../gql";
+import "./FormListPage.css";
 
 const formListItemFragment = graphql(/* GraphQL */ `
   fragment FormListItem on Form {
     _id
     title
   }
-`)
+`);
 interface Props {
-  item: DocumentType<typeof formListItemFragment>
-  onFormSelect(formId: string): void
+  item: DocumentType<typeof formListItemFragment>;
+  onFormSelect(formId: string): void;
 }
 export const FormListItem: React.FC<Props> = ({ item, onFormSelect }) => {
   return (
@@ -20,5 +20,5 @@ export const FormListItem: React.FC<Props> = ({ item, onFormSelect }) => {
     >
       {item.title}
     </div>
-  )
-}
+  );
+};

@@ -28,7 +28,7 @@
     "allowUnreachableCode": false,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src", "test"],
+  "include": ["src", "test", "mongo-sample-script.ts"],
   "exclude": ["node_modules", "dist"],
 
 }
