@@ -1,23 +1,12 @@
-import { DocumentType, graphql } from "../../gql";
-import "./FormDetails.css";
+import { Question } from "../../data/FormService";
+import "./FormDetailsPage.css";
 
-const questionDisplayFragment = graphql(/* GraphQL */ `
-  fragment QuestionDisplay on Question {
-    __typename
-    _id
-    question
-    ... on SelectQuestion {
-      multiSelect
-      options
-    }
-  }
-`);
 interface QuestionProps {
-  data: DocumentType<typeof questionDisplayFragment>;
+  data: Question;
 }
 export const QuestionDisplay: React.FC<QuestionProps> = ({ data }) => {
-  switch (data.__typename) {
-    case "SelectQuestion":
+  switch (data.type) {
+    case "select":
       return (
         <div className="form-detail-question">
           {data.question}
@@ -42,7 +31,7 @@ export const QuestionDisplay: React.FC<QuestionProps> = ({ data }) => {
           </div>
         </div>
       );
-    case "TextQuestion":
+    case "text":
       return (
         <div className="form-detail-question">
           {data.question}

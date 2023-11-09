@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { FormDetails } from "../forms/detail-view/FormDetails";
-import { FormListPage } from "../forms/list-view/FormListPage";
+import { FormDetailsPage } from "./detail-view/FormDetailsPage";
+import { FormListPage } from "./list-view/FormListPage";
 
 export const FormPage: React.FC = () => {
   const [formId, setSelectedForm] = useState<string>();
@@ -8,6 +8,6 @@ export const FormPage: React.FC = () => {
   return !formId ? (
     <FormListPage onFormSelect={setSelectedForm} />
   ) : (
-    <FormDetails id={formId} goBack={() => setSelectedForm(undefined)} />
+    <FormDetailsPage id={formId} goBack={() => setSelectedForm(undefined)} />
   );
 };

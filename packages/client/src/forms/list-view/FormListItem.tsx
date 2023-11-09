@@ -1,14 +1,8 @@
-import { DocumentType, graphql } from "../../gql";
+import { FormOverview } from "../../data/FormService";
 import "./FormListPage.css";
 
-const formListItemFragment = graphql(/* GraphQL */ `
-  fragment FormListItem on Form {
-    _id
-    title
-  }
-`);
 interface Props {
-  item: DocumentType<typeof formListItemFragment>;
+  item: FormOverview;
   onFormSelect(formId: string): void;
 }
 export const FormListItem: React.FC<Props> = ({ item, onFormSelect }) => {
