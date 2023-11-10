@@ -1,4 +1,0 @@
-{
-  "7ce769e8cee799b8f1471fe60aab025d14f531ac": "fragment QuestionDisplay on Question { __typename _id question ... on SelectQuestion { __typename multiSelect options } } query FormDetails($id: ID!) { __typename formById(id: $id) { __typename _id questions { __typename _id ...QuestionDisplay } title } }",
-  "c11f70503e2cb7937fe154826673f3da6f00a31a": "fragment FormListItem on Form { __typename _id title } query FormListPage { __typename forms { __typename _id ...FormListItem } }"
-}

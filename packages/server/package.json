@@ -11,7 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "@graphql-tools/schema": "^10.0.0",
-    "@graphql-yoga/plugin-persisted-operations": "^3.0.0",
     "@graphql-yoga/render-graphiql": "^5.0.0",
     "dotenv": "^16.3.1",
     "graphql": "^16.8.1",
@@ -20,9 +19,7 @@
   },
   "devDependencies": {
     "@types/node": "^18.18.9",
-    "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
-    "prettier": "^3.0.3",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.2.2"

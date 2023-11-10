@@ -1,7 +1,7 @@
-import { useQuery } from "@apollo/client"
-import { FormListItem } from "./FormListItem"
-import "./FormListPage.css"
-import { graphql } from "../../gql"
+import { useQuery } from "@apollo/client";
+import { graphql } from "../../gql";
+import { FormListItem } from "./FormListItem";
+import "./FormListPage.css";
 
 const formListDocument = graphql(/* GraphQL */ `
   query FormListPage {
@@ -10,15 +10,15 @@ const formListDocument = graphql(/* GraphQL */ `
       ...FormListItem
     }
   }
-`)
+`);
 interface Props {
-  onFormSelect(formId: string): void
+  onFormSelect(formId: string): void;
 }
 export const FormListPage: React.FC<Props> = ({ onFormSelect }) => {
-  const { data, loading } = useQuery(formListDocument)
+  const { data, loading } = useQuery(formListDocument);
 
   if (loading) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
   return (
     <div className="form-main">
@@ -26,5 +26,5 @@ export const FormListPage: React.FC<Props> = ({ onFormSelect }) => {
         <FormListItem key={f._id} item={f} onFormSelect={onFormSelect} />
       ))}
     </div>
-  )
-}
+  );
+};

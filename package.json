@@ -6,18 +6,18 @@
   ],
   "scripts": {
     "dev": "graphql-codegen --watch",
-    "codegen": "graphql-codegen"
+    "codegen": "graphql-codegen",
+    "prettier": "prettier --write \"**/*.{ts,tsx,json,md}\""
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.0",
     "@graphql-codegen/client-preset": "^4.1.0",
+    "@graphql-codegen/fragment-matcher": "^5.0.0",
     "@graphql-codegen/schema-ast": "^4.0.0",
     "@graphql-codegen/typed-document-node": "^5.0.1",
     "@graphql-codegen/typescript-operations": "^4.0.1",
     "@graphql-codegen/typescript-resolvers": "^4.0.1",
-    "@parcel/watcher": "^2.3.0"
-  },
-  "dependencies": {
-    "@graphql-codegen/fragment-matcher": "^5.0.0"
+    "@parcel/watcher": "^2.3.0",
+    "prettier": "^3.0.3"
   }
 }

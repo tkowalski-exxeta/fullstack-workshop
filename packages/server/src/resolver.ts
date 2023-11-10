@@ -24,7 +24,7 @@ export const resolvers: Resolvers = {
       };
       const res = await db.forms.updateOne(
         { _id: new ObjectId(formId) },
-        { $push: { questions: questionCreated } }
+        { $push: { questions: questionCreated } },
       );
       return res.matchedCount === 1 ? questionCreated : null;
     },
@@ -48,7 +48,7 @@ export const resolvers: Resolvers = {
           _id: new ObjectId(formId),
           "questions._id": new ObjectId(questionId),
         },
-        { $set: { "questions.$": questionUpdated } }
+        { $set: { "questions.$": questionUpdated } },
       );
       return result.matchedCount === 1 ? questionUpdated : null;
     },
@@ -61,7 +61,7 @@ export const resolvers: Resolvers = {
     deleteQuestion: async (_root, { formId, questionId }, { db }) => {
       const result = await db.forms.updateOne(
         { _id: new ObjectId(formId) },
-        { $pull: { questions: { _id: new ObjectId(questionId) } } }
+        { $pull: { questions: { _id: new ObjectId(questionId) } } },
       );
       return result.modifiedCount === 1;
     },

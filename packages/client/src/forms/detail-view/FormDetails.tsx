@@ -1,7 +1,7 @@
-import { useQuery } from "@apollo/client"
-import { QuestionDisplay } from "./QuestionDisplay"
-import "./FormDetails.css"
-import { graphql } from "../../gql"
+import { useQuery } from "@apollo/client";
+import { graphql } from "../../gql";
+import "./FormDetails.css";
+import { QuestionDisplay } from "./QuestionDisplay";
 
 const formDetailsDocument = graphql(/* GraphQL */ `
   query FormDetails($id: ID!) {
@@ -14,21 +14,18 @@ const formDetailsDocument = graphql(/* GraphQL */ `
       }
     }
   }
-`)
+`);
 
 interface Props {
-  id: string
-  goBack(): void
+  id: string;
+  goBack(): void;
 }
 export const FormDetails: React.FC<Props> = ({ id, goBack }) => {
-  const { data } = useQuery(formDetailsDocument, {
-    variables: { id: id! },
-    skip: !id,
-  })
-  const form = data?.formById
+  const { data } = useQuery(formDetailsDocument, { variables: { id } });
+  const form = data?.formById;
 
   function submitForm(ev: React.MouseEvent) {
-    ev.preventDefault()
+    ev.preventDefault();
   }
 
   return (
@@ -37,10 +34,9 @@ export const FormDetails: React.FC<Props> = ({ id, goBack }) => {
       {form ? (
         <div>
           <h1>{form.title}</h1>
-          {form.questions.map((q) => {
-            console.log("question", q)
-            return <QuestionDisplay key={q._id} data={q} />
-          })}
+          {form.questions.map((q) => (
+            <QuestionDisplay key={q._id} data={q} />
+          ))}
           <button type="submit" onClick={(ev) => submitForm(ev)}>
             Submit Form
           </button>
@@ -49,5 +45,5 @@ export const FormDetails: React.FC<Props> = ({ id, goBack }) => {
         <div>Form not found</div>
       )}
     </div>
-  )
-}
+  );
+};

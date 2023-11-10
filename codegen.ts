@@ -1,5 +1,5 @@
-import type { CodegenConfig } from "@graphql-codegen/cli"
-import { addTypenameSelectionDocumentTransform } from "@graphql-codegen/client-preset"
+import type { CodegenConfig } from "@graphql-codegen/cli";
+import { addTypenameSelectionDocumentTransform } from "@graphql-codegen/client-preset";
 
 const config: CodegenConfig = {
   schema: "./packages/server/src/schema.ts",
@@ -23,7 +23,6 @@ const config: CodegenConfig = {
       preset: "client",
       presetConfig: {
         fragmentMasking: true,
-        persistedDocuments: true,
       },
       documentTransforms: [addTypenameSelectionDocumentTransform],
     },
@@ -35,6 +34,6 @@ const config: CodegenConfig = {
     },
   },
   hooks: { afterOneFileWrite: ["prettier --write"] },
-}
+};
 
-export default config
+export default config;

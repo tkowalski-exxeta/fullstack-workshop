@@ -1,2 +1,4 @@
 node_modules
 packages/server/src/generated.types.ts
+packages/client/src/gql
+!packages/client/src/gql/client.ts

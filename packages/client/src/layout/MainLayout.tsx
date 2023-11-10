@@ -1,4 +1,4 @@
-import "./MainLayout.css"
+import "./MainLayout.css";
 
 export const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
@@ -13,5 +13,5 @@ export const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
         <footer className="footer">&copy; 2023 Exxeta</footer>
       </section>
     </div>
-  )
-}
+  );
+};
