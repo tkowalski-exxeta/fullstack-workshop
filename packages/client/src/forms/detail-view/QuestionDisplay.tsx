@@ -1,5 +1,5 @@
 import { FragmentType, graphql, useFragment } from "../../gql";
-import "./FormDetails.css";
+import "./FormDetailsPage.css";
 
 const questionDisplayFragment = graphql(/* GraphQL */ `
   fragment QuestionDisplay on Question {

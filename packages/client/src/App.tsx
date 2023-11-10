@@ -1,14 +1,14 @@
-import { client } from "./gql/client";
-import { MainLayout } from "./layout/MainLayout";
-import { FormPage } from "./pages/FormPage";
 import { ApolloProvider } from "@apollo/client";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { client } from "./gql/client";
+import { routes } from "./pages/routes";
+
+const router = createBrowserRouter(routes);
 
 function App() {
   return (
     <ApolloProvider client={client}>
-      <MainLayout>
-        <FormPage />
-      </MainLayout>
+      <RouterProvider router={router} />
     </ApolloProvider>
   );
 }

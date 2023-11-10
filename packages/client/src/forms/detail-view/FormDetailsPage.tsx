@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
+import { useNavigate, useParams } from "react-router-dom";
 import { graphql } from "../../gql";
-import "./FormDetails.css";
+import "./FormDetailsPage.css";
 import { QuestionDisplay } from "./QuestionDisplay";
 
 const formDetailsDocument = graphql(/* GraphQL */ `
@@ -16,18 +17,18 @@ const formDetailsDocument = graphql(/* GraphQL */ `
   }
 `);
 
-interface Props {
-  id: string;
-  goBack(): void;
-}
-export const FormDetails: React.FC<Props> = ({ id, goBack }) => {
-  const { data } = useQuery(formDetailsDocument, { variables: { id } });
+export const FormDetailsPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+  const { data } = useQuery(formDetailsDocument, { variables: { id: id! } });
   const form = data?.formById;
 
   function submitForm(ev: React.MouseEvent) {
     ev.preventDefault();
   }
-
+  function goBack() {
+    navigate(-1);
+  }
   return (
     <div className="form-detail-content">
       <button onClick={goBack}>Back</button>
