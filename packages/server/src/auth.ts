@@ -1,17 +1,18 @@
-import * as jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken"
 
-const JWT_SECRET = process.env["JWT_SECRET"] ?? "5ecret";
+const JWT_SECRET = process.env["JWT_SECRET"] ?? "5ecret"
 
-type ROLE = "admin" | "user";
+type ROLE = "admin" | "user"
+type LoginResponse = { _id: string; name: string; token: string }
 
 export interface UserInfo {
-  _id: string;
-  roles: ROLE[];
+  _id: string
+  roles: ROLE[]
 }
 interface User extends UserInfo {
-  fullname: string;
-  username: string;
-  pwd: string;
+  fullname: string
+  username: string
+  pwd: string
 }
 
 const knownUsers: User[] = [
@@ -29,30 +30,28 @@ const knownUsers: User[] = [
     pwd: "tigl",
     roles: ["admin"],
   },
-];
-
-type LoginResponse = { _id: string; name: string; token: string };
+]
 
 export async function getUser(
   username: string,
-  password: string,
+  password: string
 ): Promise<LoginResponse | null> {
-  const user = knownUsers.find((u) => u.username === username);
+  const user = knownUsers.find((u) => u.username === username)
   if (user && user.pwd === password) {
     return {
       _id: user._id,
       name: user.fullname,
       token: getToken(user),
-    };
+    }
   }
-  return null;
+  return null
 }
 
 export function getToken(user: UserInfo): string {
-  return jwt.sign(user, JWT_SECRET);
+  return jwt.sign(user, JWT_SECRET)
 }
 
 export function userFromRequest(authHeader: string): UserInfo | null {
-  const token = authHeader?.replace(/^BEARER /i, "");
-  return token ? jwt.verify(token, JWT_SECRET) : null;
+  const token = authHeader?.replace(/^BEARER /i, "")
+  return token ? jwt.verify(token, JWT_SECRET) : null
 }
