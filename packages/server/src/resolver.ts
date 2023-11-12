@@ -1,9 +1,13 @@
 import { ObjectId } from "mongodb";
 import { QuestionDB } from "./db/types";
 import { Resolvers } from "./generated.types";
+import { getUser } from "./auth";
 
 export const resolvers: Resolvers = {
   Mutation: {
+    login: (_root, { username, password }, { db }) => {
+      return getUser(username, password);
+    },
     createForm: async (_root, { form }, { db }) => {
       const formDB = {
         _id: new ObjectId(),

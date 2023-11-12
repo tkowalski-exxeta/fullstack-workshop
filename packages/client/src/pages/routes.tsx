@@ -1,4 +1,4 @@
-import { Navigate, RouteObject } from "react-router-dom";
+import { Navigate, Outlet, RouteObject } from "react-router-dom";
 import { FormDetailsPage, FormEditorPage, FormListPage } from "../forms/index";
 import { AdminLayout } from "../layout/AdminLayout";
 import { MainLayout } from "../layout/MainLayout";
@@ -10,7 +10,11 @@ import { ThankYouPage } from "./ThankYouPage";
 export const routes: RouteObject[] = [
   {
     path: "/",
-    element: <MainLayout />,
+    element: (
+      <MainLayout>
+        <Outlet />
+      </MainLayout>
+    ),
     errorElement: <ErrorPage />,
     children: [
       {

@@ -1,7 +1,7 @@
 import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
+import "./MainLayout.css";
 import ArrowBackPath from "./icons/arrow_back.svg";
 import LogoutPath from "./icons/logout.svg";
-import "./main-layout.css";
 
 export const AdminLayout: React.FC = () => {
   const navigate = useNavigate();

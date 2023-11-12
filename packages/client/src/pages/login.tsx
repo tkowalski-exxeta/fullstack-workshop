@@ -1,4 +1,4 @@
-import { useApolloClient } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useId } from "react";
 import { useNavigate } from "react-router-dom";
 import { graphql } from "../gql";
@@ -22,24 +22,24 @@ export const Login: React.FC = () => {
   const navigate = useNavigate();
   const usernameId = useId();
   const passId = useId();
-  const client = useApolloClient();
+  const [doLogin] = useMutation(LoginDocument);
 
   function login(data: LoginData) {
-    return client
-      .query(LoginDocument, {
-        variables: {
-          username: data.username,
-          password: data.password,
-        },
-      })
-      .then((res) => {
-        if (res.login) {
-          const { token, ...user } = res.login;
+    return doLogin({
+      variables: {
+        username: data.username,
+        password: data.password,
+      },
+      onCompleted: (data) => {
+        console.log("login data", data);
+        if (data.login) {
+          const { token, ...user } = data.login;
           window.localStorage.setItem("id_token", token);
           window.localStorage.setItem("user", JSON.stringify(user));
           navigate("/admin");
         }
-      });
+      },
+    });
   }
 
   return (
@@ -51,7 +51,6 @@ export const Login: React.FC = () => {
           onSubmit={(ev) => {
             ev.preventDefault();
             ev.stopPropagation();
-            console.log("onSubmit", ev);
             const { username, password } = document.forms[0];
             login({
               username: username.value,

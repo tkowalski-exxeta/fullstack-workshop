@@ -4,8 +4,8 @@ const Centered: React.CSSProperties = {
   justifyContent: "center",
   textAlign: "center",
   height: "100%",
-  width: "100%"
-}
+  width: "100%",
+};
 export const ThankYouPage: React.FC = () => {
   return (
     <div style={Centered}>
@@ -14,5 +14,5 @@ export const ThankYouPage: React.FC = () => {
         <p>Thank you for taking the time and answer this survey.</p>
       </div>
     </div>
-  )
-}
+  );
+};
