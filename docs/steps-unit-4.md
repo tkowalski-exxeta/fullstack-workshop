@@ -54,3 +54,6 @@ export default config
 - Try to use fragement-masking
 
 - Try to use apollo and persisted queries
+
+
+https://the-guild.dev/blog/unleash-the-power-of-fragments-with-graphql-codegen
