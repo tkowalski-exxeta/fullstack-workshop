@@ -1,5 +1,10 @@
 import { Navigate, Outlet, RouteObject } from "react-router-dom";
-import { FormDetailsPage, FormEditorPage, FormListPage } from "../forms/index";
+import {
+  FormDetailsPage,
+  FormEditorPage,
+  FormListPage,
+  loader,
+} from "../forms/index";
 import { AdminLayout } from "../layout/AdminLayout";
 import { MainLayout } from "../layout/MainLayout";
 import { ErrorPage } from "./ErrorPage";
@@ -27,7 +32,9 @@ export const routes: RouteObject[] = [
       },
       {
         path: "user",
-        children: [{ path: ":id", element: <FormDetailsPage /> }],
+        children: [
+          { path: ":id", loader: loader, element: <FormDetailsPage /> },
+        ],
       },
       {
         path: "admin",
