@@ -3,7 +3,7 @@ import { FormDetailsPage, FormEditorPage, FormListPage } from "../forms/index";
 import { AdminLayout } from "../layout/AdminLayout";
 import { MainLayout } from "../layout/MainLayout";
 import { ErrorPage } from "./ErrorPage";
-import { Login } from "./Login";
+import { Login } from "./LoginPage";
 import { PrivateRoute } from "./PrivateRoute";
 import { ThankYouPage } from "./ThankYouPage";
 
