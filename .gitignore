@@ -2,3 +2,37 @@ node_modules
 packages/server/src/generated.types.ts
 packages/client/src/gql
 !packages/client/src/gql/client.ts
+packages/client/src copy/app.tsx
+packages/client/src copy/main.tsx
+packages/client/src copy/vite-env.d.ts
+packages/client/src copy/forms/index.ts
+packages/client/src copy/forms/detail-view/form-details.css
+packages/client/src copy/forms/detail-view/form-details.graphql
+packages/client/src copy/forms/detail-view/form-details.tsx
+packages/client/src copy/forms/detail-view/form-question-list.tsx
+packages/client/src copy/forms/detail-view/question-display.tsx
+packages/client/src copy/forms/form-editor/form-editor-page.tsx
+packages/client/src copy/forms/form-editor/form-editor.graphql
+packages/client/src copy/forms/form-editor/form-editor.module.css
+packages/client/src copy/forms/form-editor/form-editor.tsx
+packages/client/src copy/forms/form-editor/question-editor.tsx
+packages/client/src copy/forms/icons/delete_trash.svg
+packages/client/src copy/forms/icons/delete.svg
+packages/client/src copy/forms/icons/placeholder.svg
+packages/client/src copy/forms/icons/plus.svg
+packages/client/src copy/forms/list-view/form-main.graphql
+packages/client/src copy/forms/list-view/form-main.module.css
+packages/client/src copy/forms/list-view/form-main.tsx
+packages/client/src copy/gql/client.ts
+packages/client/src copy/gql/graphql-operations.ts
+packages/client/src copy/layout/admin-layout.tsx
+packages/client/src copy/layout/main-layout.css
+packages/client/src copy/layout/main-layout.tsx
+packages/client/src copy/layout/icons/arrow_back.svg
+packages/client/src copy/layout/icons/logout.svg
+packages/client/src copy/pages/error-page.tsx
+packages/client/src copy/pages/login.graphql
+packages/client/src copy/pages/login.tsx
+packages/client/src copy/pages/private-route.tsx
+packages/client/src copy/pages/routes.tsx
+packages/client/src copy/pages/thank-you.tsx
