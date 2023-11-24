@@ -59,16 +59,16 @@ export const Login: React.FC = () => {
           <div className="input-group">
             <label htmlFor={usernameId}>Username</label>
             <input id={usernameId} type="text" {...register("username")} />
-            {errors.username?.message && (
-              <div className="error-msg">{errors.username?.message}</div>
+            {errors.username && (
+              <div className="error-msg">{errors.username.message}</div>
             )}
           </div>
 
           <div className="input-group">
             <label htmlFor={passId}>Password</label>
             <input id={passId} type="password" {...register("password")} />
-            {errors.password?.message && (
-              <div className="error-msg">{errors.password?.message}</div>
+            {errors.password && (
+              <div className="error-msg">{errors.password.message}</div>
             )}
           </div>
 
