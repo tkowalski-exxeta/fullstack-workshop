@@ -50,7 +50,13 @@ export const FormDetailsPage: React.FC = () => {
     // TODO: fix type
     if (id) {
       return submitFormBase({
-        variables: { formId: id!, data: data.answers as any },
+        variables: {
+          formId: id!,
+          data: data.answers.map((a) => ({
+            id: a.id,
+            result: Array.isArray(a.result) ? a.result : [a.result],
+          })),
+        },
         onCompleted: () => navigate("/thank-you"),
       });
     }
