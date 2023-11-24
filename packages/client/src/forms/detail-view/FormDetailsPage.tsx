@@ -1,8 +1,9 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
+import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { graphql } from "../../gql";
 import "./FormDetailsPage.css";
-import { QuestionDisplay } from "./QuestionDisplay";
+import { FormData, QuestionDisplay } from "./QuestionDisplay";
 
 const formDetailsDocument = graphql(/* GraphQL */ `
   query FormDetails($id: ID!) {
@@ -17,31 +18,64 @@ const formDetailsDocument = graphql(/* GraphQL */ `
   }
 `);
 
+const submitFormdataDocument = graphql(/* GraphQL */ `
+  mutation SubmitFormdata($formId: ID!, $answers: [AnswerInput!]!) {
+    submitAnswers(formId: $formId, answers: $answers)
+  }
+`);
+
 export const FormDetailsPage: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const { data } = useQuery(formDetailsDocument, { variables: { id: id! } });
-  const form = data?.formById;
+  const methods = useForm<FormData>();
 
-  function submitForm(ev: React.MouseEvent) {
-    ev.preventDefault();
-  }
-  function goBack() {
-    navigate(-1);
-  }
+  const { data } = useQuery(formDetailsDocument, {
+    variables: { id: id! },
+    onCompleted(data) {
+      if (data.formById) {
+        const questions = data?.formById?.questions;
+        const answers = questions.map<FormData["answers"][number]>((q) => ({
+          id: q._id,
+          result: "",
+        }));
+        methods.reset({ answers });
+      }
+    },
+  });
+
+  const [submitFormBase] = useMutation(submitFormdataDocument);
+
+  const onSubmit = (data: FormData) => {
+    console.log("onSubmit", data);
+    // TODO: fix type
+    if (id) {
+      return submitFormBase({
+        variables: {
+          formId: id!,
+          answers: data.answers.map((a) => ({
+            questionId: a.id,
+            answer: Array.isArray(a.result) ? a.result : [a.result],
+          })),
+        },
+        onCompleted: () => navigate("/thank-you"),
+      });
+    }
+  };
+
+  const form = data?.formById;
   return (
     <div className="form-detail-content">
-      <button onClick={goBack}>Back</button>
+      <button onClick={() => navigate(-1)}>Back</button>
       {form ? (
-        <div>
-          <h1>{form.title}</h1>
-          {form.questions.map((q) => (
-            <QuestionDisplay key={q._id} data={q} />
-          ))}
-          <button type="submit" onClick={(ev) => submitForm(ev)}>
-            Submit Form
-          </button>
-        </div>
+        <FormProvider {...methods}>
+          <form onSubmit={methods.handleSubmit(onSubmit)}>
+            <h1>{form.title}</h1>
+            {form.questions.map((f, i) => (
+              <QuestionDisplay key={f._id} data={f} index={i} />
+            ))}
+            <button type="submit">Submit Form</button>
+          </form>
+        </FormProvider>
       ) : (
         <div>Form not found</div>
       )}

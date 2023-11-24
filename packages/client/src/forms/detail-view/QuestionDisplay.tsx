@@ -1,3 +1,4 @@
+import { useFormContext } from "react-hook-form";
 import { FragmentType, graphql, useFragment } from "../../gql";
 import "./FormDetailsPage.css";
 
@@ -12,19 +13,36 @@ const questionDisplayFragment = graphql(/* GraphQL */ `
     }
   }
 `);
+
+export type FormData = {
+  answers: {
+    id: string;
+    result: string | string[];
+  }[];
+};
 interface QuestionProps {
+  index: number;
   data: FragmentType<typeof questionDisplayFragment>;
 }
-export const QuestionDisplay: React.FC<QuestionProps> = ({ data: dataSrc }) => {
+export const QuestionDisplay: React.FC<QuestionProps> = ({
+  data: dataSrc,
+  index,
+}) => {
   const data = useFragment(questionDisplayFragment, dataSrc);
+  const { register } = useFormContext<FormData>();
 
   switch (data.__typename) {
     case "TextQuestion":
       return (
         <div className="form-detail-question">
           {data.question}
+          <input type="hidden" {...register(`answers.${index}.id`)} />
           <div>
-            <input type="text" name={data._id} placeholder={data.question} />
+            <input
+              type="text"
+              placeholder={data.question}
+              {...register(`answers.${index}.result`)}
+            />
           </div>
         </div>
       );
@@ -32,6 +50,7 @@ export const QuestionDisplay: React.FC<QuestionProps> = ({ data: dataSrc }) => {
       return (
         <div className="form-detail-question">
           {data.question}
+          <input type="hidden" {...register(`answers.${index}.id`)} />
           <div>
             {data.multiSelect
               ? data.options?.map((opt, i) => (
@@ -39,15 +58,19 @@ export const QuestionDisplay: React.FC<QuestionProps> = ({ data: dataSrc }) => {
                     {opt}
                     <input
                       type="checkbox"
-                      name={`${data._id}-cb${i}`}
                       value={opt}
+                      {...register(`answers.${index}.result`)}
                     />
                   </label>
                 ))
               : data.options?.map((opt, i) => (
                   <label key={i} className="form-detail-option">
                     {opt}
-                    <input type="radio" name={data._id} value={opt} />
+                    <input
+                      type="radio"
+                      value={opt}
+                      {...register(`answers.${index}.result`)}
+                    />
                   </label>
                 ))}
           </div>

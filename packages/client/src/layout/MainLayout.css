@@ -23,13 +23,18 @@ body {
 }
 
 .header {
+  display: flex;
   background-color: var(--main);
-  display: block;
   color: var(--text);
   padding: 1.5rem;
   font-size: 1.5rem;
+  line-height: 36px;
 }
-
+.header h1 {
+  flex: 1;
+  padding: 0;
+  margin: 0;
+}
 .footer {
   background-color: var(--dark);
   padding: 1.5rem;
