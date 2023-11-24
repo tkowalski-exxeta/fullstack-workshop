@@ -16,8 +16,8 @@ const questionDisplayFragment = graphql(/* GraphQL */ `
 
 export type FormData = {
   answers: {
-    id: string;
-    result: string | string[];
+    questionId: string;
+    answer: string | string[];
   }[];
 };
 interface QuestionProps {
@@ -36,12 +36,12 @@ export const QuestionDisplay: React.FC<QuestionProps> = ({
       return (
         <div className="form-detail-question">
           {data.question}
-          <input type="hidden" {...register(`answers.${index}.id`)} />
+          <input type="hidden" {...register(`answers.${index}.questionId`)} />
           <div>
             <input
               type="text"
               placeholder={data.question}
-              {...register(`answers.${index}.result`)}
+              {...register(`answers.${index}.answer`)}
             />
           </div>
         </div>
@@ -50,7 +50,7 @@ export const QuestionDisplay: React.FC<QuestionProps> = ({
       return (
         <div className="form-detail-question">
           {data.question}
-          <input type="hidden" {...register(`answers.${index}.id`)} />
+          <input type="hidden" {...register(`answers.${index}.questionId`)} />
           <div>
             {data.multiSelect
               ? data.options?.map((opt, i) => (
@@ -59,7 +59,7 @@ export const QuestionDisplay: React.FC<QuestionProps> = ({
                     <input
                       type="checkbox"
                       value={opt}
-                      {...register(`answers.${index}.result`)}
+                      {...register(`answers.${index}.answer`)}
                     />
                   </label>
                 ))
@@ -69,7 +69,7 @@ export const QuestionDisplay: React.FC<QuestionProps> = ({
                     <input
                       type="radio"
                       value={opt}
-                      {...register(`answers.${index}.result`)}
+                      {...register(`answers.${index}.answer`)}
                     />
                   </label>
                 ))}

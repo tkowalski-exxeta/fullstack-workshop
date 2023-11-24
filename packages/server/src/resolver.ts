@@ -21,13 +21,13 @@ export const resolvers: Resolvers = {
       const result = await db.forms.deleteOne({ _id: new ObjectId(formId) });
       return result.deletedCount === 1;
     },
-    submitFormAnswer: async (_root, { formId, data }, { db }) => {
+    submitAnswers: async (_root, { formId, answers }, { db }) => {
       const result = await db.answers.insertOne({
         _id: new ObjectId(),
         formId: new ObjectId(formId),
-        answers: data.map((d) => ({
-          _id: new ObjectId(d.id),
-          result: d.result ?? undefined,
+        answers: answers.map((d) => ({
+          _id: new ObjectId(d.questionId),
+          result: d.answer ?? [],
         })),
       });
       return result.insertedId.toHexString();

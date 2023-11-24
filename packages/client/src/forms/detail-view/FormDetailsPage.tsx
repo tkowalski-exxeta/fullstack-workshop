@@ -35,8 +35,8 @@ export const FormDetailsPage: React.FC = () => {
       if (data.formById) {
         const questions = data?.formById?.questions;
         const answers = questions.map<FormData["answers"][number]>((q) => ({
-          id: q._id,
-          result: "",
+          questionId: q._id,
+          answer: "",
         }));
         methods.reset({ answers });
       }
@@ -47,14 +47,13 @@ export const FormDetailsPage: React.FC = () => {
 
   const onSubmit = (data: FormData) => {
     console.log("onSubmit", data);
-    // TODO: fix type
     if (id) {
       return submitFormBase({
         variables: {
           formId: id!,
           answers: data.answers.map((a) => ({
-            questionId: a.id,
-            answer: Array.isArray(a.result) ? a.result : [a.result],
+            questionId: a.questionId,
+            answer: Array.isArray(a.answer) ? a.answer : [a.answer],
           })),
         },
         onCompleted: () => navigate("/thank-you"),
