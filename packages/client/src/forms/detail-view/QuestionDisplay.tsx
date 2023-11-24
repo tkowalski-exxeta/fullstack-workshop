@@ -1,3 +1,4 @@
+import { useFormContext } from "react-hook-form";
 import { FragmentType, graphql, useFragment } from "../../gql";
 import "./FormDetailsPage.css";
 
@@ -12,11 +13,18 @@ const questionDisplayFragment = graphql(/* GraphQL */ `
     }
   }
 `);
+
+type QuestionId = string;
+type Answer = string;
+export type FormData = {
+  answers: Record<QuestionId, Answer>;
+};
 interface QuestionProps {
   data: FragmentType<typeof questionDisplayFragment>;
 }
 export const QuestionDisplay: React.FC<QuestionProps> = ({ data: dataSrc }) => {
   const data = useFragment(questionDisplayFragment, dataSrc);
+  const { register } = useFormContext<FormData>();
 
   switch (data.__typename) {
     case "TextQuestion":
@@ -24,7 +32,11 @@ export const QuestionDisplay: React.FC<QuestionProps> = ({ data: dataSrc }) => {
         <div className="form-detail-question">
           {data.question}
           <div>
-            <input type="text" name={data._id} placeholder={data.question} />
+            <input
+              type="text"
+              placeholder={data.question}
+              {...register(`answers.${data._id}`)}
+            />
           </div>
         </div>
       );
@@ -39,15 +51,19 @@ export const QuestionDisplay: React.FC<QuestionProps> = ({ data: dataSrc }) => {
                     {opt}
                     <input
                       type="checkbox"
-                      name={`${data._id}-cb${i}`}
                       value={opt}
+                      {...register(`answers.${data._id}`)}
                     />
                   </label>
                 ))
               : data.options?.map((opt, i) => (
                   <label key={i} className="form-detail-option">
                     {opt}
-                    <input type="radio" name={data._id} value={opt} />
+                    <input
+                      type="radio"
+                      value={opt}
+                      {...register(`answers.${data._id}`)}
+                    />
                   </label>
                 ))}
           </div>
