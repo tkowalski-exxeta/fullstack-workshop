@@ -34,7 +34,10 @@ export const FormDetailsPage: React.FC = () => {
     onCompleted(data) {
       if (data.formById) {
         const questions = data?.formById?.questions;
-        const answers = Object.fromEntries(questions.map((q) => [q._id, ""]));
+        const answers = questions.map<FormData["answers"][number]>((q) => ({
+          id: q._id,
+          result: "",
+        }));
         methods.reset({ answers });
       }
     },
@@ -42,12 +45,12 @@ export const FormDetailsPage: React.FC = () => {
 
   const [submitFormBase] = useMutation(submitFormdataDocument);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: FormData) => {
     console.log("onSubmit", data);
     // TODO: fix type
     if (id) {
       return submitFormBase({
-        variables: { formId: id!, data },
+        variables: { formId: id!, data: data.answers as any },
         onCompleted: () => navigate("/thank-you"),
       });
     }
@@ -61,8 +64,8 @@ export const FormDetailsPage: React.FC = () => {
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <h1>{form.title}</h1>
-            {form.questions.map((f) => (
-              <QuestionDisplay key={f._id} data={f} path={`answers.${f._id}`} />
+            {form.questions.map((f, i) => (
+              <QuestionDisplay key={f._id} data={f} index={i} />
             ))}
             <button type="submit">Submit Form</button>
           </form>
