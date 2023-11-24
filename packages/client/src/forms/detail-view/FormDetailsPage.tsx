@@ -62,7 +62,7 @@ export const FormDetailsPage: React.FC = () => {
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <h1>{form.title}</h1>
             {form.questions.map((f) => (
-              <QuestionDisplay key={f._id} data={f} />
+              <QuestionDisplay key={f._id} data={f} path={`answers.${f._id}`} />
             ))}
             <button type="submit">Submit Form</button>
           </form>

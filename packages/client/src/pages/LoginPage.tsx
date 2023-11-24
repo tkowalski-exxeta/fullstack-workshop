@@ -39,10 +39,7 @@ export const Login: React.FC = () => {
 
   function login(data: LoginData) {
     return doLogin({
-      variables: {
-        username: data.username,
-        password: data.password,
-      },
+      variables: data,
       onCompleted: (data) => {
         if (data.login) {
           const { token, ...user } = data.login;
