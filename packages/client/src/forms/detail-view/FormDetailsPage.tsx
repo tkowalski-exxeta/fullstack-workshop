@@ -19,8 +19,8 @@ const formDetailsDocument = graphql(/* GraphQL */ `
 `);
 
 const submitFormdataDocument = graphql(/* GraphQL */ `
-  mutation SubmitFormdata($formId: ID!, $data: [FormAnswerEntryInput!]!) {
-    submitFormAnswer(formId: $formId, data: $data)
+  mutation SubmitFormdata($formId: ID!, $answers: [AnswerInput!]!) {
+    submitAnswers(formId: $formId, answers: $answers)
   }
 `);
 
@@ -52,9 +52,9 @@ export const FormDetailsPage: React.FC = () => {
       return submitFormBase({
         variables: {
           formId: id!,
-          data: data.answers.map((a) => ({
-            id: a.id,
-            result: Array.isArray(a.result) ? a.result : [a.result],
+          answers: data.answers.map((a) => ({
+            questionId: a.id,
+            answer: Array.isArray(a.result) ? a.result : [a.result],
           })),
         },
         onCompleted: () => navigate("/thank-you"),

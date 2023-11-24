@@ -1,12 +1,12 @@
+input AnswerInput {
+  answer: [String!]
+  questionId: ID!
+}
+
 type Form {
   _id: ID!
   questions: [Question!]!
   title: String!
-}
-
-input FormAnswerEntryInput {
-  id: ID!
-  result: [String!]
 }
 
 input FormInput {
@@ -40,7 +40,7 @@ type Mutation {
   """
   Submit the collected data of the user who filled the form
   """
-  submitFormAnswer(data: [FormAnswerEntryInput!]!, formId: ID!): ID!
+  submitAnswers(answers: [AnswerInput!]!, formId: ID!): ID!
 }
 
 type Query {

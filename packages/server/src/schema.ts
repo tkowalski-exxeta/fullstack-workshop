@@ -23,7 +23,7 @@ export const typeDefinitions = /* GraphQL */ `
     """
     Submit the collected data of the user who filled the form
     """
-    submitFormAnswer(formId: ID!, data: [FormAnswerEntryInput!]!): ID!
+    submitAnswers(formId: ID!, answers: [AnswerInput!]!): ID!
   }
 
   type Form {
@@ -67,9 +67,9 @@ export const typeDefinitions = /* GraphQL */ `
     question: String!
   }
 
-  input FormAnswerEntryInput {
-    id: ID!
-    result: [String!]
+  input AnswerInput {
+    questionId: ID!
+    answer: [String!]
   }
 
   type LoginResponse {
@@ -77,4 +77,4 @@ export const typeDefinitions = /* GraphQL */ `
     name: String!
     token: String!
   }
-`
+`;
