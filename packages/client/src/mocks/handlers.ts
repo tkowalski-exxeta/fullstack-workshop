@@ -11,17 +11,18 @@ export const mockForms = [
     title: "Untitled Form",
   },
 ];
+const backend = graphql.link("http://localhost:4000/graphql");
 
 // Define handlers that catch the corresponding requests and returns the mock data.
 export const handlers = [
-  graphql.operation((args) => {
+  backend.operation((args) => {
     console.log("Intercepted a GraphQL operation:", args);
     return HttpResponse.json({ data: { forms: mockForms } });
   }),
-  graphql.query("FormListPage", ({ query }) => {
+  backend.query("FormListPage", ({ query }) => {
     console.log('Intercepted a "FormListPage" GraphQL query:', query);
     return HttpResponse.json({
-      data: { forms },
+      data: { forms: mockForms },
     });
   }),
 ];

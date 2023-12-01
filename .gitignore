@@ -41,3 +41,6 @@ packages/client/src copy/pages/thank-you.tsx
 /blob-report/
 /playwright/.cache/
 packages/client/playwright-report/index.html
+packages/client/playwright-report/data/495be65dc38acbe4728838400fd25b9cee6a7709.png
+packages/client/playwright-report/data/351553f78d39073ed1f4064f0966225e56912efb.png
+packages/client/playwright-report/data/fa64f07b1886f8868c410654d3dfedd4b1a5b844.png

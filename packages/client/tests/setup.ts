@@ -10,14 +10,14 @@ import { server } from "../src/mocks/server";
 afterEach(() => cleanup());
 
 beforeAll(() => {
-  console.log("beforeAll: server.listen");
+  // console.log("beforeAll: server.listen");
   server.listen({ onUnhandledRequest: "error" });
 });
 afterAll(() => {
-  console.log("afterAll: server.close");
+  // console.log("afterAll: server.close");
   server.close();
 });
 afterEach(() => {
-  console.log("afterEach: server.resetHandlers");
+  // console.log("afterEach: server.resetHandlers");
   server.resetHandlers();
 });

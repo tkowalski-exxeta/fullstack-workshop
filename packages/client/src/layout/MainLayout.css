@@ -1,7 +1,7 @@
 :root {
   --text: hsl(210, 40%, 98%);
-  --main: hsl(228, 67%, 25%);
-  --dark: hsl(228, 6%, 15%);
+  --main: hsl(13, 70%, 30%);
+  --dark: hsl(227, 33%, 23%);
   --hover-brightness: 0.85;
 }
 

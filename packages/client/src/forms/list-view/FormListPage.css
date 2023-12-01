@@ -10,3 +10,21 @@
   padding: 1rem 2rem;
   border-radius: 0.5rem;
 }
+
+.add-form {
+  width: 10rem;
+  cursor: pointer;
+  border: 1px solid #e2e2e2;
+  fill: var(--main);
+  padding: 0;
+  margin: 0;
+}
+
+.add-form:hover {
+  filter: brightness(var(--hover-brightness));
+}
+
+.add-form > img {
+  width: 10rem;
+  height: 10rem;
+}

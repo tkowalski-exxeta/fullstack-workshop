@@ -1,9 +1,9 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import { DocumentType, graphql } from "../../gql";
-import { mockForms } from "../../mocks/handlers";
 import { FormListItem } from "./FormListItem";
 import "./FormListPage.css";
+import plusIcon from "./plus.svg";
 
 const formListDocument = graphql(/* GraphQL */ `
   query FormListPage {
@@ -13,19 +13,32 @@ const formListDocument = graphql(/* GraphQL */ `
     }
   }
 `);
+const CreateFormDocument = graphql(/* GraphQL */ `
+  mutation CreateForm($formInput: FormInput!) {
+    saveForm(form: $formInput) {
+      _id
+      title
+    }
+  }
+`);
 type FormListPageDoc = DocumentType<typeof formListDocument>;
 export const FormListPage: React.FC = () => {
   const navigate = useNavigate();
-  const { data, loading } = useQuery(formListDocument);
-  console.log("Rendering FormListPage", data, loading);
+  const { data, loading, error } = useQuery(formListDocument);
+  const [createForm] = useMutation(CreateFormDocument, {
+    refetchQueries: [{ query: formListDocument }],
+  });
+
   if (loading) {
     return <div>Loading...</div>;
   }
-  const formList: NonNullable<FormListPageDoc["forms"]> =
-    data?.forms ?? (mockForms as any);
-  // if (!data?.forms || data.forms.length === 0) {
-  //   return <div>No forms found</div>;
-  // }
+  if (error) {
+    return <div>Error: {String(error)}</div>;
+  }
+  const formList: FormListPageDoc["forms"] | undefined = data?.forms;
+  if (!formList || formList.length === 0) {
+    return <div>No forms found</div>;
+  }
   return (
     <div className="form-main">
       {formList.map((f) => (
@@ -35,7 +48,16 @@ export const FormListPage: React.FC = () => {
           onFormSelect={(id) => navigate(id)}
         />
       ))}
-      {JSON.stringify(formList)}
+      <button
+        className="add-form"
+        onClick={() =>
+          createForm({
+            variables: { formInput: { title: "New Form", questions: [] } },
+          })
+        }
+      >
+        <img src={plusIcon} alt="plus icon" />
+      </button>
     </div>
   );
 };
