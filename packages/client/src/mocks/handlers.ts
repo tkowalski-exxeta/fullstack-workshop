@@ -1,7 +1,7 @@
-import { graphql } from "msw";
+import { HttpResponse, graphql } from "msw";
 
 // Mock Data
-export const forms = [
+export const mockForms = [
   {
     _id: "6479b7e2762f4f829cb7c316",
     title: "Test Form",
@@ -14,5 +14,14 @@ export const forms = [
 
 // Define handlers that catch the corresponding requests and returns the mock data.
 export const handlers = [
-  graphql.query("GetFormMain", (_, res, ctx) => res(ctx.data(forms))),
+  graphql.operation((args) => {
+    console.log("Intercepted a GraphQL operation:", args);
+    return HttpResponse.json({ data: { forms: mockForms } });
+  }),
+  graphql.query("FormListPage", ({ query }) => {
+    console.log('Intercepted a "FormListPage" GraphQL query:', query);
+    return HttpResponse.json({
+      data: { forms },
+    });
+  }),
 ];

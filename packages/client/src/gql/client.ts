@@ -3,7 +3,5 @@ import generatedIntrospection from "./fragement";
 
 export const client = new ApolloClient({
   link: createHttpLink({ uri: "/graphql" }),
-  cache: new InMemoryCache({
-    possibleTypes: generatedIntrospection.possibleTypes,
-  }),
+  cache: new InMemoryCache(generatedIntrospection),
 });

@@ -26,7 +26,6 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     include: ["tests/unit/**/*.test.ts(x)"],
-    // exclude: ["*.spec.ts"],
     setupFiles: ["./tests/setup.ts"],
   },
 });
