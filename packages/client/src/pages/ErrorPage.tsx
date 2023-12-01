@@ -10,7 +10,7 @@ export const ErrorPage: React.FC = () => {
         <p>Sorry, an unexpected error has occurred.</p>
         {error instanceof Error && (
           <p>
-            <i>{error.statusText || error.message}</i>
+            <i>{error.message}</i>
           </p>
         )}
       </div>

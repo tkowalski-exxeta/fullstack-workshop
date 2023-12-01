@@ -1,8 +1,14 @@
 import { useQuery } from "@apollo/client";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
-import { graphql } from "../../gql";
-import { FormEditor } from "./FormEditor";
+import { graphql, useFragment } from "../../gql";
+import {
+  FormEditorFormFragment,
+  FormInput,
+  QuestionInput,
+} from "../../gql/graphql";
+import { FormEditor, formEditorFormDocument } from "./FormEditor";
+import { questionEditorFragment } from "./QuestionEditor";
 
 const GetFormEditorDocument = graphql(/* GraphQL */ `
   query GetFormEditor($id: ID!) {
@@ -19,7 +25,7 @@ export const FormEditorPage: React.FC = () => {
     variables: { id: id! },
     skip: !id,
   });
-  const form = data?.formById;
+  const form = useFragment(formEditorFormDocument, data?.formById);
   const formInput = useMemo(() => (form ? toFormInput(form) : null), [form]);
 
   return formInput ? ( //
@@ -31,8 +37,9 @@ export const FormEditorPage: React.FC = () => {
   );
 };
 
-function toFormInput(formData: FormData) {
-  const questionInput = formData.questions.map<QuestionInput>((q) => {
+function toFormInput(formData: FormEditorFormFragment) {
+  const questionInput = formData.questions.map<QuestionInput>((question) => {
+    const q = useFragment(questionEditorFragment, question);
     switch (q.__typename) {
       case "TextQuestion":
         return {

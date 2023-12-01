@@ -6,10 +6,11 @@ import {
   useFieldArray,
   useWatch,
 } from "react-hook-form";
-import { FragmentType, graphql, useFragment } from "../../gql";
+import { graphql } from "../../gql";
+import { FormInput } from "../../gql/graphql";
 import cls from "./FormEditor.module.css";
 
-const questionEditorFragment = graphql(/* GraphQL */ `
+export const questionEditorFragment = graphql(/* GraphQL */ `
   fragment QuestionEditor on Question {
     __typename
     _id
@@ -28,13 +29,10 @@ interface QuestionProps<TData extends object> {
   setValue: UseFormSetValue<TData>;
 }
 
-type FormInput = FragmentType<typeof questionEditorFragment>;
-
 export const QuestionEditor: React.FC<QuestionProps<FormInput>> = (props) => {
   const { index, control, setValue } = props;
 
-  const watchedQuestion = useWatch({ name: `questions.${index}`, control });
-  const question = useFragment(questionEditorFragment, watchedQuestion);
+  const question = useWatch({ name: `questions.${index}`, control });
   const questionType = question.text ? "text" : "select";
 
   function changeQuestionType(event: ChangeEvent<HTMLSelectElement>): void {

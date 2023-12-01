@@ -6,28 +6,20 @@ import { FormInput } from "../../gql/graphql";
 import cls from "./FormEditor.module.css";
 import { QuestionEditor } from "./QuestionEditor";
 
-const FormEditorSaveFormDocument = graphql(/* GraphQL */ `
-  mutation FormEditorSaveForm($form: FormInput!) {
-    saveForm(form: $form) {
-      ...FormEditorForm
-    }
-  }
-
+export const formEditorFormDocument = graphql(/* GraphQL */ `
   fragment FormEditorForm on Form {
     _id
     title
     questions {
-      ...FormEditorQuestion
+      ...QuestionEditor
     }
   }
+`);
 
-  fragment FormEditorQuestion on Question {
-    __typename
-    _id
-    question
-    ... on SelectQuestion {
-      multiSelect
-      options
+export const formEditorSaveFormDocument = graphql(/* GraphQL */ `
+  mutation FormEditorSaveForm($form: FormInput!) {
+    saveForm(form: $form) {
+      ...FormEditorForm
     }
   }
 `);
@@ -38,7 +30,7 @@ interface FormEditorProps {
 export const FormEditor: React.FC<FormEditorProps> = ({ form }) => {
   const titleId = useId();
 
-  const [saveFormBase] = useMutation(FormEditorSaveFormDocument);
+  const [saveFormBase] = useMutation(formEditorSaveFormDocument);
   const formMethods = useForm({ values: form });
   const {
     register,
