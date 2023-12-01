@@ -36,3 +36,8 @@ packages/client/src copy/pages/login.tsx
 packages/client/src copy/pages/private-route.tsx
 packages/client/src copy/pages/routes.tsx
 packages/client/src copy/pages/thank-you.tsx
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+packages/client/playwright-report/index.html
